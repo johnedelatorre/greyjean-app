@@ -1,0 +1,124 @@
+<!-- dev panel / settings panel -->
+<div class="dev-panel-wrapper {{devCore.open}}">
+  <md-button class="pull-right btn-primary m-sm" ui-toggle-class="show" data-target=".dev-panel-wrapper">Close Dev Panel</md-button>
+  <md-button class="btn-info m-sm" ui-toggle-class="show" data-target=".dev-panel-local-wrap">Local</md-button>
+  <md-button class="btn-primary" ui-toggle-class="show" data-target=".xdev-panel-session-wrap">Session</md-button>
+  <md-button class="btn-primary" ui-toggle-class="show" data-target=".xdev-panel-session-wrap">Indexed DB</md-button>
+  <!-- local control wrap -->
+  <div class="dev-panel-local-wrap dev-panel-button-wrap {{devCore.local.open}}">
+    <h3>Local Control</h3>
+    <md-button class="btn-info" ui-toggle-class="show" data-target=".dev-panel-fingerprints-wrap">Fingerprints Local</md-button>
+    <md-button class="btn-info" ui-toggle-class="show" data-target=".dev-panel-campaigns-wrap">Campaigns Local</md-button>
+    <md-button class="btn-info" ui-toggle-class="show" data-target=".dev-panel-offers-wrap">Offers Local</md-button>
+    <md-button class="btn-info" ui-toggle-class="show" data-target=".dev-panel-cores-wrap">Core Local</md-button>
+    <div class="dev-panel-fingerprints-wrap dev-panel-button-wrap {{devCore.local.fingerprints.open}}">
+      <h4>Local Fingerprints Control</h4>
+      <md-button class="btn-danger" ng-click="clearFingerprints()">Clear Fingerprints</md-button>
+      <md-button class="btn-info" ng-click="logFingerprints()">Log Fingerprints</md-button>
+    </div>
+    <div class="dev-panel-offers-wrap dev-panel-button-wrap {{devCore.local.offers.open}}">
+      <h4>Local Offers Control</h4>
+      <md-button class="btn-danger" ng-click="clearOffers()">Clear Offers</md-button>
+      <md-button class="btn-info" ng-click="logOffers()">Log Offers</md-button>
+    </div>
+    <div class="dev-panel-campaigns-wrap dev-panel-button-wrap {{devCore.local.campaigns.open}}">
+      <h4>Local Campaigns Control</h4>
+      <md-button class="btn-danger" ng-click="clearCampaigns()">Clear Campaigns</md-button>
+      <md-button class="btn-info" ng-click="logCampaigns()">Log Campaigns</md-button>
+    </div>
+    <div class="dev-panel-cores-wrap dev-panel-button-wrap {{devCore.local.cores.open}}">
+      <h4>Local Cores Control</h4>
+      <md-button class="btn-danger" ng-click="clearLocal()">Clear Cores local</md-button>
+      <md-button class="btn-info" ng-click="logLocal()">Log Cores local</md-button>
+    </div>
+  </div>
+  <!-- /local control wrap -->
+  <!-- /session control wrap -->
+  <div class="dev-panel-session-wrap dev-panel-button-wrap {{devCore.session.open}}">
+    <h3>Session Control</h3>
+    <md-button class="btn-primary" ui-toggle-class="show" data-target=".dev-panel-fingerprint-wrap">Fingerprint Session</md-button>
+    <md-button class="btn-primary" ui-toggle-class="show" data-target=".dev-panel-campaign-wrap">Campaign Session</md-button>
+    <md-button class="btn-primary" ui-toggle-class="show" data-target=".dev-panel-offer-wrap">Offer Session</md-button>
+    <md-button class="btn-primary" ui-toggle-class="show" data-target=".dev-panel-core-wrap">Core Session</md-button>
+    <div class="dev-panel-fingerprint-wrap dev-panel-button-wrap {{devCore.session.fingerprint.open}}">
+      <h4>Session Core Control</h4>
+      <md-button class="btn-danger" ng-click="clearFingerprint()">Clear Fingerprint Session</md-button>
+      <md-button class="btn-primary" ng-click="logFingerprint()">Log Fingerprint Session</md-button>
+    </div>
+    <div class="dev-panel-offer-wrap dev-panel-button-wrap {{devCore.session.offer.open}}">
+      <h4>Session Offer Control</h4>
+      <md-button class="btn-danger" ng-click="clearOffer()">Clear Offer Session</md-button>
+      <md-button class="btn-primary" ng-click="logOffer()">Log Offer Session</md-button>
+    </div>
+    <div class="dev-panel-campaign-wrap dev-panel-button-wrap {{devCore.session.campaign.open}}">
+      <h4>Session Campaign Control</h4>
+      <md-button class="btn-danger" ng-click="clearCampaign()">Clear Campaign Session</md-button>
+      <md-button class="btn-primary" ng-click="logCampaign()">Log Campaign Session</md-button>
+    </div>
+    <div class="dev-panel-core-wrap dev-panel-button-wrap {{devCore.session.core.open}}">
+      <h4>Session Core Control</h4>
+      <md-button class="btn-danger" ng-click="clearSession()">Clear Core Session</md-button>
+      <md-button class="btn-primary" ng-click="logSession()">Log Core Session</md-button>
+    </div>
+  </div>
+  <!-- /session control wrap -->
+  <!-- API control wrap -->
+  <div class="dev-panel-session-wrap dev-panel-button-wrap {{devCore.API.open}}">
+    <h3>API Control</h3>
+  </div>
+  <!-- /API control wrap -->
+  <!-- IndexedDB control wrap -->
+  <div class="dev-panel-session-wrap dev-panel-button-wrap {{devCore.indexedDB.open}}">
+    <h3>IndexedDB Control</h3>
+    <md-button class="btn-info" ui-toggle-class="show" ng-click="log_DBCORE_Fingerprints()">Log DBCORE Table Fingerprints</md-button>
+    <md-button class="btn-info" ui-toggle-class="show" ng-click="log_DBCORE_Offers()">Log DBCORE Table Offers</md-button>
+    <md-button class="btn-info" ui-toggle-class="show" ng-click="log_DBCORE_Campaigns()">Log DBCORE Table Campaigns</md-button>
+    <md-button class="btn-info" ui-toggle-class="show" ng-click="log_DBCORE_Fingeprints_All()">Log DBCORE Table All Fingerprints</md-button>
+    <md-button class="btn-info" ui-toggle-class="show" ng-click="log_DBCORE_Offers_All()">Log DBCORE Table All Offers</md-button>
+    <md-button class="btn-info" ui-toggle-class="show" ng-click="log_DBCORE_Campaigns_All()">Log DBCORE Table All Campaigns</md-button>
+    <md-button class="btn-info" ui-toggle-class="show" ng-click="delete_DBCORE()">DELETE DBCORE</md-button>
+  </div>
+  <!-- /API control wrap -->
+  <!-- responses -->
+  <div class="devcore-code-response-wrap" layout-sm="column" layout-gt-md="row">
+    <div flex-sm="100" flex-gt-md="33">
+      <h3>response</h3>
+      <div class="json-format-dk-wrap">
+        <json-formatter class="json-formatter-dark" json='devcode' open="3"></json-formatter>
+      </div>
+    </div>
+    <div flex-sm="100" flex-gt-md="33">
+      <h3>response</h3>
+      <div class="json-format-dk-wrap">
+        <json-formatter class="json-formatter-dark" json='devcodeAPI' open="3"></json-formatter>
+      </div>
+    </div>
+    <div flex-sm="100" flex-gt-md="33">
+      <h3>locker log</h3>
+      <div class="json-format-dk-wrap">
+        <json-formatter class="json-formatter-dark" json='devcodeLocker' open="3"></json-formatter>
+      </div>
+    </div>
+  </div>
+  <div class="devcore-code-response-wrap" layout-sm="column" layout-gt-md="row">
+    <div flex-sm="100" flex-gt-md="33">
+      <h3>response</h3>
+      <div class="json-format-dk-wrap">
+        <json-formatter class="json-formatter-dark" json='devcode' open="3"></json-formatter>
+      </div>
+    </div>
+    <div flex-sm="100" flex-gt-md="33">
+      <h3>response</h3>
+      <div class="json-format-dk-wrap">
+        <json-formatter class="json-formatter-dark" json='devcodeAPI' open="3"></json-formatter>
+      </div>
+    </div>
+    <div flex-sm="100" flex-gt-md="33">
+      <h3>locker log</h3>
+      <div class="json-format-dk-wrap">
+        <json-formatter class="json-formatter-dark" json='devcodeLocker' open="3"></json-formatter>
+      </div>
+    </div>
+  </div>
+  <!-- /reponses -->
+</div>

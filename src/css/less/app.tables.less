@@ -1,0 +1,74 @@
+.table > thead > tr > th {
+    padding: 8px 15px;
+    border-bottom: 1px solid #f9f9f5;
+    font-size: .65em;
+    text-transform: uppercase;
+    letter-spacing: .1em;
+  }
+
+  .table-striped > tbody > tr:nth-child(odd) > td,
+  .table-striped > tbody > tr:nth-child(odd) > th {
+    background: transparent;
+  }
+
+  tr:nth-child(even) {
+    background: @brand-even;
+  }
+
+  tr:nth-child(odd) {
+    background: @brand-odd;
+  }
+
+  table, th, tfoot > tr {
+    background: @brand-light !important;
+//      :hover {
+//        background: @brand-light !important;
+//      }
+  }
+
+  .hide-if-no-paging tr {
+    background: @brand-even;
+  }
+
+  .rows {
+    border-top: 1px solid @lightgray;
+    border-bottom: 1px solid @lightgray;
+  }
+
+  tr:hover, td:hover, td > i:hover,
+  .footable-row-detail-inner:hover,
+  .footable-row-detail-row:hover,
+  .footable-row-detail-name:hover,
+  .footable-row-detail-value:hover,
+  .footable-toggle:hover,
+  {
+    background: @brand-primary !important;
+  }
+
+  .pagination{
+    padding-top: 20px;
+  }
+
+  .hide-if-no-paging tr:hover {
+    background: transparent !important;
+  }
+
+  .pagination > li > a, .pagination > li > span {
+    color: @brand-dark; border: none;
+  }
+
+  .pagination > .active > a,
+  .pagination > .active > span,
+  .pagination > .active > a:hover,
+  .pagination > .active > span:hover,
+  .pagination > .active > a:focus,
+  .pagination > .active > span:focus {
+    background: @brand-primary;
+    border-color: @brand-primary
+  }
+
+  .footable-first-column,
+  .footable-row-detail-name,
+  .footable-row-detail-value {
+    text-align: left
+  }

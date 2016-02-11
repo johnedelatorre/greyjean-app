@@ -1,0 +1,723 @@
+<div id="appTop" class="hbox hbox-auto-xs hbox-auto-sm" ng-init="" ng-controller="CoreDashboardCtrl as dashCtrl">
+    <!-- main -->
+    <div class="col">
+        <!-- main header -->
+        <!-- <div class="bg-light lter b-b wrapper-md">
+          <div class="row">
+            <div class="col-sm-6 col-xs-12">
+              <h1 class="m-n font-thin h3 text-black">
+                Hi {{merchantMe.firstName | toCapital}} {{merchantMe.lastName | toCapital}}
+                - Welcome to Flik Dashboard
+              </h1>
+              <small class="text-muted">
+                Hey {{merchantMe.firstName}} {{merchantMe.lastName}}
+              </small>
+            </div>
+            <div class="col-sm-6 text-right hidden-xs">
+              <div class="inline m-r text-left">
+                <div class="m-b-xs">77 <span class="text-muted">items</span></div>
+                <div ng-init="data1=[ 106,108,110,105,110,109,105,104,107,109,105,100,105,102,101,99,98 ]"
+                  ui-jq="sparkline"
+                  ui-options="{{data1}}, {type:'bar', height:20, barWidth:5, barSpacing:1, barColor:'#dce5ec'}"
+                  class="sparkline inline">loading...
+                </div>
+              </div>
+              <div class="inline text-left">
+                <div class="m-b-xs">$70,777 <span class="text-muted">revenue</span></div>
+                <div ng-init="data2=[ 105,102,106,107,105,104,101,99,98,109,105,100,108,110,105,110,109 ]"
+                  ui-jq="sparkline"
+                  ui-options="{{data2}}, {type:'bar', height:20, barWidth:5, barSpacing:1, barColor:'#dce5ec'}"
+                  class="sparkline inline">loading...
+                </div>
+              </div>
+            </div>
+          </div>
+        </div> -->
+        <!-- / main header -->
+        <div
+                class="dashboard-create-view fade-in-up"
+                ng-class="{'dashboardFOCActive': $state.includes('core.home.fingerprint') || $state.includes('core.home.offer') || $state.includes('core.home.campaign')}"
+                ui-view="dashboardFOC"
+                ></div>
+        <div class="wrapper-md dashboard-main-wrapper">
+            <div class="row FOC-widgets-copy-wrap">
+                <div class="col-xs-12">
+                    <div class="row row-sm text-center">
+                        <div class="col-xs-4 dashboard-FOC-widget-copy dashboard-fingerprints-create-widget">
+                            <section class="item nooverflow bottom-break">
+                                <figure class="effect-borderfill fingerprints">
+                                    <img src="img/icon-fingerprints.svg" alt="fingerprints"/>
+                                    <figcaption>
+                                        <img src="img/icon-fingerprints-white.svg" alt="" class="dashboard-f-icon-alt">
+                                        <h2 class="bottom"><span>Fingerprints</span></h2>
+                                        <p>
+                                            <a ui-sref="core.view.fingerprints">
+                                                <i class="fa fa-fw fa-binoculars"></i>
+                                            </a>
+                                            <a ui-sref="core.home.fingerprint" class="menu-button" anchor-smooth-scroll="app">
+                                                <i class="fa fa-fw fa-pencil"></i>
+                                            </a>
+                                            <a ui-sref="core.view.fingerprints">
+                                                <i class="fa fa-fw fa-search"></i>
+                                            </a>
+                                        </p>
+                                    </figcaption>
+                                </figure>
+                            </section>
+                        </div>
+                        <div class="col-xs-4 dashboard-FOC-widget-copy dashboard-offers-create-widget">
+                            <section class="item nooverflow bottom-break">
+                                <figure class="effect-borderfill offers">
+                                    <img src="img/icon-offers.svg" alt="offers"/>
+                                    <figcaption>
+                                        <img src="img/icon-offers-white.svg" alt="offers"/>
+                                        <h2 class="bottom"><span>Offers</span></h2>
+                                        <p>
+                                            <a ui-sref="core.view.offers">
+                                                <i class="fa fa-fw fa-binoculars"></i>
+                                            </a>
+                                            <a ui-sref="core.home.offer" class="menu-button" anchor-smooth-scroll="app">
+                                                <i class="fa fa-fw fa-pencil"></i>
+                                            </a>
+                                            <a ui-sref="core.view.offers">
+                                                <i class="fa fa-fw fa-search"></i>
+                                            </a>
+                                        </p>
+                                    </figcaption>
+                                </figure>
+                            </section>
+                        </div>
+                        <div class="col-xs-4 dashboard-FOC-widget-copy dashboard-campaigns-create-widget">
+                            <section class="item nooverflow bottom-break">
+                                <figure class="effect-borderfill campaigns">
+                                    <img src="img/icon-campaigns.svg" alt="campaigns"/>
+                                    <figcaption>
+                                        <img src="img/icon-campaigns.svg" alt="campaigns"/>
+                                        <h2 class="bottom"><span>Campaigns</span></h2>
+                                        <p>
+                                            <a ui-sref="core.view.campaigns">
+                                                <i class="fa fa-fw fa-binoculars"></i>
+                                            </a>
+                                            <a ui-sref="core.home.campaign" class="menu-button" anchor-smooth-scroll="app">
+                                                <i class="fa fa-fw fa-pencil"></i>
+                                            </a>
+                                            <a ui-sref="core.view.campaigns">
+                                                <i class="fa fa-fw fa-search"></i>
+                                            </a>
+                                        </p>
+                                    </figcaption>
+                                </figure>
+                            </section>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- analytics-widget view -->
+            <div ui-view="analyticsWidget"></div>
+            <!-- /analytics-widget view -->
+            <!-- stats -->
+            <div class="row">
+                <div class="col-xs-12 FOC-widgets-wrap">
+                    <div class="row row-sm text-center">
+                        <div class="col-xs-4 dashboard-fingerprints-create-widget dashboard-FOC-create-widget">
+                            <section class="item nooverflow bottom-break">
+                                <figure class="effect-borderfill fingerprints">
+                                    <img src="img/icon-fingerprints.svg" alt="" class="dashboard-f-icon-alt">
+                                    <figcaption>
+                                        <img src="img/icon-fingerprints-white.svg" alt="" class="dashboard-f-icon-alt">
+                                        <h2 class="bottom"><span>Fingerprints</span></h2>
+                                        <p>
+                                            <a ui-sref="core.view.fingerprints">
+                                                <i class="fa fa-fw fa-binoculars"></i>
+                                            </a>
+                                            <a ui-sref="core.home.fingerprint" class="menu-button" anchor-smooth-scroll="app">
+                                                <i class="fa fa-fw fa-pencil"></i>
+                                            </a>
+                                            <a ui-sref="core.view.fingerprints">
+                                                <i class="fa fa-fw fa-search"></i>
+                                            </a>
+                                        </p>
+                                    </figcaption>
+                                </figure>
+                            </section>
+                        </div>
+                        <div class="col-xs-4 dashboard-offers-create-widget dashboard-FOC-create-widget">
+                            <section class="item nooverflow bottom-break">
+                                <figure class="effect-borderfill offers">
+                                    <img src="img/icon-offers.svg" alt="offers"/>
+                                    <figcaption>
+                                        <img src="img/icon-offers-white.svg" alt="" class="dashboard-f-icon-alt">
+                                        <h2 class="bottom"><span>Offers</span></h2>
+                                        <p>
+                                            <a ui-sref="core.view.offers">
+                                                <i class="fa fa-fw fa-binoculars"></i>
+                                            </a>
+                                            <a ui-sref="core.home.offer" class="menu-button" anchor-smooth-scroll="app">
+                                                <i class="fa fa-fw fa-pencil"></i>
+                                            </a>
+                                            <a ui-sref="core.view.offers">
+                                                <i class="fa fa-fw fa-search"></i>
+                                            </a>
+                                        </p>
+                                    </figcaption>
+                                </figure>
+                            </section>
+                        </div>
+                        <div class="col-xs-4 dashboard-campaigns-create-widget dashboard-FOC-create-widget">
+                            <section class="item nooverflow bottom-break">
+                                <figure class="effect-borderfill campaigns">
+                                    <img src="img/icon-campaigns.svg" alt="campaigns"/>
+                                    <figcaption>
+                                        <img src="img/icon-campaigns.svg" alt="" class="dashboard-f-icon-alt">
+                                        <h2 class="bottom"><span>Campaigns</span></h2>
+                                        <p>
+                                            <a ui-sref="core.view.campaigns">
+                                                <i class="fa fa-fw fa-binoculars"></i>
+                                            </a>
+                                            <a ui-sref="core.home.campaign" class="menu-button" anchor-smooth-scroll="app">
+                                                <i class="fa fa-fw fa-pencil"></i>
+                                            </a>
+                                            <a ui-sref="core.view.campaigns">
+                                                <i class="fa fa-fw fa-search"></i>
+                                            </a>
+                                        </p>
+                                    </figcaption>
+                                </figure>
+                            </section>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="">
+                        <div class="col-lg-2">
+                            <div class="row">
+                                <div class="nav-txt-size bg-color-black filter-btn-height"><h5 class="color-white">CAMPAIGN TYPE</h5></div>
+
+                                <div class="filter-btn-margin" data-ng-modal="isdrop2 = true">
+                                    <div class="btn-group dropdown" data-ng-class="{open:isdrop2}">
+                                        <button type="button" ng-click = "isdrop2 = !isdrop2" class="btn dropdown-toggle filter-btn-height bg-filter-color color-button"
+                                                >
+                                            <div class="color-white filter-btn-txt">Filter</div>
+                                            <div class="fa fa-chevron-down fa-1x color-white"></div>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-width dropdown-scroll" role="menu">
+                                            <li class="dropdown-txt bg-color-blue color-white height-header">
+                                                <span class= "color-white">Select Campaign Type</span> <span class="fa fa-1x check-box-position color-light-blue chevron-position"></span>
+                                            </li>
+                                            <select class="input-sm form-control inline v-middle select-width" ng-model="analyticscampaigntype.value" ng-options="v for v in analyticscampaigntype.values" ng-change="updateanalytics()">
+                                                <option value="mobile">Mobile</option>
+                                                <option value="social">Social</option>
+                                            </select>
+                                            <li><span class="dropdown-txt color-light-blue"></span><span></span></li>
+                                            <li><span class="dropdown-txt color-light-blue"></span><span></span></li>
+                                            <!--<li class="divider"></li>-->
+                                            <!--<li><span class="dropdown-txt color-light-blue">Social</span><span><input type="radio" ng-model = "camptype"  ng-change = "updatecamptype(camptype)" value = "social" class="check-box-position check-box-margin"></span></li>-->
+                                            <!--<li class="divider"></li>-->
+                                            <!--<li><span class="dropdown-txt color-light-blue">Something else here</span><span><input type="checkbox" class="check-box-position check-box-margin"></span></a></li>-->
+                                        </ul>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="row">
+                                <div class="nav-txt-size bg-color-black filter-btn-height"><h5 class="color-white">CAMPAIGNS</h5></div>
+
+                                <div class="filter-btn-margin" data-ng-modal="isdrop4 = true">
+                                    <div class="btn-group dropdown" data-ng-class="{open:isdrop4}">
+                                        <button type="button" class="btn dropdown-toggle filter-btn-height bg-filter-color color-button" ng-click = "isdrop4 = !isdrop4">
+                                            <div class="color-white filter-btn-txt">Filter</div>
+                                            <div class="fa fa-chevron-down fa-1x color-white"></div>
+                                        </button>
+
+                                        <ul class="dropdown-menu dropdown-width dropdown-scroll" role="menu">
+                                            <li class=" dropdown-txt bg-color-blue color-white height-header">
+                                                <span class= "color-white">Campaign Name</span> <span class="fa fa-chevron-down fa-1x check-box-position color-light-blue chevron-position"></span>
+                                            </li>
+                                            <div ng-repeat = "campaign in campaign|unique:'campaignName'">
+                                                <li><span class="dropdown-txt-analytics color-light-blue" style= "width:auto">{{campaign.campaignName}}</span><span><input type="checkbox" class="check-box-position check-box-margin" ng-model= "ischecked.data[campaign.campaignId]"   data-ng-change = "filterByCampaign(campaign.campaignId)"></span></li>
+                                                <li class="divider"></li>
+                                            </div>
+                                            <li><span><input type="checkbox" ng-model="uncheckc" ng-change="uncheck(uncheckc,'campaign')"></span><span class="float-right check-box-margin"><input type="checkbox" ng-model="isCampaignChecked.data"  data-ng-change="campaignFilterApply()"></span></li>
+                                            <li><span class="color-light-blue">Reset</span><span class="float-right color-light-blue">Apply filter</span></li>
+
+                                        </ul>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="row">
+                                <div class="nav-txt-size bg-color-black filter-btn-height"><h5 class="color-white">OFFERS</h5></div>
+
+                                <div class="filter-btn-margin"  data-ng-modal="isdrop5 = true">
+                                    <div class="btn-group dropdown" data-ng-class="{open:isdrop5}">
+                                        <button type="button" class="btn dropdown-toggle filter-btn-height bg-filter-color color-button" ng-click = "isdrop5 = !isdrop5" >
+                                            <div class="color-white filter-btn-txt">Filter</div>
+                                            <div class="fa fa-chevron-down fa-1x color-white"></div>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-width dropdown-scroll" role="menu">
+                                            <li class="dropdown-txt bg-color-blue color-white height-header">
+                                                <span class= "color-white">Offer Name</span> <span class="fa fa-chevron-down fa-1x check-box-position color-light-blue chevron-position"></span>
+                                            </li>
+                                            <div ng-repeat = "campaign in offer| unique:'offerName'">
+                                                <li ><span class="dropdown-txt-analytics color-light-blue" style= "width:auto">{{campaign.offerName}}</span><span><input type="checkbox" class="check-box-position check-box-margin" ng-model= "ischecked.data[campaign.offerId]"   data-ng-change = "filterByOffer(campaign.offerId)"></span></li>
+                                                <li class="divider"></li>
+                                            </div>
+                                            <li><span><input type="checkbox" ng-model="unchecko" ng-change="uncheck(unchecko,'offer')"></span><span class="float-right check-box-margin"><input type="checkbox" ng-model="isOfferChecked.data"  ng-change="offerFilterApply()"></span></li>
+                                            <li><span class="color-light-blue">Reset</span><span class="float-right color-light-blue">Apply filter</span></li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="row">
+                                <div class="nav-txt-size bg-color-black filter-btn-height"><h5 class="color-white">FINGERPRINTS</h5></div>
+
+                                <div class="filter-btn-margin"  data-ng-modal="isdrop6 = true">
+                                    <div class="btn-group dropdown"  data-ng-class="{open:isdrop6}">
+                                        <button type="button" class="btn dropdown-toggle filter-btn-height bg-filter-color color-button" ng-click = "isdrop6 = !isdrop6">
+                                            <div class="color-white filter-btn-txt">Filter</div>
+                                            <div class="fa fa-chevron-down fa-1x color-white"></div>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-width dropdown-scroll" role="menu">
+                                            <li class="dropdown-txt bg-color-blue color-white height-header">
+                                                <span class= "color-white">Fingerprint Name</span> <span class="fa fa-chevron-down fa-1x check-box-position color-light-blue chevron-position"></span>
+                                            </li>
+                                            <div ng-repeat = "campaign in fingerprint| unique:'fingerprintName'">
+                                                <li><span class="dropdown-txt-analytics color-light-blue" style= "width:auto">{{campaign.fingerprintName}}</span><span><input type="checkbox" class="check-box-position check-box-margin" ng-model= "ischecked.data[campaign.fingerprintId]"   data-ng-change = "filterByFingerPrint(campaign.fingerprintId)"></span></li>
+                                                <li class="divider"></li>
+                                            </div>
+                                            <li><span><input type="checkbox" ng-model="uncheckf" ng-change="uncheck(uncheckf,'fingerprint')"><span class="float-right check-box-margin"><input type="checkbox" ng-model="isFingerprintChecked.data" ng-change="fingerprintFilterApply()"></span></li>
+                                            <li><span class="color-light-blue">Reset</span><span class="float-right color-light-blue">Apply filter</span></li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="row">
+                                <div class="nav-txt-size bg-color-black filter-btn-height"><h5 class="color-white">STARTDATE</h5></div>
+
+                                <div class="filter-btn-margin" data-ng-modal="isdrop7 = true">
+                                    <div class="btn-group dropdown"  data-ng-class="{open:isdrop7}">
+                                        <button type="button" class="btn dropdown-toggle filter-btn-height bg-filter-color color-button"  ng-click = "isdrop7 = !isdrop7">
+                                            <div class="color-white filter-btn-txt">Filter</div>
+                                            <div class="fa fa-chevron-down fa-1x color-white"></div>
+                                        </button>
+
+                                        <ul class="dropdown-menu dropdown-width dropdown-scroll" role="menu">
+                                            <li class="dropdown-txt bg-color-blue color-white height-header">
+                                                <span class= "color-white">Date Start</span> <span class="fa fa-chevron-down fa-1x check-box-position color-light-blue chevron-position"></span>
+                                            </li>
+                                            <div style="display:inline-block; min-height:219px;">
+                                                <datepicker id="date-calender-custom" ng-model="selectstartDate" min-date="minDate" show-weeks="false" class="well well-sm" datepicker-position="right"></datepicker>
+
+                                            </div>
+                                            <li><span class="dropdown-txt">Check to apply filter</span><span><input type="checkbox" class="check-box-position check-box-margin" ng-model="isSelected" ng-click="startDate(selectstartDate,isSelected)"></span></a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="row">
+                                <div class="nav-txt-size bg-color-black filter-btn-height"><h5 class="color-white">ENDDATE</h5></div>
+
+                                <div class="filter-btn-margin" data-ng-modal="isdrop8 = true">
+                                    <div class="btn-group dropdown"  data-ng-class="{open:isdrop8}">
+                                        <button type="button" class="btn dropdown-toggle filter-btn-height bg-filter-color color-button"  ng-click = "isdrop8 = !isdrop8">
+                                            <div class="color-white filter-btn-txt">Filter</div>
+                                            <div class="fa fa-chevron-down fa-1x color-white"></div>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-width dropdown-scroll" role="menu">
+                                            <li class="dropdown-txt bg-color-blue color-white height-header">
+                                                <span class= "color-white">Date End</span> <span class="fa fa-chevron-down fa-1x check-box-position color-light-blue chevron-position"></span>
+                                            </li>
+                                            <div style="display:inline-block; min-height:219px;">
+                                                <datepicker id="date-calender-custom" ng-model="selectendDate" min-date="minDate" show-weeks="false" class="well well-sm" datepicker-position="right"></datepicker>
+                                            </div>
+                                            <li><span class="dropdown-txt">Check to apply filter</span><span><input type="checkbox" class="check-box-position check-box-margin" ng-model="isselected" ng-change="endDate(selectendDate,isselected)"></span></a></li>
+
+                                        </ul>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="totalReport" class="as-height bg-color-blue margin-bottom-15px">
+                        <div class="col-xs-12 col-md-4">
+                            <div class="twenty gallery-caption">
+                                <p class=""><span class="color-green txt-font-size" >Overall</span><br><span class="numbers color-white">{{salesSummary.totalParticipant | number}}</span></p>
+                            </div>
+
+                            <p class="txt-size text-align-center color-light-blue">Participants</p>
+                        </div>
+                        <div class="col-xs-12 col-md-4">
+                            <div class="twenty gallery-caption">
+                                <p class=""><span class="color-green txt-font-size">Overall</span><br><span class="numbers color-white">{{salesSummary.totalRedemptionRate | percentage}}</span></p>
+                            </div>
+
+                            <p class="txt-size text-align-center color-orange">Redemption</p>
+                        </div>
+                        <div class="col-xs-12 col-md-4">
+                            <div class="twenty gallery-caption">
+                                <p class=""><span class="color-green txt-font-size">Overall</span><br><span class="numbers color-white">{{salesSummary.totalSalesAmountforAllRedemptions | currency:"$":0 }}</span></p>
+                            </div>
+
+                            <p class="txt-size text-align-center color-dark-blue">Sales</p>
+                        </div>
+                        <md-progress-circular
+                                class="md-hue-2 wizard-loader"
+                                md-mode="indeterminate"
+                                ng-class="{'show-wizard-loader': toggleWizardLoader.showLoader}"
+                                ></md-progress-circular>
+
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- tables -->
+            <div class="panel panel-default">
+                <div class="row wrapper">
+                    <div class="col-sm-4"><h2><b>Campaigns</b>Overview</h2></div>
+                    <div class="col-sm-4">
+                        <div class="row wrapper">
+                            <div class="col-sm-12">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="row wrapper">
+                            <div class="col-sm-12">
+                                <a class="download" href="" ng-click="printPdf(salesSummary.totalParticipant, salesSummary.totalRedemptionRate, salesSummary.totalSalesAmountforAllRedemptions)">
+                                    <img src="img/icon-pdf.svg">
+                                </a>
+
+                                <a class="download" href=""  ng-csv="filterdLists | orderBy:'campaignName'" filename="analytics.csv" csv-header="['Campaign Id', 'Merchant Id', 'Fingerprint Id','Fingerprint Name','Offer Id','Offer Name','Campaign Name','Start Date','End Date','Total Participant','Total Sales', 'Total Redemption']" text-delimiter="['Field A','Field B']">
+                                    <img src="img/icon-csv.svg">
+                                </a>
+
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <!-- service -->
+                <div class="panel hbox hbox-auto-xs no-border">
+                    <div id="graphPdf">
+                        <div class="col-xs-12 col-md-4 wrapper">
+                            <div class="row">
+                                <highchart id="chart2" class="span10" config="campaignOverview"></highchart>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-md-4 wrapper">
+                            <div class="row">
+                                <highchart id="chart2" class="span10" config="redamptionOverview"></highchart>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-md-4 wrapper">
+                            <div class="row">
+                                <highchart id="chart2" class="span10" config="salesOverview"></highchart>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- / service -->
+                    <div class="row wrapper">
+                    </div>
+                    <div class="table-responsive" >
+                        <table class="table table-striped b-t b-light" id="CampaignTable">
+                            <thead>
+                            <tr>
+                                <th><span class="font-size-tab-header">All Campaigns </span></th>
+                                <th><span class="font-size-tab-header">Start Date</span></th>
+                                <th><span class="font-size-tab-header">End Date</span></th>
+                                <th><span class="font-size-tab-header">Participants</span></th>
+                                <th><span class="font-size-tab-header">Offer Values</span></th>
+                                <th><span class="font-size-tab-header">Redemptions</span></th>
+                                <th><span class="font-size-tab-header">Total Sales</span></th>
+
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat = "filterdList in c | orderBy:'campaignName'">
+                                <td>{{filterdList.campaignName}}</td>
+                                <td>{{filterdList.dateStart}}</td>
+                                <td>{{filterdList.dateEnd}}</td>
+                                <td>({{filterdList.campaignTotalParticipants}})</td>
+                                <td>$15.00</td>
+                                <td>{{filterdList.campaignTotalRedemptionRate}}</td>
+                                <td>{{filterdList.campaignTotalSalesAmountforAllRedemptions}}</td>
+
+                            </tr>
+
+                            </tbody>
+                        </table>
+
+                    </div>
+                    <footer class="panel-footer">
+                        <div class="row">
+                            <div class="col-sm-4 hidden-xs">
+                                <select class="input-sm form-control w-sm inline v-middle">
+                                    <option value="0">Bulk action</option>
+                                    <option value="1">Delete selected</option>
+                                    <option value="2">Bulk edit</option>
+                                    <option value="3">Export</option>
+                                </select>
+                                <button class="btn btn-sm btn-default">Apply</button>
+                            </div>
+                            <div class="col-sm-4 text-center">
+                                <small class="text-muted inline m-t-sm m-b-sm">showing 20-30 of 50 items</small>
+                            </div>
+                            <div class="col-sm-4 text-right text-center-xs">
+                                <ul class="pagination pagination-sm m-t-none m-b-none">
+                                    <li><a href><i class="fa fa-chevron-left"></i></a></li>
+                                    <li><a href>1</a></li>
+                                    <li><a href>2</a></li>
+                                    <li><a href>3</a></li>
+                                    <li><a href>4</a></li>
+                                    <li><a href>5</a></li>
+                                    <li><a href><i class="fa fa-chevron-right"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </footer>
+                </div>
+            </div>
+            <!-- / tables -->
+            <!-- /d3 graphs -->
+            <div class="panel">
+                <div class="row wrapper">
+                    <div class="row wrapper">
+                        <div class="col-sm-4"></div>
+                        <div class="col-sm-4">
+                            <div class="row wrapper">
+                                <div class="col-sm-12">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="row wrapper">
+                                <div class="col-sm-12">
+                                    <a class="download" href="" ng-click="bubbleGraphPdf()">
+                                        <img src="img/icon-pdf.svg">
+                                    </a>
+
+                                    <a ng-show="group.selected.groupBy != 'Gender'" class="download" href=""  ng-csv="csvData | orderBy:'productName'" filename="DynamicAnalytics.csv" csv-header="['Product Name', 'Total Participant', 'Total Redemption','Total Sales']" text-delimiter="['Field A','Field B']">
+                                        <img src="img/icon-csv.svg">
+                                    </a>
+                                    <a ng-show="group.selected.groupBy == 'Gender'" class="download" href=""  ng-csv="csvData | orderBy:'productName'" filename="DynamicAnalytics.csv" csv-header="['Product Name', 'Total Male Participant', 'Total Female Participant','Total Male Redemption','Total Female Redemption','Total Male Sales','Total Female Sales']" text-delimiter="['Field A','Field B']">
+                                        <img src="img/icon-csv.svg">
+                                    </a>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <h3> Campaign Type</h3>
+                        <div class="input-group margin-bottom-half-em">
+                            <select class="input-sm form-control w-sm inline v-middle"ng-model="bubblecampaigntype.value" ng-options="v for v in bubblecampaigntype.values" ng-change="productFilter()">
+                                <option value="mobile">Mobile</option>
+                                <option value="social">Social</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <h3> Product</h3>
+                        <div class="input-group margin-bottom-half-em">
+                            <ui-select reach-infinity="addMoreProductItems()" ng-model="product.selected" theme="bootstrap" ng-change="productFilter()">
+                                <ui-select-match placeholder="Select a product">{{$select.selected.productName}}</ui-select-match>
+                                <ui-select-choices repeat="productCat in allProducts | propsFilter: {productName: $select.search} | orderBy: 'productCategory'" refresh= "refreshProductName($select.search)">
+                                    <div ng-bind-html="productCat.productCategory | highlight: $select.search" ng-required="true" required></div>
+                                    Product: <small ng-bind-html="productCat.productName | highlight: $select.search" ng-required="true" required></small>
+                                </ui-select-choices>
+                            </ui-select>
+        <span class="input-group-btn">
+          <button ng-click="Filterdelete()" class="btn btn-default">
+              <span class="glyphicon glyphicon-trash"></span>
+          </button>
+        </span>
+                        </div>
+                        <!--button id="btn" class=" danger" ng-click="moveByYear()">MoveY</button-->
+                    </div>
+                    <div class="col-sm-4">
+                        <h3> Group BY</h3>
+                        <div class="input-group" ng-init="isEnableGroupBy = true" >
+                            <ui-select ng-model="group.selected" theme="bootstrap"  ng-disabled="isEnableGroupBy" ng-mouseleave="groupByChange()">
+                                <ui-select-match placeholder="Select a Group">{{$select.selected.groupBy}}</ui-select-match>
+                                <ui-select-choices ng-click="$select.open = true; isClickedGroupBY.isChecked = true" ng-mouseleave="$select.open = false" repeat="group in groups | filter: {groupBy: $select.search}">
+                                    <div ng-bind-html="group.groupBy | highlight: $select.search"></div>
+                                    <div ng-show="group.groupBy == 'Income'">
+                                        <slider class="customSlider" ng-model="rangeIncome.minIncome" ng-model-range="rangeIncome.maxIncome" translate-fn="currencyFormatting" floor="20000" ceiling="150000">
+                                        </slider>
+                                        <p class="details text-dark">Income Range ( min: ${{rangeIncome.minIncome}} - max: ${{rangeIncome.maxIncome}} )</p>
+                                    </div>
+                                    <div ng-show="group.groupBy == 'Age'">
+                                        <slider class="customSlider" ng-model="rangeAge.minAge" ng-model-range="rangeAge.maxAge" floor="16" ceiling="80">
+                                        </slider>
+                                        <p class="details text-dark">Age Range ( min:{{rangeAge.minAge}} - max:{{rangeAge.maxAge}} )</p>
+                                    </div>
+                                </ui-select-choices>
+                            </ui-select>
+        <span class="input-group-btn">
+          <button ng-click="Groupfilterdelete()" class="btn btn-default">
+              <span class="glyphicon glyphicon-trash"></span>
+          </button>
+        </span>
+                        </div>
+                    </div>
+
+                    <div class="d3Graph" id="d3BubbleGraph">
+
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-striped b-t b-light" id="bubbleTable">
+                            <thead>
+                            <tr>
+                                <th><span class="font-size-tab-header">All Product </span></th>
+                                <th><span ng-if="group.selected.groupBy != 'Gender'" class="font-size-tab-header">Total Participant</span><span ng-if="group.selected.groupBy == 'Gender'" class="font-size-tab-header">Male Total Participant</span>
+                                </th>
+                                <th ng-if="group.selected.groupBy == 'Gender'"><span class="font-size-tab-header">Female Total Participant</span></th>
+                                <th><span ng-if="group.selected.groupBy != 'Gender'" class="font-size-tab-header">Total Redemption</span><span ng-if="group.selected.groupBy == 'Gender'"class="font-size-tab-header">Male Total Redemption</span>             </th>
+                                <th ng-if="group.selected.groupBy == 'Gender'"><span class="font-size-tab-header">Female Total Redemption</span></th>
+                                <th><span ng-if="group.selected.groupBy != 'Gender'" class="font-size-tab-header">Total Sales</span><span ng-if="group.selected.groupBy == 'Gender'" class="font-size-tab-header">Male Total Sales</span></th>
+                                <th ng-if="group.selected.groupBy == 'Gender'"><span class="font-size-tab-header">Female Total Sales</span></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>{{product.selected.productName}}</td>
+                                <td  ng-if="group.selected.groupBy != 'Gender'">{{d3TotalParticipant}}</td>
+                                <td  ng-if="group.selected.groupBy != 'Gender'">{{d3TotalRedemption}}</td>
+                                <td  ng-if="group.selected.groupBy != 'Gender'">({{d3TotalSales}})</td>
+                                <td  ng-if="group.selected.groupBy == 'Gender'">{{d3MaleTotalParticipant}}</td>
+                                <td  ng-if="group.selected.groupBy == 'Gender'">{{d3FemaleTotalParticipant}}</td>
+                                <td  ng-if="group.selected.groupBy == 'Gender'">{{d3MaleTotalRedemption}}</td>
+                                <td  ng-if="group.selected.groupBy == 'Gender'">{{d3FemaleTotalRedemption}}</td>
+                                <td  ng-if="group.selected.groupBy == 'Gender'">{{d3MaleTotalSales}}</td>
+                                <td  ng-if="group.selected.groupBy == 'Gender'">{{d3FemaleTotalSales}}</td>
+
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <!-- / bubble grap -->
+            <!-- heat map -->
+            <div class="panel">
+                <div class="row wrapper">
+                    <div class="row wrapper">
+                        <div class="col-sm-4"></div>
+                        <div class="col-sm-4">
+                            <div class="row wrapper">
+                                <div class="col-sm-12">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="row wrapper">
+                                <div class="col-sm-12">
+                                    <a class="download" href="" ng-click="heatMapPdf()">
+                                        <img src="img/icon-pdf.svg">
+                                    </a>
+                                    <a class="download" href=""  ng-csv="locationCsv" filename="DynamicAnalytics.csv" csv-header="['Product Name','Sate', 'Total Participant', 'Total Redemption','Total Sales']" text-delimiter="['Field A','Field B','Field C','Field D', 'Field E']">
+                                        <img src="img/icon-csv.svg">
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row wrapper margin-bottom-15px" ng-init="allStores()">
+                        <div class="col-sm-4">
+                            <h3> Campaign Type</h3>
+                            <div class="input-group margin-bottom-half-em">
+                                <select class="input-sm form-control w-sm inline v-middle" ng-model="heatmapcampaigntype.value" ng-options="v for v in heatmapcampaigntype.values" ng-change="locationTargeting()">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <h3> Product</h3>
+                            <span>{{$scope.allProducts}} </span>
+                            <div class="input-group margin-bottom-half-em">
+                                <ui-select reach-infinity="addMoreProductItems()" ng-model="product.locationselected" theme="bootstrap" ng-change="locationTargeting()">
+                                    <ui-select-match placeholder="Select a product">{{$select.selected.productName}}</ui-select-match>
+                                    <ui-select-choices repeat="productCat in allProducts | propsFilter: {productName: $select.search} | orderBy: 'productCategory'" refresh="refreshProductName($select.search)">
+                                        <div ng-bind-html="productCat.productCategory | highlight: $select.search" ng-required="true" required></div>
+                                        Product: <small ng-bind-html="productCat.productName | highlight: $select.search" ng-required="true" required></small>
+                                    </ui-select-choices>
+                                </ui-select>
+
+        <span class="input-group-btn">
+          <button ng-click="product.selected = {}" class="btn btn-default">
+              <span class="glyphicon glyphicon-trash"></span>
+          </button>
+        </span>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                        </div>
+                    </div>
+                    <div class="row wrapper margin-bottom-15px">
+                        <div class="col-md-3"></div>
+                        <div class="col-md-6">
+                            <div id="heatmap" class="heatmap-pannel demo-wrapper">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div ng-init="showTab = false">
+                                <tabset ng-show="showTab" vertical="false" type="pills" class="group-tab">
+                                    <tab heading="Participant" ng-click="selectedTab('totalParticipants')"></tab>
+                                    <tab heading="Redemption" ng-click="selectedTab('totalRedemptionRate')"></tab>
+                                    <tab heading="Sales" ng-click="selectedTab('totalSalesAmount')"></tab>
+                                </tabset>
+                            </div>
+                            <div id="tooltip" style ="height:5px" class="toolt">
+                                <strong>{{tab}}:</strong> <span style='color:red'>{{val}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-striped b-t b-light" id="heatMapTable">
+                            <thead>
+                            <tr>
+                                <th><heatMapPdfspan class="font-size-tab-header">All Product </heatMapPdfspan></th>
+                                <th><span class="font-size-tab-header">State</span></th>
+                                <th><span class="font-size-tab-header">Total Participant</span></th>
+                                <th><span class="font-size-tab-header">Total Redemption</span></th>
+                                <th><span class="font-size-tab-header">Total Sales</span></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="heatMapData in allStateData">
+                                <td>{{product.locationselected.productName}}</td>
+                                <td>{{heatMapData.state}}</td>
+                                <td>{{heatMapData.totalParticipants}}</td>
+                                <td>{{heatMapData.totalRedemptionRate}}</td>
+                                <td>{{heatMapData.totalSalesAmount}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <!-- /heat map -->
+        </div>
+    </div>
+    <!-- / main -->
+</div>

@@ -1,0 +1,14 @@
+<snippet>
+	<content><![CDATA[
+${1:dbCore}.${2:table}
+ 	.${3:put}(${4:data}).then(${5:primKey} => {
+ 		console.info("${4:primKey} on ${3:put} into ${2:table} "+JSON.stringify(${5:primKey}, null, 4));
+ 	}).catch(${6:error} => {
+  		console.info("${6:error} on ${3:put} into ${2:table} "+JSON.stringify(${6:error}, null, 4));
+  	});
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>dxw</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

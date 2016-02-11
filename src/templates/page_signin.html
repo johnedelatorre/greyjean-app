@@ -1,0 +1,38 @@
+<div class="container w-xxl w-auto-xs" ng-controller="SigninFormController" ng-init="app.settings.container = false;">
+  <div class="w al-cm img-resp">
+    <img class="padder-lg" src="img/genielogo.png" alt="">
+  </div>
+  <a href class="navbar-brand block m-t">
+    {{app.name}}
+  </a>
+  <div class="m-b-lg">
+    <div class="wrapper text-center">
+      <strong>Welcome Sign in Below</strong>
+    </div>
+    <form name="loginForm" class="form-validation">
+      <div class="text-danger wrapper text-center" ng-show="authError">
+          {{authError}}
+      </div>
+      <md-progress-circular
+        class="md-hue-2 wizard-loader"
+        md-mode="indeterminate"
+        ng-class="{'show-wizard-loader': toggleWizardLoader.showLoader}"
+      ></md-progress-circular>
+      <div class="list-group list-group-sm">
+        <div class="list-group-item">
+          <input type="email" id="email" name="emailId" placeholder="Email" class="form-control no-border" ng-model="user.email" required>
+        </div>
+        <div class="list-group-item">
+           <input type="password" id="password" name= "password" placeholder="Password" class="form-control no-border" ng-model="user.password" required>
+        </div>
+      </div>
+      <md-button id="loginButton" class="md-primary btn btn-lg btn-primary btn-block padder-v" ng-disabled="loginForm.$invalid" ng-click="login()">Login</md-button>
+      <div class="text-center m-t m-b"><a ui-sref="access.forgotpwd">Forgot password?</a></div>
+      <div class="line line-dashed"></div>
+      <p class="text-center"><small>Don't have an account?</small></p>
+      <a ui-sref="access.signup" class="btn btn-lg btn-default btn-block">Create an account</a>
+    </form>
+  </div>
+  <!-- <md-button class="btn-primary" ng-click="loginHack()">Hack Login -- write token</md-button> -->
+  <div class="text-center" ng-include="'templates/blocks/page_footer.html'"></div>
+</div>

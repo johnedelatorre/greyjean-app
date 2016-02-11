@@ -1,0 +1,16 @@
+<snippet>
+	<content><![CDATA[
+${1:dbCore}.${2:table}
+ 	.${3:where}("${4:indexedKey}")
+ 	.${5:equals}("${6:value}")
+ 	.${7:modify}(${8:data}).then(${9:result}) => {
+ 		console.info("${7:modify} ${1:dbCore} ${2:table} ${3:where} ${4:indexedKey} ${5:equals} ${6:value} ${7:modify} result "+JSON.stringify(${9:result}, null, 4));
+ 	}).catch(${10:error} => {
+ 		console.info("error on modify ${1:dbCore} ${2:table} ${3:where} ${4:indexedKey} ${5:equals} ${6:value} ${7:modify} error "+JSON.stringify(${10:error}, null, 4));
+ 	});
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>dxqa</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

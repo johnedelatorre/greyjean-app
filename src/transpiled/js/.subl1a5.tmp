@@ -1,0 +1,353 @@
+"use strict";
+
+/**
+ * Config for the router
+ */
+angular.module("app").run(["$rootScope", "$state", "locker", "Auth", "Restangular", "$stateParams", function ($rootScope, $state, locker, Auth, Restangular, $stateParams) {
+  $rootScope.$state = $state;
+  $rootScope.$stateParams = $stateParams;
+
+  /**
+   * devCore settings
+   * only for dev
+   */
+  $rootScope.devcode = "meow";
+  $rootScope.devcodeAPI = "meow";
+  $rootScope.devcodeLocker = "meow from locker";
+  /**
+   * this is how we set whether or not to use runscope
+   * to inspect our API traffic
+   *
+   * @type  {Boolean}  if true using runscope API url
+   */
+  var runCoreAPI = false;
+  /**
+   * end dev settings
+   */
+
+  $rootScope.$on("$stateChangeStart", function (event, toState, toParams, fromState, fromParams) {
+    if (toState.data.authenticate && !Auth.isLoggedIn()) {
+      // User isn’t authenticated
+      console.group(Auth.isLoggedIn());
+      console.info("nope from router auth ");
+      console.groupEnd();
+      $state.transitionTo("access.signin");
+      event.preventDefault();
+    }
+  });
+
+  /**
+   * Multithread Init
+   *
+   * waiting to perf test against Operative
+   */
+  // var num_threads = 2;
+  // $rootScope.MT = new Multithread(num_threads);
+
+  /**
+   * Dexie Init
+   *
+   */
+  $rootScope.dbCore = new Dexie("Core");
+  $rootScope.dbCore.version(1).stores({
+    fingerprints: "$$uuid, fingerprintName, &fingerprintId, age, minAge, maxAge, gender, income, merchantId, dateCreated, dateSynced, synced, saved, status",
+    fingerprintLocations: "$$uuid, &merchantFingerprintLocationId, merchantFingerprintId, latitude, longitude, zipCode, date, streetAddress, city, state, country, merchantId, dateCreated, dateSynced, synced, saved, status",
+    fingerprintTransactions: "$$uuid, &merchantFingerprintTransactionId, transactionDate, productId, productName, productQuantity, productDescription, productPrice, finalSalePrice, brandName, brandId, product_SKU_number, productType, productTypeDescription, productCategory, productCategoryDescription, merchantId, dateCreated, dateSynced, synced, saved, status",
+    offers: "$$uuid, offerName, &offerId, offerType, productName, productPrice, productId, brandName, brandId, dateStart, dateEnd, amount, zipCode, merchantId, dateCreated, dateSynced, synced, saved, status",
+    offerLocations: "$$uuid, &merchantOfferLocationId, merchantOffertId, latitude, longitude, zipCode, date, streetAddress, city, state, country, merchantId, dateCreated, dateSynced, synced, saved, status",
+    campaigns: "$$uuid, campaignName, &campaignId, fingerprintId, offerId, dateStart, dateEnd, merchantId, dateCreated, dateSynced, synced, saved, status",
+    merchant: "$$uuid, &merchantId, &loginId, &email, &mobileNo, applicationKey, developerKey, firstName, lastName"
+  });
+
+  // Output the schema of each table:
+  // $rootScope.dbCore.tables.forEach(function (table) {
+  //     console.log("Schema of " + table.name + ": " + JSON.stringify(table.schema));
+  // });
+
+  $rootScope.dbCore.on("error", function (err) {
+    // Catch all uncaught DB-related errors and exceptions
+    console.error(err);
+  });
+  /**
+   * log Dexie changes to tables
+   *
+   */
+  $rootScope.dbCore.on("changes", function (changes) {
+    changes.forEach(function (change) {
+      switch (change.type) {
+        case 1:
+          // CREATED
+          console.info("An object was created: " + JSON.stringify(change.obj, null, 4));
+          $rootScope.devcode = JSON.stringify(change.obj, null, 4);
+          $rootScope.$apply();
+          break;
+        case 2:
+          // UPDATED
+          console.info("An object with key " + change.key + " was updated with modifications: " + JSON.stringify(change.mods, null, 4));
+          $rootScope.devcode = JSON.stringify(change.key, null, 4);
+          $rootScope.$apply();
+          break;
+        case 3:
+          // DELETED
+          console.info("An object was deleted: " + JSON.stringify(change.oldObj, null, 4));
+          $rootScope.devcode = JSON.stringify(change.oldObj, null, 4);
+          $rootScope.$apply();
+          break;
+      }
+    });
+  });
+  $rootScope.dbCore.open();
+  /**
+   * log Dexie creation and deletion of DB
+   *
+   */
+  window.addEventListener("storage", function (event) {
+    if (event.key === "Dexie.DatabaseNames") {
+      console.group("A database was added or removed");
+      console.log("Old list: " + event.oldValue);
+      console.log("New list: " + event.newValue);
+      console.groupEnd();
+    }
+  });
+  /**
+   * config for ng-dexie db instance cats
+   *
+   * @param  {object}  db  configured during init
+   */
+  // var catsDb = new Dexie("CatsDb");
+  // catsDb.version(1).stores({
+  //     cats: "++id, name, gender, likes, loves, friends, hunts",
+  // });
+  // catsDb.on('changes', function (changes) {
+  //   changes.forEach(function (change) {
+  //     switch (change.type) {
+  //       case 1: // CREATED
+  //         console.log('An object was created: ' + JSON.stringify(change.obj, null, 4));
+  //         break;
+  //       case 2: // UPDATED
+  //         console.log('An object with key ' + change.key + ' was updated with modifications: ' + JSON.stringify(change.mods), null, 4));
+  //         break;
+  //       case 3: // DELETED
+  //         console.log('An object was deleted: ' + JSON.stringify(change.oldObj, null, 4));
+  //         break;
+  //   });
+  // });
+  // catsDb.open();
+  // var catsConfig = function(db){
+  //     db.version(1).stores({
+  //         cats: "++id, name, gender, likes, loves",
+  //     });
+  //     db.on('error', function (err) {
+  //         // Catch all uncatched DB-related errors and exceptions
+  //         $log.error("db error", err);
+  //     });
+  // };
+
+  // // Initialize :: Dexie
+  // ngDexie.init("cats", catsConfig, false).then(function(){
+  //     console.info('APPJS :: database cats open');
+  // });
+
+  // fired when a new item is added to storage
+  $rootScope.$on("locker.item.added", function (e, payload) {
+    console.log("++ locker item added ++ \n" + JSON.stringify(payload, null, 4));
+    $rootScope.devcodeLocker = payload;
+  });
+
+  // fired when an item is removed from storage
+  $rootScope.$on("locker.item.forgotten", function (e, payload) {
+    console.log("-- locker item forgotten -- \n" + JSON.stringify(payload, null, 4));
+    $rootScope.devcodeLocker = payload;
+  });
+
+  // fired when an item's value changes to something new
+  $rootScope.$on("locker.item.updated", function (e, payload) {
+    console.log("+- locker item updated +- \n" + JSON.stringify(payload, null, 4));
+    $rootScope.devcodeLocker = payload;
+  });
+
+  $rootScope.merchantID = 1; //hardcoded for now
+  var merchant = locker.driver("local").namespace("core").has("auth");
+  if (merchant) {
+    var merchantToken = locker.driver("local").namespace("core").get("auth").MerchantToken;
+    $rootScope.merchantToken = merchantToken;
+  }
+  if (!runCoreAPI) {
+    Restangular.setBaseUrl("http://54.148.81.103:8080/flik_api/api/");
+  } else {
+    /**
+     * here we are using Runscope to inspect our API calls
+     * go and check it out most awesome
+     */
+    Restangular.setBaseUrl("http://54-148-81-103-o70xsfwi43pg.runscope.net/flik_api/api/");
+    Restangular.setDefaultHeaders({ "Runscope-Request-Port": 8080 });
+  }
+  // Restangular.configuration.getIdFromElem = function(elem) {
+  //   // if route is customers ==> returns customerID
+  //   return elem[_.initial(elem.route).join('') + "Id"];
+  // }
+}])
+/**
+ * raven config
+ *
+ * use Raven like this to catch adn log specific errors
+ *
+ * HOWTO:  (1)  log raven error  ->  Raven.captureMessage('Error');
+ */
+// .config(function(RavenProvider) {
+//   // This is a development flag to log errors rather than sending it to Sentry
+//   RavenProvider.development(true);
+// })
+/**
+ * locker config
+ */
+.config(function config(lockerProvider) {
+  lockerProvider.setDefaultDriver("session").setDefaultNamespace("core").setEventsEnabled(true);
+})
+/**
+ * http config
+ */
+.config(["$httpProvider", function ($httpProvider) {
+  // Use x-www-form-urlencoded Content-Type
+  $httpProvider.defaults.headers.post["Content-Type"] = "application/x-www-form-urlencoded;charset=utf-8";
+
+  $httpProvider.defaults.transformRequest.unshift(function (data, headersGetter) {
+    var key,
+        result = [];
+    for (key in data) {
+      if (data.hasOwnProperty(key)) {
+        result.push(encodeURIComponent(key) + "=" + encodeURIComponent(data[key]));
+      }
+    }
+    return result.join("&");
+  });
+}])
+/**
+ * ui-router config
+ */
+.config(["$stateProvider", "$urlRouterProvider", function ($stateProvider, $urlRouterProvider) {
+  $urlRouterProvider.otherwise("/access/signin");
+  $stateProvider.state("core", {
+    abstract: true,
+    url: "",
+    templateUrl: "templates/layout.html",
+    data: {
+      authenticate: true
+    }
+  }).state("core.home", {
+    url: "/dashboard",
+    templateUrl: "templates/app_dashboard.html",
+    resolve: {
+      deps: ["$ocLazyLoad", function ($ocLazyLoad) {
+        return $ocLazyLoad.load(["transpiled/js/controllers/core.dashboard.js"]);
+      }],
+      onEnter: function (locker) {
+        locker.namespace("fingerprintCreate").clean();
+        locker.namespace("offerCreate").clean();
+        locker.namespace("campaignCreate").clean();
+        console.info("cleaning duty");
+      }
+    }
+  }).state("core.view", {
+    url: "/view",
+    template: "<div ui-view class=\"fade-in\"></div>"
+  }).state("core.view.fingerprints", {
+    url: "/fingerprints",
+    templateUrl: "templates/core_fingerprints.html",
+    resolve: {
+      deps: ["$ocLazyLoad", function ($ocLazyLoad) {
+        return $ocLazyLoad.load(["vr.directives.slider", "ui.select"]).then(function () {
+          return $ocLazyLoad.load("transpiled/js/app/fingerprints/fingerprints.js");
+        });
+      }]
+    }
+  }).state("core.view.campaigns", {
+    url: "/campaigns",
+    templateUrl: "templates/core_campaigns.html",
+    resolve: {
+      deps: ["$ocLazyLoad", function ($ocLazyLoad) {
+        return $ocLazyLoad.load(["vr.directives.slider", "ui.select"]).then(function () {
+          return $ocLazyLoad.load("transpiled/js/app/campaigns/campaigns.js");
+        });
+      }]
+    }
+  }).state("core.view.offers", {
+    url: "/offers",
+    templateUrl: "templates/core_offers.html",
+    resolve: {
+      deps: ["$ocLazyLoad", function ($ocLazyLoad) {
+        return $ocLazyLoad.load(["vr.directives.slider", "ui.select"]).then(function () {
+          return $ocLazyLoad.load("transpiled/js/app/offers/offers.js");
+        });
+      }]
+    }
+  }).state("core.create", {
+    url: "/create",
+    template: "<div ui-view class=\"fade-in\"></div>"
+  }).state("core.create.fingerprint", {
+    url: "/fingerprint",
+    templateUrl: "templates/core_fingerprint_create.html",
+    resolve: {
+      deps: ["$ocLazyLoad", function ($ocLazyLoad) {
+        return $ocLazyLoad.load(["vr.directives.slider", "ui.select"]).then(function () {
+          return $ocLazyLoad.load("transpiled/js/controllers/core.fingerprint.create.js");
+        });
+      }]
+    }
+  }).state("core.create.offer", {
+    url: "/offer",
+    templateUrl: "templates/core_offer_create.html",
+    resolve: {
+      deps: ["$ocLazyLoad", function ($ocLazyLoad) {
+        return $ocLazyLoad.load(["vr.directives.slider", "ui.select"]).then(function () {
+          return $ocLazyLoad.load("transpiled/js/controllers/core.offer.create.js");
+        });
+      }]
+    }
+  }).state("core.create.campaign", {
+    url: "/campaign",
+    templateUrl: "templates/core_campaign_create.html",
+    resolve: {
+      deps: ["$ocLazyLoad", function ($ocLazyLoad) {
+        return $ocLazyLoad.load(["vr.directives.slider", "ui.select"]).then(function () {
+          return $ocLazyLoad.load("transpiled/js/controllers/core.campaign.create.js");
+        });
+      }]
+    }
+  })
+
+  ////////////
+  // access //
+  ////////////
+
+  .state("access", {
+    url: "/access",
+    template: "<div ui-view class=\"fade-in-right-big smooth\"></div>",
+    data: {
+      authenticate: false
+    }
+  }).state("access.signin", {
+    url: "/signin",
+    templateUrl: "templates/page_signin.html",
+    resolve: {
+      deps: ["uiLoad", function (uiLoad) {
+        return uiLoad.load(["transpiled/js/controllers/signin.js"]);
+      }]
+    }
+  }).state("access.signup", {
+    url: "/signup",
+    templateUrl: "templates/page_signup.html",
+    resolve: {
+      deps: ["uiLoad", function (uiLoad) {
+        return uiLoad.load(["transpiled/js/controllers/signup.js"]);
+      }]
+    }
+  }).state("access.forgotpwd", {
+    url: "/forgotpwd",
+    templateUrl: "templates/page_forgotpwd.html"
+  }).state("access.404", {
+    url: "/404",
+    templateUrl: "templates/page_404.html"
+  });
+}]);
+//# sourceMappingURL=.subl1a5.tmp.map

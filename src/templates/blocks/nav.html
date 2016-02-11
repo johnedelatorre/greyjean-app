@@ -1,0 +1,83 @@
+<!-- list -->
+<ul class="nav">
+  <li class="hidden-folded padder m-t m-b-sm text-muted text-xs">
+    <span>Create</span>
+  </li>
+  </li>
+  <li ui-sref-active="active">
+    <a ui-sref="core.home.fingerprint" id="fingerprint_create">
+     <!-- <b class="badge bg-info pull-right" ng-model="fingerprintsCount">{{fingerprintsCount}}</b> -->
+    <i class="sidebar-icons">
+        <img src="img/icon-fingerprints-transparent.svg" alt="fingerprints"/>
+      </i>
+    <span class="font-bold">Fingerprints</span>
+    </a>
+</li>
+  <li ui-sref-active="active">
+    <a ui-sref="core.home.offer" id="offer_name">
+      <span class="pull-right text-muted">
+        <!-- <b class="badge bg-primary pull-right" ng-model="offersCount">{{offersCount}}</b> -->
+        <i class="fa fa-fw fa-angle-down text-active"></i>
+      </span>
+      <i class="sidebar-icons">
+        <img src="img/icon-offers-transparent.svg" alt="fingerprints"/>
+      </i>
+      <span class="font-bold">Offers</span>
+    </a>
+  </li>
+  <li ui-sref-active="active">
+    <a ui-sref="core.home.campaign" id="campaign_create">
+      <span class="pull-right text-muted">
+        <!-- <b class="badge bg-primary pull-right" ng-model="campaignsCount">{{campaignsCount}}</b> -->
+        <i class="fa fa-fw fa-angle-down text-active"></i>
+      </span>
+      <i class="sidebar-icons">
+        <img src="img/icon-campaigns-transparent.svg" alt="fingerprints"/>
+      </i>
+      <span class="font-bold">Campaigns</span>
+    </a>
+  </li>
+  <li class="line dk"></li>
+
+  <li class="hidden-folded padder m-t m-b-sm text-muted text-xs">
+    <span>View / Edit</span>
+  </li>
+  <li ui-sref-active="active">
+    <a ui-sref="core.view.fingerprints">
+      <span class="pull-right text-muted">
+        <i class="fa fa-fw fa-angle-down text-active"></i>
+      </span>
+      <b class="badge bg-primary pull-right" ng-model="fingerprintsCount">{{allData.fingerprints.count}}</b>
+      <i class="sidebar-icons">
+        <img src="img/icon-fingerprints-transparent-black.svg" alt="fingerprints"/>
+      </i>
+      <span class="font-bold">Fingerprints</span>
+    </a>
+  </li>
+  <li ui-sref-active="active">
+    <a ui-sref="core.view.offers">
+      <span class="pull-right text-muted">
+        <i class="fa fa-fw fa-angle-down text-active"></i>
+      </span>
+      <b class="badge bg-danger pull-right" ng-model="offersCount">{{allData.offers.count}}</b>
+      <i class="sidebar-icons">
+        <img src="img/icon-offers-transparent-black.svg" alt="fingerprints"/>
+      </i>
+      <span class="font-bold">Offers</span>
+    </a>
+  </li>
+  <li ui-sref-active="active">
+    <a ui-sref="core.view.campaigns">
+      <span class="pull-right text-muted">
+        <i class="fa fa-fw fa-angle-down text-active"></i>
+      </span>
+      <b class="badge bg-info pull-right" ng-model="campaignsCount">{{allData.campaigns.count}}</b>
+      <i class="sidebar-icons">
+        <img src="img/icon-campaigns-transparent-black.svg" alt="fingerprints"/>
+      </i>
+      <span class="font-bold">Campaigns</span>
+    </a>
+  </li>
+  <li class="line dk"></li>
+</ul>
+<!-- / list -->

@@ -1,0 +1,254 @@
+<div class="bg-light lter b-b wrapper-md">
+  <h1 class="m-n font-thin h3">Create Fingerprint</h1>
+</div>
+<div class="wrapper-md" ng-controller="CoreFingerprintCreateCtrl">
+  <div class="panel panel-default">
+    <div class="bg-light lter b-b wrapper-md">
+      <h4 class="m-n font-bold h4">Name Your Fingerprint</h4>
+    </div>
+    <div class="panel-body">
+      <form name="fingerprintCreateForm" class="form-horizontal" role="form">
+        <div class="form-group">
+          <div class="col-xs-12">
+
+            <md-text-float
+              label="Fingerprint Name"
+              name="fingerprintNameInput"
+              ng-pattern="wordsOnly"
+              class="form-input-full"
+              ng-model="fingerprintName"
+              required ng-trim="false"></md-text-float>
+            <input
+              label="FingerprintName"
+              name="fingerprintNameInput"
+              type="text"
+              class="form-input-full ng-hide"
+              ng-model="fingerprintName"
+              ng-pattern="wordsOnly"
+              ng-trim="false"
+              required
+            >
+            <span class="error" ng-show="fingerprintCreateForm.fingerprintNameInput.$error.pattern">
+              No special characters allowed only letters, numbers, and spaces
+            </span>
+
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="bg-light lter b-b wrapper-md m-b-lg">
+            <h4 class="m-n font-bold h4">Choose Gender</h4>
+          </div>
+          <div class="col-xs-5 col-sm-3 col-md-2">
+
+            <div class="row">
+              <label class="col-xs-4 m-t-sm control-label">Male</label>
+              <div class="col-xs-8">
+                <label class="i-switch i-switch-lg m-t-xs m-r">
+                  <input type="checkbox" ng-model="checkModel.male">
+                  <i></i>
+                </label>
+              </div>
+            </div>
+
+          </div>
+          <div class="col-xs-5 col-sm-3 col-md-2 text-l">
+
+            <div class="row">
+              <label class="col-xs-4 m-t-sm control-label">Female</label>
+
+              <div class="col-xs-8">
+
+                <label class="i-switch i-switch-lg m-t-xs m-r">
+                  <input type="checkbox" ng-model="checkModel.female">
+                  <i></i>
+                </label>
+
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+        <div class="line line-dashed b-b line-lg"></div>
+        <div class="form-group">
+          <div class="col-xs-10">
+
+            <div class="btn-group">
+              <label class="btn btn-default" ng-model="gender.male" btn-checkbox>Male</label>
+              <label class="btn btn-default" ng-model="gender.female" btn-checkbox>Female</label>
+            </div>
+
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="bg-light lter b-b wrapper-md">
+            <h4 class="m-n font-bold h4">Choose Income Range</h4>
+          </div>
+          <div class="wrapper-md">
+            <p>Income Range: ( min income: ${{rangeIncome.minIncome}} - max income: ${{rangeIncome.maxIncome}} )</p>
+            <slider ng-model="rangeIncome.minIncome" ng-model-range="rangeIncome.maxIncome" translate-fn="currencyFormatting" floor="1" ceiling="1000000">
+            </slider>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="bg-light lter b-b wrapper-md">
+            <h4 class="m-n font-bold h4">Choose Age Range</h4>
+          </div>
+          <div class="wrapper-md">
+            <p>Age Range: ( min age:{{rangeAge.minAge}} - max age:{{rangeAge.maxAge}} )</p>
+            <slider ng-model="rangeAge.minAge" ng-model-range="rangeAge.maxAge" floor="1" ceiling="80">
+            </slider>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="m-b-md bg-light lter b-b wrapper-md">
+            <h4 class="font-bold h4">Choose Locations</h4>
+          </div>
+          <div class="col-xs-12 col-sm-4">
+
+            <h5 class="m-b-xs font-bold h5">Choose Locations</h5>
+            <tags-input ng-model="fingerprintLocationAddresses">
+              <auto-complete source="getFingerprintLocations($query)"></auto-complete>
+            </tags-input>
+
+          </div>
+          <div class="col-xs-12 col-sm-4">
+
+            <h5 class="m-b-xs font-bold h5">Choose States</h5>
+            <ui-select ng-model="fingerprintLocationStates.selectedStates" theme="bootstrap" ng-disabled="disabled" ng-required="true" multiple required>
+              <ui-select-match placeholder="Select States" required>
+                {{$item.name}}
+              </ui-select-match>
+              <ui-select-choices group-by="someGroupFn" repeat="state in fingerprintLocationStatesList | propsFilter: {name: $select.search}" ng-required="true" required>
+                <div ng-bind-html="state.name | highlight: $select.search" ng-required="true" required></div>
+              </ui-select-choices>
+            </ui-select>
+
+          </div>
+          <div class="col-xs-12 col-sm-4">
+
+            <h5 class="m-b-xs font-bold h5">Choose Zipcodes</h5>
+            <tags-input ng-model="fingerprintLocationZipcodes">
+              <auto-complete source="getFingerprintLocations($query)"></auto-complete>
+            </tags-input>
+
+          </div>
+        </div>
+        <div class="form-group clearfix">
+          <div class="bg-light lter b-b wrapper-md m-b-lg">
+            <h4 class="m-n font-bold h4">Choose Emotions</h4>
+          </div>
+          <div class="m-l-md pull-left">
+            <p class="m-t-sm emotion-label">Happy</p>
+            <label class="i-switch i-switch-lg m-t-xs m-r">
+              <input type="checkbox" ng-model="emotionsList.happy">
+              <i></i>
+            </label>
+          </div>
+          <div class="pull-left">
+            <p class="m-t-sm emotion-label">Elated</p>
+            <label class="i-switch i-switch-lg m-t-xs m-r">
+              <input type="checkbox" ng-model="emotionsList.elated">
+              <i></i>
+            </label>
+          </div>
+          <div class="pull-left">
+            <p class="m-t-sm emotion-label">Irritated</p>
+            <label class="i-switch i-switch-lg m-t-xs m-r">
+              <input type="checkbox" ng-model="emotionsList.irratable">
+              <i></i>
+            </label>
+          </div>
+          <div class="pull-left">
+            <p class="m-t-sm emotion-label">Fatigued</p>
+            <label class="i-switch i-switch-lg m-t-xs m-r">
+              <input type="checkbox" ng-model="emotionsList.fatigued">
+              <i></i>
+            </label>
+          </div>
+          <div class="pull-left">
+            <p class="m-t-sm emotion-label">Stressed</p>
+            <label class="i-switch i-switch-lg m-t-xs m-r">
+              <input type="checkbox" ng-model="emotionsList.stressed">
+              <i></i>
+            </label>
+          </div>
+
+        </div>
+        <div class="form-group clearfix">
+          <div class="bg-light lter b-b wrapper-md m-b-lg">
+            <h4 class="m-n font-bold h4">Transaction History</h4>
+          </div>
+        </div>
+        <div class="form-group">
+          <h5 class="m-l-md m-b-sm font-bold h5">Filter Consumers Habits</h5>
+          <label class="m-l-md i-switch i-switch-lg m-t-xs m-r">
+            <input type="checkbox" ng-model="transaction.buys">
+            <i></i>
+          </label>
+          <span ng-show="!transaction.buys">Consumer Doesn't Buy</span>
+          <span ng-show="transaction.buys">Consumer Buys</span>
+        </div>
+        <div class="line line-dashed b-b line-lg pull-in"></div>
+        <div class="form-group">
+          <div class="col-xs-6 col-sm-3">
+
+            <h5 class="m-b-sm font-bold h5">Choose Product Category</h5>
+            <ui-select ng-model="productCategories.selectedProductCategories" theme="bootstrap" ng-disabled="disabled" ng-required="true" multiple required>
+              <ui-select-match placeholder="Select Product Categories" required>
+                {{$item.ProductCategory}}
+              </ui-select-match>
+              <ui-select-choices group-by="someGroupFn" repeat="productCategory in uniqProductCats | propsFilter: {ProductCategory: $select.search}" ng-required="true" required>
+                <div ng-bind-html="productCategory.ProductCategory | highlight: $select.search" ng-required="true" required></div>
+              </ui-select-choices>
+            </ui-select>
+
+          </div>
+          <div class="col-xs-6 col-sm-3">
+
+            <h5 class="m-b-sm font-bold h5">Choose Product Brand</h5>
+            <ui-select ng-model="productBrands.selectedProductBrand" theme="bootstrap" ng-disabled="disabled" ng-required="true" multiple required>
+              <ui-select-match placeholder="Select Product Brands" required>
+                {{$item.BrandName}}
+              </ui-select-match>
+              <ui-select-choices group-by="someGroupFn" repeat="brand in productsList| propsFilter: {BrandName: $select.search}" ng-required="true" required>
+                <div ng-bind-html="brand.BrandName | highlight: $select.search" ng-required="true" required></div>
+              </ui-select-choices>
+            </ui-select>
+
+          </div>
+          <div class="col-xs-6 col-sm-3">
+
+            <h5 class="m-b-sm font-bold h5">Choose Product Type</h5>
+            <ui-select ng-model="productTypes.selectedProductType" theme="bootstrap" ng-disabled="disabled" ng-required="true" multiple required>
+              <ui-select-match placeholder="Select Product Types" required>
+                <small>{{$item.ProductType}}</small>
+              </ui-select-match>
+              <ui-select-choices group-by="someGroupFn" repeat="type in uniqProductTypes | propsFilter: {ProductType: $select.search}" ng-required="true" required>
+                <div ng-bind-html="type.ProductType | highlight: $select.search" ng-required="true" required></div>
+                Product: <small ng-bind-html="type.ProductName | highlight: $select.search" ng-required="true" required></small>
+              </ui-select-choices>
+            </ui-select>
+
+          </div>
+          <div class="col-xs-6 col-sm-3">
+
+            <h5 class="m-b-sm font-bold h5">Choose Time Span</h5>
+            <ui-select ng-model="timeFrames.selected" theme="bootstrap" required>
+              <ui-select-match placeholder="Select time span">{{$select.selected.name}}</ui-select-match>
+              <ui-select-choices repeat="time in timeFramesList | filter: $select.search">
+                <div ng-bind-html="time.name | highlight: $select.search"></div>
+              </ui-select-choices>
+            </ui-select>
+
+          </div>
+        </div>
+        <div class="line line-dashed b-b line-lg pull-in"></div>
+        <div class="form-group text-right clearfix">
+          <md-button class="md-primary btn btn-lg btn-primary m-r-sm padder-v padder-lg" ng-disabled="fingerprintCreateForm.$invalid" ng-click="saveFingerprint()">Save</md-button>
+          <md-button class="md-primary btn btn-lg btn-danger m-r-md padder-v padder-lg" ng-disabled="fingerprintCreateForm.$invalid" ng-click="saveFingerprintNextStep()">Save &amp; Next</md-button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

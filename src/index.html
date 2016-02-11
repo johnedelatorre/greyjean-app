@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en" data-ng-app="app">
+<head>
+  <meta charset="utf-8" />
+  <title>Genie Admin Control Panel</title>
+  <meta name="apple-itunes-app" content="app-id=965196098, app-argument=http://54.191.82.204/#/view/campaigns/149/update"/>
+  <meta name="description" content="app, web app, responsive, responsive layout, admin, admin panel, admin dashboard, flat, flat ui, ui kit, AngularJS, ui route, charts, widgets, components" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  
+  <!--Favicon-->
+  <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/apple-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="/apple-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="/apple-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="/apple-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="192x192"  href="/android-icon-192x192.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/manifest.json">
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+  <meta name="theme-color" content="#ffffff">
+  <!--Favicon-->
+  <link rel="stylesheet" href="css/bootstrap.css" type="text/css" />
+  <link rel="stylesheet" href="css/animate.css" type="text/css" />
+  <link rel="stylesheet" href="css/font-awesome.min.css" type="text/css" />
+  <link rel="stylesheet" href="css/simple-line-icons.css" type="text/css" />
+  <link rel="stylesheet" href="css/font.css" type="text/css" />
+  <link rel="stylesheet" href="css/angular-material.min.css" type="text/css" />
+  <link rel="stylesheet" href="css/ng-tags-input.min.css" type="text/css" />
+  <link rel="stylesheet" href="css/slick.css" type="text/css" />
+  <link rel="stylesheet" href="css/slick-theme.css" type="text/css" />
+  <link rel="stylesheet" href="css/flickity.css" type="text/css" />
+  <link rel="stylesheet" href="css/app.css" type="text/css" />
+  <link rel="stylesheet" href="css/flex-grid.css" type="text/css" />
+  <link rel="stylesheet" href="css/datetimepicker.css" type="text/css" />
+  <link rel="stylesheet" href="css/smart-app-banner.min.css" type="text/css"/>
+  <!-- dev only -->
+  <link rel="stylesheet" href="css/prism.css" type="text/css" />
+  <link rel="stylesheet" href="css/prism-theme-monokai.css" type="text/css" />
+  <link rel="stylesheet" href="css/json-formatter.css" type="text/css" />
+  <link rel="stylesheet" href="css/hotkeys.css" type="text/css" />
+  <link rel="stylesheet" href="vendor/modules/angular-xeditable/xeditable.css" type="text/css" />
+  <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+</head>
+<body
+  ng-controller="AppCtrl"
+  ng-class="{'mainFOCActive': $state.includes('core.home.fingerprint') || $state.includes('core.home.offer') || $state.includes('core.home.campaign'), 'accessPages': $state.includes('access.signin') || $state.includes('access.signup') || $state.includes('access.forgotpwd')}"
+>
+  <div
+    id="app"
+    class="app app-header-fixed app-aside-fixed app-aside-folded"
+    ui-view
+  ></div>
+
+  <!-- jQuery -->
+  <script src="vendor/jquery/jquery.min.js"></script>
+
+  <!-- Raven before Angular to catch errors if Angular fails to bootstrap -->
+  <script src="vendor/libs/raven.js"></script>
+
+  <!-- gsap -->
+  <!-- here they are local if you can haz no internets -->
+  <script src="vendor/libs/greensock/TweenMax.js"></script>
+  <!-- otherwise can haz internetzen fromze cdnze -->
+  <!-- <script src="//cdnjs.cloudflare.com/ajax/libs/gsap/latest/TweenMax.min.js"></script> -->
+
+
+  <!-- Angular -->
+  <script src="vendor/angular/angular.js"></script>
+  <script src="vendor/angular/ngInfiniteScroll/build/ng-infinite-scroll.min.js"></script>
+  <script src="vendor/angular/ui-select-infinity/lib/index.js"></script>
+  <!-- flickity -->
+  <script src="vendor/libs/flickity/flickity.pkgd.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+  <!-- Latest compiled JavaScript -->
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+  <script src="http://code.highcharts.com/highcharts.js"></script>
+  <script src="http://code.highcharts.com/modules/exporting.js"></script>
+  <script src="http://canvg.googlecode.com/svn/trunk/rgbcolor.js"></script>
+  <script src="http://canvg.googlecode.com/svn/trunk/canvg.js"></script>
+  <script src="vendor/jsPdf/jspdf.debug.js"></script>
+  <script src="vendor/jsPdf/html2canvas.js"></script>
+  <script src="vendor/jsPdf/jspdf.plugin.autotable.js"></script>
+  <!-- D3 graph js -->
+  <script src="vendor/d3/d3.min.js"></script>
+  <script src="vendor/d3/index.js"></script>
+  <!-- Heat map js -->
+  <script type="text/javascript"
+  src="https://maps.googleapis.com/maps/api/js?libraries=visualization&sensor=true_or_false">
+ </script>
+
+  <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+  <script src="vendor/heatmap/heatmap.js"></script>
+  <script src="vendor/heatmap/leaflet-heatmap.js"></script>
+  
+  <script async src="//cdn.embedly.com/widgets/platform.js" charset="UTF-8"></script>
+  
+  <script src="vendor/smart-app-banner/smart-app-banner.min.js"></script>
+
+  <!-- Raven config -->
+  <script>
+    // Raven.config('https://8bddc11042fa4ddb8d6c5b6c7815c5ea@app.getsentry.com/35627', {
+      // Raven settings
+      // })
+      // .setUser({
+      //   "id": "SERVER_RENDERED_ID",
+      //   "email": "SERVER_RENDERED_EMAIL"
+      // })
+      // .install()
+  </script>
+  <script src="vendor/angular/angular-raven/angular-raven.js"></script>
+
+  <!-- will load this from CDN -->
+  <!-- <script src="//code.highcharts.com/highcharts.src.js"></script> -->
+  <!--script src="vendor/libs/highcharts/highcharts.js"></script-->
+
+  <!-- slick -->
+  <script src="vendor/jquery/slick/slick.js"></script>
+
+  <!-- Vendor -->
+  <script src="vendor/libs/dexie/Dexie.js"></script>
+  <script src="vendor/libs/dexie/Dexie.Observable.js"></script>
+  <script src="vendor/libs/check-types.min.js"></script>
+  <script src="vendor/libs/operative.js"></script>
+  <!-- <script src="vendor/libs/multithread.js"></script> -->
+
+  <!-- Angular core libs -->
+  <script src="vendor/angular/angular-animate/angular-animate.js"></script>
+  <script src="vendor/angular/angular-cookies/angular-cookies.js"></script>
+  <script src="vendor/angular/angular-resource/angular-resource.js"></script>
+  <script src="vendor/angular/angular-sanitize/angular-sanitize.js"></script>
+  <script src="vendor/csv/ng-csv.min.js"></script>
+  <script src="vendor/angular/angular-touch/angular-touch.js"></script>
+  <script src="vendor/angular/angular-material/hammer.js"></script>
+  <script src="vendor/angular/angular-aria/angular-aria.js"></script>
+  <script src="vendor/angular/angular-material/angular-material.js"></script>
+  <script src="vendor/angular/angular-ui-router/angular-ui-router.js"></script>
+  <script src="vendor/angular/lodash/lodash.js"></script>
+  <script src="vendor/angular/restangular/restangular.js"></script>
+  <script src="vendor/angular/highcharts-ng/highcharts-ng.js"></script>
+  <script src="vendor/angular/angular-slick/slick.js"></script>
+  <script src="vendor/angular/angular-locker/angular-locker.js"></script>
+  <script src="vendor/angular/angular-filter/angular-filter.js"></script>
+  <script src="vendor/angular/ng-tags-input/ng-tags-input.js"></script>
+  <script src="vendor/angular/angular-ui-utils/ui-utils.js"></script>
+  <script src="vendor/angular/hotkeys/hotkeys.js"></script>
+  <script src="vendor/angular/satellizer/satellizer.js"></script>
+  <script src="vendor/angular/ngstorage/ngStorage.js"></script>
+  <script src="vendor/angular/json-formatter/json-formatter.js"></script>
+  <script src="vendor/angular/angular-base64-upload/src/angular-base64-upload.js"></script>
+
+  <!-- bootstrap -->
+  <script src="vendor/angular/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+  <script src="vendor/angular/angular-ui-bootstrap-datetimepicker/datetimepicker.js"></script>
+
+  <!-- lazyload -->
+  <script src="vendor/angular/oclazyload/ocLazyLoad.js"></script>
+
+  <!-- libs -->
+  <script src="vendor/libs/moment.min.js"></script>
+  <script src="vendor/modules/angular-xeditable/xeditable.js"></script>
+
+  <!-- translate -->
+  <script src="vendor/angular/angular-translate/angular-translate.js"></script>
+  <script src="vendor/angular/angular-translate/loader-static-files.js"></script>
+  <script src="vendor/angular/angular-translate/storage-cookie.js"></script>
+  <script src="vendor/angular/angular-translate/storage-local.js"></script>
+
+  <!-- App -->
+  <script src="transpiled/js/app.js"></script>
+  <script src="transpiled/js/config.js"></script>
+  <script src="transpiled/js/config.lazyload.js"></script>
+  <script src="transpiled/js/config.router.js"></script>
+  <script src="transpiled/js/main.js"></script>
+  <script src="transpiled/js/services/ui-load.js"></script>
+  <script src="transpiled/js/factories/auth.js"></script>
+  <script src="transpiled/js/factories/fingerprint.js"></script>
+  <script src="transpiled/js/factories/offer.js"></script>
+  <script src="transpiled/js/factories/campaign.js"></script>
+  <script src="transpiled/js/factories/product.js"></script>
+  <script src="transpiled/js/factories/cause.js"></script>
+  <script src="transpiled/js/factories/store.js"></script>
+  <script src="transpiled/js/factories/beacon.js"></script>
+  <script src="transpiled/js/factories/spark.js"></script>
+  <script src="transpiled/js/factories/social.js"></script>
+  <script src="transpiled/js/factories/analytics.js"></script>
+  <script src="transpiled/js/factories/merchant.js"></script>
+  <script src="transpiled/js/filters/fromNow.js"></script>
+  <script src="transpiled/js/filters/toSlug.js"></script>
+  <script src="transpiled/js/filters/toCapital.js"></script>
+  <script src="transpiled/js/filters/percentage.js"></script>f
+  <script src="transpiled/js/directives/autofocus.js"></script>
+  <script src="transpiled/js/directives/setnganimate.js"></script>
+  <script src="transpiled/js/directives/gs-scroll-to.js"></script>
+  <script src="transpiled/js/directives/gs-widget-open.js"></script>
+  <script src="transpiled/js/directives/ui-butterbar.js"></script>
+  <script src="transpiled/js/directives/ui-focus.js"></script>
+  <script src="transpiled/js/directives/ui-jq.js"></script>
+  <script src="transpiled/js/directives/ui-module.js"></script>
+  <script src="transpiled/js/directives/ui-nav.js"></script>
+  <script src="transpiled/js/directives/ui-scroll.js"></script>
+  <script src="transpiled/js/directives/ui-shift.js"></script>
+  <script src="transpiled/js/directives/smooth-scroll.js"></script>
+  <script src="transpiled/js/directives/ui-toggleclass.js"></script>
+  <script src="transpiled/js/directives/ui-validate.js"></script>
+  <script src="transpiled/js/directives/flickity.js"></script>
+  <script src="transpiled/js/controllers/bootstrap.js"></script>
+  <script src="transpiled/js/controllers/select.js"></script>
+  <!-- Lazy loading -->
+</body>
+</html>

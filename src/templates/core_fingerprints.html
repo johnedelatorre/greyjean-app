@@ -1,0 +1,115 @@
+<div class="wrapper-md" ng-controller="FingerprintsCtrl">
+  <div class="panel-default">
+    <div class="panel-body">
+      <div class="row wrapper bg-light">
+        <div class="col-sm-3">
+          <h1><span class="font-bold">Recent</span> Fingerprints</h1>
+        </div>
+          <md-progress-circular
+                  class="md-hue-2 wizard-loader-data"
+                  md-mode="indeterminate"
+                  ng-class="{'show-wizard-loader': toggleWizardLoader.showLoader}"
+                  ></md-progress-circular>
+        <div class="col-sm-1">
+          <a class="list-toggle" href=""><img src="img/icon-coverflow.svg">
+          </a>
+          <a class="list-toggle" href=""><img src="img/icon-listview.svg">
+          </a>
+        </div>
+        <div class="col-sm-3">
+          <input id="filter" type="text" class="form-control input-sm w-f inline m-r search-box" placeholder="Search..." />
+        </div>
+        <div class="col-sm-1">
+          <md-button
+            class="createBtn md-primary btn btn-lg btn-primary m-r-sm padder-v padder-lg"
+            ui-sref="core.view.fingerprints.create"
+          >
+            Create
+          </md-button>
+        </div>
+        <div class="col-sm-4 m-b-xs">
+          <div class="col-sm-4">
+            <a class="download" href=""><img src="img/icon-csv.svg">
+            </a>
+            <a class="download" href=""><img src="img/icon-pdf.svg">
+            </a>
+          </div>
+          <div class="col-sm-8">
+            <select class="input-sm campaign-toggle form-control w-sm inline v-middle">
+              <option value="0">Year</option>
+              <option value="1">Month</option>
+              <option value="2">Day</option>
+              <option value="3">Overall</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      id="fingerprintWidget"
+      class="fingerprint-create-wrap fade-in-up"
+      ui-view="fingerprintWidget"
+      ng-class="{'fingerprintWidgetViewActive': $state.includes('core.view.fingerprints.create')}"
+      ></div>
+    <div class="">
+      <!-- FLUX: ->  this is going back in the mix
+      <div class="bg-dark"> REMOVED 02/12/15
+        <div class="gallery" flickity="{wrapAround: true}">
+          <div class="gallery-cell" fingerprint-ref="{{fingerprint.fingerprintId}}" ng-repeat="fingerprint in fingerprints">
+            <img src="img/placeholder.png" alt="">
+            <div class="gallery-caption">
+              <p>{{fingerprint.fingerprintName}}</p>
+            </div>
+          </div>
+        </div>
+      </div> -->
+      <div>
+        <table class="table table-striped b-t b-light" ui-jq="footable" data-filter="#filter" data-page-size="5">
+          <thead>
+            <tr>
+              <th data-toggle="true">Fingerprint Name</th>
+              <th>Gender</th>
+              <th data-hide="phone">Min Age</th>
+              <th data-hide="phone" data-name="Max Age">Max Age</th>
+              <th data-hide="phone">Min Income</th>
+              <th data-hide="phone">Max Income</th>
+              <th data-hide="phone">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="fingerprint in allFingerprints">
+              <td>{{fingerprint.fingerprintName}}</td>
+              <td>{{fingerprint.gender}}</td>
+              <td>{{fingerprint.minAge}}</td>
+              <td>{{fingerprint.maxAge}}</td>
+              <td>{{fingerprint.minIncome}}</td>
+              <td>{{fingerprint.maxIncome}}</td>
+              <td data-value="1">
+                <!-- <a href="#">
+                  <i class="fa fa-fw fa-eye text-dark"></i>
+                </a> -->
+                <a
+                  href="#/view/fingerprints/{{fingerprint.fingerprintId}}/update"
+                  id="open-button"
+                  class="menu-button m-r-sm"
+                >
+                  <i class="fa fa-fw fa-pencil text-dark"></i>
+                </a>
+                <a ng-click="trashFingerprint($index, fingerprint.fingerprintId)">
+                  <i class="fa fa-fw fa-trash text-dark"></i>
+                </a>
+              </td>
+            </tr>
+            <tfoot class="hide-if-no-paging">
+              <tr>
+                <td colspan="12" class="text-center">
+                  <ul class="pagination"></ul>
+                </td>
+              </tr>
+            </tfoot>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

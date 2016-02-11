@@ -1,0 +1,250 @@
+<div class="FOC-widget-outer-wrap" ng-controller="CoreCampaignCreateCtrl">
+<form name="campaignCreateForm" class="form-horizontal" role="form">
+<div class="clearfix bg-primarydark controls">
+    <div
+            ng-if="$state.includes('core.view.campaigns.create')"
+            ui-sref="core.view.campaigns"
+            class="close"
+            ></div>
+    <div
+            ng-if="$state.includes('core.home.campaign')"
+            ui-sref="core.home"
+            class="close"
+            ></div>
+    <div
+            ui-sref="core.home.offer"
+            class="back"
+            aria-label="Time"
+            ></div>
+</div>
+<div class="panel-body bg-primary">
+    <div class="row wrapper">
+        <div class="col-sm-12 col-md-6 wrapper-md">
+            <md-text-float
+                    label="Campaign Name"
+                    name="campaignNameInput"
+                    class="bb form-input-full main-input"
+                    ng-model="campaignName"
+                    required
+                    ng-trim="false"
+                    ></md-text-float>
+        </div>
+
+        <div class="col-sm-6">
+
+            <h5 class="font-bold m-l-xs m-b-sm">Select Product</h5>
+
+            <div class="input-group">
+                <ui-select ng-model="productWithTransaction.selected" theme="bootstrap" data-ng-change="populateOtherDropDowns()"
+                           required>
+                    <ui-select-match placeholder="Select Product">{{$select.selected.productName}}</ui-select-match>
+                    <ui-select-choices repeat="item in allData.productsWithTransaction.list | filter: $select.search">
+                        <div ng-bind-html="item.productType | highlight: $select.search" ng-required="true"
+                             required></div>
+                        Product:
+                        <small ng-bind-html="item.productName | highlight: $select.search" ng-required="true"
+                               required></small>
+                        <!--<h4 ng-bind-html="item.productName | highlight: $select.search"></h4>-->
+                        <!--Product: <small ng-bind-html="type.productName | highlight: $select.search" ng-required="true" required></small>-->
+                    </ui-select-choices>
+                </ui-select>
+          <span class="input-group-btn">
+            <!--<button ng-click="product.selected = {}" class="btn btn-default">-->
+                <button ng-click="deleteProduct()" class="btn btn-default">
+                <span class="glyphicon glyphicon-trash"></span>
+            </button>
+          </span>
+            </div>
+
+        </div>
+
+        <div class="row wrapper">
+            <div class="col-sm-12">
+                <div class="row">
+                    <div class="text-dark wrapper-md">
+                        <h4 class="m-n h4"><span class="font-bold">Options</span> Select</h4>
+                    </div>
+
+
+                    <div class="col-sm-6">
+
+                        <h5 class="font-bold m-l-xs m-b-sm">Select Fingerprint</h5>
+
+                        <div class="input-group">
+                            <ui-select reach-infinity="addMoreFingerprintItems()" ng-model="fingerprint.selected" theme="bootstrap" ng-disabled="isDisabled"
+                                       required>
+                                <ui-select-match placeholder="Select Fingerprint">{{$select.selected.fingerprintName}}
+                                </ui-select-match>
+                                <ui-select-choices repeat="item in allFingerprints | filter: $select.search">
+                                    <h4 ng-bind-html="item.fingerprintName | highlight: $select.search"></h4>
+                                    Gender:
+                                    <small ng-bind-html="item.gender | highlight: $select.search"></small>
+                                </ui-select-choices>
+                            </ui-select>
+          <span class="input-group-btn">
+            <button ng-click="fingerprint.selected = {}" ng-disabled="isDisabled" class="btn btn-default">
+                <span class="glyphicon glyphicon-trash"></span>
+            </button>
+          </span>
+                        </div>
+
+                    </div>
+
+                    <div class="col-sm-6" >
+
+                        <h5 class="font-bold m-l-xs m-b-sm">Select Offer</h5>
+
+                        <div class="input-group">
+                            <ui-select reach-infinity="addMoreOfferItems()" ng-model="offer.selected" theme="bootstrap" ng-disabled="isDisabled"
+                                         required>
+                                <ui-select-match placeholder="Select Offer">{{$select.selected.offerName}}
+                                </ui-select-match>
+                                <ui-select-choices  repeat="item in allOffers | filter: $select.search">
+                                    <h4 ng-bind-html="item.offerName | highlight: $select.search"></h4>
+                                    <small>Brand:</small>
+                                    <small ng-bind-html="item.brandName | highlight: $select.search"></small>
+                                </ui-select-choices>
+                            </ui-select>
+
+
+          <span class="input-group-btn">
+            <button ng-click="offer.selected = {}" ng-disabled="isDisabled" class="btn btn-default">
+                <span class="glyphicon glyphicon-trash"></span>
+            </button>
+          </span></div>
+
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row wrapper">
+                <div class="col-sm-12">
+                    <div class="row">
+                        <div class="text-dark wrapper-md">
+                            <h4 class="m-n h4"><span class="font-bold">Time</span> Frame</h4>
+                        </div>
+                    </div>
+                    <div class="row wrapper-md">
+                        <div class="form-group">
+                            <div class="col-sm-4">
+
+                                <p class="input-group">
+                                    <datetimepicker show-weeks="showWeeks" hour-step="hourStep" minute-step="minuteStep"
+                                                    ng-model="campaignDates.startDate" show-meridian="showMeridian"
+                                                    date-format="dd-MMM-yyyy" date-options="dateOptions"
+                                                    date-disabled="disabled(date, mode)"
+                                                    readonly-time="false"></datetimepicker>
+                                </p>
+
+                            </div>
+                            <div class="col-sm-4">
+                                <img class="span-of-time" src="img/icon-datearrow.svg">
+                            </div>
+                            <div class="col-sm-4">
+
+                                <p class="input-group m-l-xl">
+                                    <datetimepicker show-weeks="showWeeks" hour-step="hourStep" minute-step="minuteStep"
+                                                    ng-model="campaignDates.endDate" show-meridian="showMeridian"
+                                                    date-format="dd-MMM-yyyy" date-options="dateOptions"
+                                                    date-disabled="disabled(date, mode)"
+                                                    readonly-time="false"></datetimepicker>
+                                </p>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group text-right clearfix bg-primary button-align-bottom">
+            <div class="bg-primarydark savenext campaign-no-save-next-small button-align-bottom">
+                <md-button
+                        ng-if="$state.includes('core.view.campaigns.update')"
+                        class="btnSave m-r-lg padder-lg"
+                        ng-disabled="offerCreateForm.$invalid"
+                        ng-click="updateCampaign()"
+                        >
+                    Update
+                </md-button>
+                <md-button
+                        class="btnNext m-r-md padder-lg btn-txt-padding mob-push-btn-width"
+                        ng-click="saveCampaignNextStep('True')"
+                        ng-if="$state.includes('core.home.campaign') || $state.includes('core.view.campaigns.create')"
+                        >
+                    <div class="mob-push-btn-txt-small-font">Save &amp; Activate Mobile Push</div>
+                </md-button>
+            </div>
+            <div class="bg-primarydark savenext campaign-no-save-next-small button-align-bottom">
+                <md-button
+                        class="btnNext m-r-md padder-lg btn-txt-padding mob-push-btn-width"
+                        ng-click="saveCampaignNextStep('False')"
+                        ng-if="$state.includes('core.home.campaign') || $state.includes('core.view.campaigns.create')"
+                        >
+                    <div class="mob-push-btn-txt-small-font">Save &amp; Not Activate Mobile Push</div>
+                </md-button>
+            </div>
+            <div class="bg-primarydark savenext campaign-no-save-next-small button-align-bottom">
+                <md-button
+                        class="btnNext m-r-md padder-lg btn-txt-padding mob-push-btn-width"
+                        ng-click="socialPush()"
+                        ng-if="$state.includes('core.home.campaign') || $state.includes('core.view.campaigns.create')"
+                        >
+                    <div class="mob-push-btn-txt-small-font">Save &amp; Activate Internal Social Push</div>
+                </md-button>
+            </div>
+            <div class="bg-primarydark savenext campaign-no-save-next-small button-align-bottom">
+                <md-button
+                        class="btnNext m-r-md padder-lg btn-txt-padding mob-push-btn-width"
+                        ng-click="activateExternalPush()"
+                        ng-if="$state.includes('core.home.campaign') || $state.includes('core.view.campaigns.create')"
+                        >
+                    <div class="mob-push-btn-txt-small-font">Save &amp; Activate External Social Push</div>
+                </md-button>
+            </div>
+            <div class="bg-primarydark savenext campaign-no-save-next-small button-align-bottom">
+                <md-button
+                        class="btnNext m-r-md padder-lg btn-txt-padding mob-push-btn-width"
+                        ng-click="externalPush()"
+                        ng-if="$state.includes('core.home.campaign') || $state.includes('core.view.campaigns.create')"
+                        >
+                    <div class="mob-push-btn-txt-small-font">Save &amp; Not Activate External Social Push</div>
+                </md-button>
+            </div>
+
+            <div class="bg-primarydark savenext campaign-no-save-next-small button-align-bottom">
+                <md-button
+                        class="btnNext m-r-md padder-lg btn-txt-padding mob-push-btn-width"
+                        ng-click="emailCampaign()"
+                        ng-if="$state.includes('core.home.campaign') || $state.includes('core.view.campaigns.create')"
+                        >
+                    <div class="mob-push-btn-txt-small-font">Save &amp; Activate Email Campaign</div>
+                </md-button>
+            </div>
+
+        </div>
+        <div class="btn-center">
+            <div class="col-sm-12 col-md-6 ">
+                <div class="col-sm-12 col-sm-offset-6">
+                    <a href="https://itunes.apple.com/us/app/genie-app/id965196098?mt=8"
+                       class="btn btn-lg btn-default btn-block md-raised font-bold download-app-top-align">Download
+                        Genie App</a>
+
+                    <div class="embeded-code-area-alignment">
+                        <textarea class="form-control" rows="2" id="comment" readonly><a class="embedly-card"
+                                                                                         href="https://itunes.apple.com/us/app/genie-app/id965196098?mt=8">Genie
+                            App</a>
+                            <script async src="//cdn.embedly.com/widgets/platform.js" charset="UTF-8"></script>
+                        </textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+</form>
+<md-progress-circular
+        class="md-hue-2 wizard-loader"
+        md-mode="indeterminate"
+        ng-class="{'show-wizard-loader': toggleWizardLoader.showLoader}"
+        ></md-progress-circular>
+

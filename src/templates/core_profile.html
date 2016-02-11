@@ -1,0 +1,1785 @@
+<div class="hbox hbox-auto-xs hbox-auto-sm" ng-controller="CoreProfileCtrl">
+  <div class="col">
+	<div style="background:url(img/d0.jpg) center center; background-size:cover">
+	  <div class="wrapper-lg bg-white-opacity">
+		<div class="row m-t">
+		  <div class="col-sm-5">
+			<a href class="thumb-lg pull-left m-r">
+			  <img src="img/icon-male.svg" class="img-circle">
+			</a>
+			<div class="clear m-b">
+			  <div class="m-b m-t-sm">
+				<span class="h3 text-black">{{merchantMe.firstName | toCapital}} {{merchantMe.lastName | toCapital}}</span>
+			  </div>
+			  <p class="m-b">
+			  </p>
+			  <a href class="btn btn-xs btn-success btn-rounded">Edit Avatar</a>
+			</div>
+		  </div>
+		  <div class="col-sm-7">
+			<div class="pull-right pull-none-xs text-center">
+			  <a href class="m-b-md inline m">
+				<span class="h3 block font-bold">{{fingerprintsCount}}</span>
+				<small>Fingerprints</small>
+			  </a>
+			  <a href class="m-b-md inline m">
+				<span class="h3 block font-bold">{{offersCount}}</span>
+				<small>Offers</small>
+			  </a>
+			  <a href class="m-b-md inline m">
+				<span class="h3 block font-bold">{{campaignsCount}}</span>
+				<small>Campaigns</small>
+			  </a>
+			</div>
+		  </div>
+		</div>
+	  </div>
+	</div>
+	<div class="wrapper-md">
+	  <div class="row">
+
+		<div class="col-sm-12">
+		  <div class="panel panel-success profile-uploader-widget-wrap">
+			<div class="panel-heading">
+			  <h3>
+			  SDK Link
+				<a class="sdklink" href="http://api.genieapp.com/genie/jsp/howto.jsp" target="_blank">http://api.genieapp.com/genie/jsp/howto.jsp</a>
+			  </h3>
+			</div>
+		  </div>
+		</div>
+
+<!--Start Campaign loader tabel -->
+        <div class="col-sm-12">
+            <div class="panel panel-success profile-uploader-widget-wrap">
+                <div class="panel-heading">
+                    Campaign Loader
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="" nv-file-drop="" uploader="uploaderCampaign" filters="queueLimit, customFilter">
+                            <div class="bg-light b-r bg-auto">
+                                <div class="wrapper-md">
+                                    <div ng-show="uploaderCampaign.isHTML5" class="m-b-md">
+                                        <div class="b-a b-2x b-dashed wrapper-lg bg-white text-center m-b" nv-file-over="" over-class="b-info" uploader="uploaderCampaign">
+                                            Drop File Here to Upload
+                                        </div>
+                                    </div>
+                                    <input type="file" nv-file-select="" uploader="uploaderCampaign" name = "campaignFile"/>
+                                </div>
+                            </div>
+                            <div class="">
+                                <div class="wrapper-md bg-light dk b-b">
+                                    <span class="pull-right m-t-xs">Queue length: <b class="badge bg-info">{{ uploadCampaign.queue.length }}</b></span>
+                                    <h3 class="m-n font-thin">Upload queue</h3>
+                                </div>
+                                <div class="wrapper-md">
+                                    <table class="table bg-white-only b-a">
+                                        <thead>
+                                        <tr>
+                                            <th width="50%">Name</th>
+                                            <th ng-show="uploaderCampaign.isHTML5">Size</th>
+                                            <th ng-show="uploaderCampaign.isHTML5">Progress</th>
+                                            <th>Status</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr ng-repeat="item in uploaderCampaign.queue">
+                                            <td><strong>{{ item.file.name }}</strong></td>
+                                            <td ng-show="uploaderCampaign.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
+                                            <td ng-show="uploaderCampaign.isHTML5">
+                                                <div class="progress progress-sm m-b-none m-t-xs">
+                                                    <div class="progress-bar bg-info" role="progressbar" ng-style="{ 'width': item.progress + '%' }"></div>
+                                                </div>
+                                            </td>
+                                            <td class="text-center">
+                                                <span  ng-show="item.isSuccess" class="text-success" id="campaignOk" name = "campaignOk"><i class="glyphicon glyphicon-ok"></i></span>
+                                                <span ng-show="item.isCancel" class="text-warning"><i class="glyphicon glyphicon-ban-circle"></i></span>
+                                                <span ng-show="item.isError" class="text-danger" id="campaignError" name = "campaignError"><i class="glyphicon glyphicon-remove"></i></span>
+                                            </td>
+                                            <td nowrap>
+                                                <button
+                                                        type="button"
+                                                        class="btn btn-default btn-xs"
+                                                        ng-click="item.upload()"
+                                                        ng-disabled="item.isReady || item.isUploading || item.isSuccess"
+                                                        >
+                                                    Upload
+                                                </button>
+                                                <button type="button" class="btn btn-default btn-xs" ng-click="item.cancel()" ng-disabled="!item.isUploading">
+                                                    Cancel
+                                                </button>
+                                                <button type="button" class="btn btn-default btn-xs" ng-click="item.remove()">
+                                                    Remove
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                    <div>
+                                        <div>
+                                            <p>Queue progress:</p>
+                                            <div class="progress bg-light dker" style="">
+                                                <div class="progress-bar progress-bar-striped bg-info" role="progressbar" ng-style="{ 'width': uploaderCampaign.progress + '%' }"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- End Campaign Loader table-->
+        <!--<div ng-controller="CoreMerchantTableCtrl">-->
+        <div class="col-sm-12">
+            <div class="panel panel-success profile-uploader-widget-wrap">
+                <div class="panel-heading">
+                    Campaign Table
+                </div>
+                <div class="panel-body">
+                    <div class="pull-right">
+                        <md-button class="md-primary btn btn-lg btn-primary profile-btn-margin" ng-click="allCampaigns()">Get Campaigns</md-button>
+                    </div>
+                <div class="panel-body">
+
+                    <div ng-controller="CoreMerchantTableCtrl">
+                        <table class="table table-bordered table-condensed">
+                            <tr>
+                                <td>Campaign Name</td>
+                                <td>Offer Id</td>
+                                <td>Fingerprint Id</td>
+                                <td>Date Start</td>
+                                <td>Date End</td>
+                                <td>Edit</td>
+                            </tr>
+                            <tr ng-repeat="cRow in campaignRows.allCampaignRows">
+
+                                <td>
+                                    <!-- editable brandName (text with validation) -->
+                    <span
+                            editable-text="cRow.campaignName"
+                            e-name="campaignName"
+                            e-form="browform"
+                            e-required
+                            >
+                    {{cRow.campaignName || 'empty'}}
+                    </span>
+
+                                </td>
+                                <td>
+                                    <!-- editable brandName (text with validation) -->
+                    <span
+                            editable-text="cRow.offerId"
+                            e-name="offerId"
+                            e-form="browform"
+                            e-required
+                            >
+                    {{cRow.offerId || 'empty'}}
+                    </span>
+
+                                </td>
+                                <td>
+                                    <!-- editable productName (text with validation) -->
+                    <span
+                            editable-text="cRow.fingerprintId"
+                            e-name="fingerprintId"
+                            e-form="browform"
+                            e-required
+                            >
+                    {{cRow.fingerprintId || 'empty'}}
+                    </span>
+
+                                </td>
+                                <td>
+                                    <!-- editable productName (text with validation) -->
+                    <span
+                            editable-text="cRow.dateStart"
+                            e-name="dateStart"
+                            e-form="browform"
+                            e-required
+                            >
+                    {{cRow.dateStart || 'empty'}}
+                    </span>
+
+                                </td>
+                                <td>
+                                    <!-- editable productName (text with validation) -->
+                    <span
+                            editable-text="cRow.dateEnd"
+                            e-name="dateEnd"
+                            e-form="browform"
+                            e-required
+                            >
+                    {{cRow.dateEnd || 'empty'}}
+                    </span>
+
+                                </td>
+
+                                <td>
+                                    <!-- form -->
+                                    <form
+                                            editable-form name="browform"
+                                            onbeforesave="saveAllCampaignRows($data,$index)"
+                                            ng-show="browform.$visible"
+                                            class="form-buttons form-inline"
+                                            shown="inserted == cRow"
+                                            >
+                                        <button type="submit" ng-disabled="browform.$waiting" class="btn btn-primary">save</button>
+                                        <button type="button" ng-disabled="browform.$waiting" ng-click="browform.$cancel()" class="btn btn-default">cancel</button>
+                                    </form>
+                                    <div class="buttons" ng-show="!browform.$visible">
+                                        <button class="btn btn-primary" ng-click="browform.$show()">edit</button>
+                                        <button class="btn btn-danger" ng-click="removeAllCampaignRows($index)">del</button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+
+
+
+
+		<!-- start Campaign Uploader -->
+		<div class="col-sm-12">
+			<div class="panel panel-success profile-uploader-widget-wrap">
+				<div class="panel-heading">
+					Merchant Beacon CSV File Uploader
+				</div>
+				<div class="panel-body">
+					<div class="row">
+						<div class="" nv-file-drop="" uploader="uploaderBeacon" filters="queueLimit, customFilter">
+							<div class="bg-light b-r bg-auto">
+								<div class="wrapper-md">
+									<div ng-show="uploaderBeacon.isHTML5" class="m-b-md">
+										<div class="b-a b-2x b-dashed wrapper-lg bg-white text-center m-b" nv-file-over="" over-class="b-info" uploader="uploaderBeacon">
+											Drop File Here to Upload
+										</div>
+									</div>
+									<input type="file" nv-file-select="" uploader="uploaderBeacon" name = "merchantBeaconFile"/>
+								</div>
+							</div>
+							<div class="">
+								<div class="wrapper-md bg-light dk b-b">
+									<span class="pull-right m-t-xs">Queue length: <b class="badge bg-info">{{ uploaderBeacon.queue.length }}</b></span>
+									<h3 class="m-n font-thin">Upload queue</h3>
+								</div>
+								<div class="wrapper-md">
+									<table class="table bg-white-only b-a">
+										<thead>
+										<tr>
+											<th width="50%">Name</th>
+											<th ng-show="uploaderBeacon.isHTML5">Size</th>
+											<th ng-show="uploaderBeacon.isHTML5">Progress</th>
+											<th>Status</th>
+											<th>Actions</th>
+										</tr>
+										</thead>
+										<tbody>
+										<tr ng-repeat="item in uploaderBeacon.queue">
+											<td><strong>{{ item.file.name }}</strong></td>
+											<td ng-show="uploaderBeacon.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
+											<td ng-show="uploaderBeacon.isHTML5">
+												<div class="progress progress-sm m-b-none m-t-xs">
+													<div class="progress-bar bg-info" role="progressbar" ng-style="{ 'width': item.progress + '%' }"></div>
+												</div>
+											</td>
+											<td class="text-center">
+												<span ng-show="item.isSuccess" id = "beaconSuccess" name = "beaconSuccess" class="text-success"><i class="glyphicon glyphicon-ok"></i></span>
+												<span ng-show="item.isCancel" class="text-warning"><i class="glyphicon glyphicon-ban-circle"></i></span>
+												<span ng-show="item.isError" id = "beaconError" name = "beaconError" class="text-danger"><i class="glyphicon glyphicon-remove"></i></span>
+											</td>
+											<td nowrap>
+												<button
+														type="button"
+														class="btn btn-default btn-xs"
+														ng-click="item.upload()"
+														ng-disabled="item.isReady || item.isUploading || item.isSuccess"
+														>
+													Upload
+												</button>
+												<button type="button" class="btn btn-default btn-xs" ng-click="item.cancel()" ng-disabled="!item.isUploading">
+													Cancel
+												</button>
+												<button type="button" class="btn btn-default btn-xs" ng-click="item.remove()">
+													Remove
+												</button>
+											</td>
+										</tr>
+										</tbody>
+									</table>
+									<div>
+										<div>
+											<p>Queue progress:</p>
+											<div class="progress bg-light dker" style="">
+												<div class="progress-bar progress-bar-striped bg-info" role="progressbar" ng-style="{ 'width': uploaderBeacon.progress + '%' }"></div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- End uploaderBeacon -->
+
+		<div class="col-sm-12">
+			<div class="panel panel-success profile-uploader-widget-wrap">
+				<div class="panel-heading">
+					Beacon Table
+				</div>
+
+				<div class="panel-body">
+                    <div class="pull-right">
+                        <md-button class="md-primary btn btn-lg btn-primary profile-btn-margin" ng-click="allBeacons()">Get Beacons</md-button>
+                    </div>
+					<div class="panel-body">
+                        <div ng-controller="CoreMerchantTableCtrl">
+
+							<table class="table table-bordered table-condensed">
+								<tr>
+									<td>Beacon UUID</td>
+									<td>Beacon Identifier</td>
+									<td>Edit</td>
+								</tr>
+								<tr ng-repeat="bRow in beaconRows.allBeaconRows">
+									<td>
+										<!-- editable brandName (text with validation) -->
+                    <span
+                        editable-text="bRow.beaconUUID"
+                        e-name="beaconUUID"
+                        e-form="browform"
+                        e-required
+                        >
+                    {{bRow.beaconUUID || 'empty'}}
+                    </span>
+
+									</td>
+
+									<td>
+										<!-- editable productName (text with validation) -->
+                    <span
+                        editable-text="bRow.beaconIdentifier"
+                        e-name="beaconIdentifier"
+                        e-form="browform"
+                        e-required
+                        >
+                    {{bRow.beaconIdentifier || 'empty'}}
+                    </span>
+
+									</td>
+
+									<td>
+										<!-- form -->
+										<form
+												editable-form name="browform"
+												onbeforesave="saveAllBeaconRows($data,$index)"
+												ng-show="browform.$visible"
+												class="form-buttons form-inline"
+												shown="inserted == bRow"
+												>
+											<button type="submit" ng-disabled="browform.$waiting" class="btn btn-primary">save</button>
+											<button type="button" ng-disabled="browform.$waiting" ng-click="browform.$cancel()" class="btn btn-default">cancel</button>
+										</form>
+										<div class="buttons" ng-show="!browform.$visible">
+											<button class="btn btn-primary" ng-click="browform.$show()">edit</button>
+											<button class="btn btn-danger" ng-click="removeAllBeaconRows($index)">del</button>
+										</div>
+									</td>
+								</tr>
+							</table>
+							<button class="btn btn-default" ng-click="addAllBeaconRows()">Add row</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	  </div>
+	  <div class="row">
+        <!-- Start uploaderCause -->
+      <div class="col-sm-12">
+        <div class="panel panel-success profile-uploader-widget-wrap">
+          <div class="panel-heading">
+            Merchant Consumer Cause CSV File Uploader
+          </div>
+          <div class="panel-body">
+            <div class="row">
+              <div class="" nv-file-drop="" uploader="uploaderCause" filters="queueLimit, customFilter">
+                <div class="bg-light b-r bg-auto">
+                  <div class="wrapper-md">
+                    <div ng-show="uploaderCause.isHTML5" class="m-b-md">
+                      <div class="b-a b-2x b-dashed wrapper-lg bg-white text-center m-b" nv-file-over="" over-class="b-info" uploader="uploaderCause">
+                        Drop File Here to Upload
+                      </div>
+                    </div>
+                    <input type="file" nv-file-select="" uploader="uploaderCause" name = "consumerCauseFile"/>
+                  </div>
+                </div>
+                <div class="">
+                  <div class="wrapper-md bg-light dk b-b">
+                    <span class="pull-right m-t-xs">Queue length: <b class="badge bg-info">{{ uploaderCause.queue.length }}</b></span>
+                    <h3 class="m-n font-thin">Upload queue</h3>
+                  </div>
+                  <div class="wrapper-md">
+                    <table class="table bg-white-only b-a">
+                      <thead>
+                      <tr>
+                        <th width="50%">Name</th>
+                        <th ng-show="uploaderCause.isHTML5">Size</th>
+                        <th ng-show="uploaderCause.isHTML5">Progress</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                      <tr ng-repeat="item in uploaderCause.queue">
+                        <td><strong>{{ item.file.name }}</strong></td>
+                        <td ng-show="uploaderCause.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
+                        <td ng-show="uploaderCause.isHTML5">
+                          <div class="progress progress-sm m-b-none m-t-xs">
+                            <div class="progress-bar bg-info" role="progressbar" ng-style="{ 'width': item.progress + '%' }"></div>
+                          </div>
+                        </td>
+                        <td class="text-center">
+                          <span ng-show="item.isSuccess" id = "consumerCauseSuccess" name = "consumerCauseSuccess" class="text-success"><i class="glyphicon glyphicon-ok"></i></span>
+                          <span ng-show="item.isCancel" class="text-warning"><i class="glyphicon glyphicon-ban-circle"></i></span>
+                          <span ng-show="item.isError" id = "consumerCauseError" name = "consumerCauseError" class="text-danger"><i class="glyphicon glyphicon-remove"></i></span>
+                        </td>
+                        <td nowrap>
+                          <button
+                              type="button"
+                              class="btn btn-default btn-xs"
+                              ng-click="item.upload()"
+                              ng-disabled="item.isReady || item.isUploading || item.isSuccess"
+                              >
+                            Upload
+                          </button>
+                          <button type="button" class="btn btn-default btn-xs" ng-click="item.cancel()" ng-disabled="!item.isUploading">
+                            Cancel
+                          </button>
+                          <button type="button" class="btn btn-default btn-xs" ng-click="item.remove()">
+                            Remove
+                          </button>
+                        </td>
+                      </tr>
+                      </tbody>
+                    </table>
+                    <div>
+                      <div>
+                        <p>Queue progress:</p>
+                        <div class="progress bg-light dker" style="">
+                          <div class="progress-bar progress-bar-striped bg-info" role="progressbar" ng-style="{ 'width': uploaderCause.progress + '%' }"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+			  <!-- End uploaderCause -->
+      <div class="col-sm-12">
+        <div class="panel panel-success profile-uploader-widget-wrap">
+          <div class="panel-heading">
+            Cause Table
+          </div>
+          <div class="panel-body">
+              <div class="pull-right">
+                  <md-button class="md-primary btn btn-lg btn-primary profile-btn-margin" ng-click="allCauses()">Get Causes</md-button>
+              </div>
+            <div class="panel-body">
+              <div ng-controller="CoreMerchantTableCtrl">
+
+                <table class="table table-bordered table-condensed">
+                  <tr>
+                    <td>Cause Name</td>
+                    <td>Edit</td>
+                  </tr>
+                  <tr ng-repeat="cRow in causeRows.allCauseRows">
+                    <td>
+                      <!-- editable brandName (text with validation) -->
+                      <span
+                        editable-text="cRow.causeName"
+                        e-name="causeName"
+                        e-form="crowform"
+                        e-required
+                      >
+                      {{cRow.causeName || 'empty'}}
+                       </span>
+
+                    </td>
+
+                    <td>
+                      <!-- form -->
+                      <form
+                          editable-form name="crowform"
+                          onbeforesave="saveAllCauseRows($data,$index)"
+                          ng-show="crowform.$visible"
+                          class="form-buttons form-inline"
+                          shown="inserted == cRow"
+                          >
+                        <button type="submit" ng-disabled="crowform.$waiting" class="btn btn-primary">save</button>
+                        <button type="button" ng-disabled="crowform.$waiting" ng-click="crowform.$cancel()" class="btn btn-default">cancel</button>
+                      </form>
+                      <div class="buttons" ng-show="!crowform.$visible">
+                        <button class="btn btn-primary" ng-click="crowform.$show()">edit</button>
+                        <button class="btn btn-danger" ng-click="removeAllCauseRows($index)">del</button>
+                      </div>
+                    </td>
+                  </tr>
+                </table>
+                <button class="btn btn-default" ng-click="addAllCauseRows()">Add row</button>
+              </div>
+            </div>
+          </div>
+			  </div>
+		  </div>
+	  </div>
+	  <!-- start consumerUploader -->
+	  <div class="row">
+		  <div class="col-sm-12">
+			  <div class="panel panel-success profile-uploader-widget-wrap">
+				  <div class="panel-heading">
+					  Merchant Consumer CSV File Uploader
+				  </div>
+				  <div class="panel-body">
+					  <div class="row">
+						  <div class="" nv-file-drop="" uploader="uploaderConsumer" filters="queueLimit, customFilter">
+							  <div class="bg-light b-r bg-auto">
+								  <div class="wrapper-md">
+									  <div ng-show="uploaderConsumer.isHTML5" class="m-b-md">
+										  <div class="b-a b-2x b-dashed wrapper-lg bg-white text-center m-b" nv-file-over="" over-class="b-info" uploader="uploaderConsumer">
+											  Drop File Here to Upload
+										  </div>
+									  </div>
+									  <input type="file" nv-file-select="" uploader="uploaderConsumer" name = "merchantConsumerFile"/>
+								  </div>
+							  </div>
+							  <div class="">
+								  <div class="wrapper-md bg-light dk b-b">
+									  <span class="pull-right m-t-xs">Queue length: <b class="badge bg-info">{{ uploaderConsumer.queue.length }}</b></span>
+									  <h3 class="m-n font-thin">Upload queue</h3>
+								  </div>
+								  <div class="wrapper-md">
+									  <table class="table bg-white-only b-a">
+										  <thead>
+										  <tr>
+											  <th width="50%">Name</th>
+											  <th ng-show="uploaderConsumer.isHTML5">Size</th>
+											  <th ng-show="uploaderConsumer.isHTML5">Progress</th>
+											  <th>Status</th>
+											  <th>Actions</th>
+										  </tr>
+										  </thead>
+										  <tbody>
+										  <tr ng-repeat="item in uploaderConsumer.queue">
+											  <td><strong>{{ item.file.name }}</strong></td>
+											  <td ng-show="uploaderConsumer.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
+											  <td ng-show="uploaderConsumer.isHTML5">
+												  <div class="progress progress-sm m-b-none m-t-xs">
+													  <div class="progress-bar bg-info" role="progressbar" ng-style="{ 'width': item.progress + '%' }"></div>
+												  </div>
+											  </td>
+											  <td class="text-center">
+												  <span ng-show="item.isSuccess" id = "consumerSuccess" name = "consumerSuccess" class="text-success"><i class="glyphicon glyphicon-ok"></i></span>
+												  <span ng-show="item.isCancel" class="text-warning"><i class="glyphicon glyphicon-ban-circle"></i></span>
+												  <span ng-show="item.isError" id = "consumerError" name = "consumerError" class="text-danger"><i class="glyphicon glyphicon-remove"></i></span>
+											  </td>
+											  <td nowrap>
+												  <button type="button" class="btn btn-default btn-xs" ng-click="item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess">
+													  Upload
+												  </button>
+												  <button type="button" class="btn btn-default btn-xs" ng-click="item.cancel()" ng-disabled="!item.isUploading">
+													  Cancel
+												  </button>
+												  <button type="button" class="btn btn-default btn-xs" ng-click="item.remove()">
+													  Remove
+												  </button>
+											  </td>
+										  </tr>
+										  </tbody>
+									  </table>
+									  <div>
+										  <div>
+											  <p>Queue progress:</p>
+											  <div class="progress bg-light dker" style="">
+												  <div class="progress-bar progress-bar-striped bg-info" role="progressbar" ng-style="{ 'width': uploaderConsumer.progress + '%' }"></div>
+											  </div>
+										  </div>
+									  </div>
+								  </div>
+							  </div>
+						  </div>
+					  </div>
+				  </div>
+			  </div>
+		  </div>
+		  <!-- End uploaderConsumer -->
+		  <div class="col-sm-12">
+			  <div class="panel panel-success profile-uploader-widget-wrap">
+				  <div class="panel-heading">
+					  Consumer Table
+				  </div>
+				  <div class="panel-body">
+            <div class="pull-right">
+              <input type="number" placeholder="Number of Consumer" name="consumerRange" ng-model="consumer.range">
+              <md-button class="md-primary btn btn-lg btn-primary profile-btn-margin" ng-click="allConsumer()">Submit</md-button>
+            </div>
+					  <div class="panel-body">
+						  <div ng-controller="CoreMerchantTableCtrl">
+
+							  <table class="table table-bordered table-condensed">
+								  <tr>
+									  <td>First Name</td>
+									  <td>Last Name</td>
+									  <td>Mobile Number</td>
+									  <td>Email</td>
+                    <td>Edit</td>
+								  </tr>
+								  <tr ng-repeat="coRow in ConsumerRows.allConsumerRows">
+									  <td>
+										  <!-- editable brandName (text with validation) -->
+                      <span
+                          editable-text="coRow.firstName"
+                          e-name="firstName"
+                          e-form="corowform"
+                          e-required
+                          >
+                      {{coRow.firstName || 'empty'}}
+                      </span>
+									  </td>
+
+									  <td>
+										  <!-- editable productName (text with validation) -->
+                      <span
+                          editable-text="coRow.lastName"
+                          e-name="lastName"
+                          e-form="corowform"
+                          e-required
+                          >
+                      {{coRow.lastName || 'empty'}}
+                      </span>
+									  </td>
+
+									  <td>
+										  <!-- editable productDescription (text with validation) -->
+                      <span
+                          editable-text="coRow.mobileNumber"
+                          e-name="mobileNumber"
+                          e-form="corowform"
+                          e-required
+                          >
+                      {{coRow.mobileNumber || 'empty'}}
+                      </span>
+									  </td>
+
+									  <td>
+										  <!-- editable productType (text with validation) -->
+                      <span
+                          editable-text="coRow.email"
+                          e-name="email"
+                          e-form="corowform"
+                          e-readonly="true"
+                          e-required
+                          >
+                      {{coRow.email || 'empty'}}
+                      </span>
+									  </td>
+
+									  <td>
+										  <!-- form -->
+										  <form
+												  editable-form name="corowform"
+												  onbeforesave="saveAllConsumerRow($data,$index)"
+												  ng-show="corowform.$visible"
+												  class="form-buttons form-inline"
+												  shown="inserted == coRow"
+												  >
+											  <button type="submit" ng-disabled="corowform.$waiting" class="btn btn-primary">save</button>
+											  <button type="button" ng-disabled="corowform.$waiting" ng-click="corowform.$cancel()" class="btn btn-default">cancel</button>
+										  </form>
+										  <div class="buttons" ng-show="!corowform.$visible">
+											  <button class="btn btn-primary" ng-click="corowform.$show()">edit</button>
+											  <button class="btn btn-danger" ng-click="removeAllConsumerRows($index)">del</button>
+										  </div>
+									  </td>
+								  </tr>
+							  </table>
+							  <button class="btn btn-default" ng-click="addAllConsumerRows()">Add row</button>
+						  </div>
+					  </div>
+				  </div>
+			  </div>
+		  </div>
+		  </div>
+      <div class="row">
+      <div class="col-sm-12">
+          <div class="panel panel-success profile-uploader-widget-wrap">
+              <div class="panel-heading">
+                  Recommended Product Price Report
+              </div>
+              <div class="panel-body">
+                  <div class="pull-right">
+                      <input type="number" placeholder="Number of Customers" name="consumerrecommendationRange" ng-model="consumer_recommendations.range">
+                      <md-button class="md-primary btn btn-lg btn-primary profile-btn-margin" ng-click="allConsumerRecommendation()">Submit</md-button>
+                  </div>
+                  <div class="panel-body">
+                      <div ng-controller="CoreMerchantTableCtrl">
+
+                          <table class="table table-bordered table-condensed">
+                              <tr>
+                                  <td>Customer Name</td>
+                                  <td>Recommended Product 1</td>
+                                  <td>Recommended Product Price 1</td>
+                                  <td>Correlated Product 1</td>
+                                  <td>Recommended Product 2</td>
+                                  <td>Recommended Product Price 2</td>
+                                  <td>Correlated Product 2</td>
+                                  <td>Recommended Product 3</td>
+                                  <td>Recommended Product Price 3</td>
+                                  <td>Correlated Product 3</td>
+                              </tr>
+                              <tr ng-repeat="coRow in ConsumerRecommendationRows.allConsumerRecommendationRows">
+                                  <td>
+                      <span
+                              editable-text="coRow.firstName"
+                              e-name="firstName"
+                              e-form="corowform"
+                              e-required
+                              >
+                      {{coRow.firstName + ' ' + coRow.lastName || 'empty'}}
+                      </span>
+                                  </td>
+
+                                  <td>
+                      <span
+                              editable-text="coRow.productName1"
+                              e-name="productName1"
+                              e-form="corowform"
+                              e-required
+                              >
+                      {{coRow.productName1 || 'empty'}}
+                      </span>
+                                  </td>
+
+                                  <td>
+                      <span
+                              editable-text="coRow.productPrice1"
+                              e-name="productPrice1"
+                              e-form="corowform"
+                              e-required
+                              >
+                      {{coRow.productPrice1 || 'empty'}}
+                      </span>
+                                  </td>
+                                  <td>
+                      <span
+                              editable-text="coRow.correlatedProduct1"
+                              e-name="correlatedProduct1"
+                              e-form="corowform"
+                              e-required
+                              >
+                      {{coRow.correlatedProduct1 || 'empty'}}
+                      </span>
+                                  </td>
+
+                                  <td>
+                      <span
+                              editable-text="coRow.productName2"
+                              e-name="productName2"
+                              e-form="corowform"
+                              e-readonly="true"
+                              e-required
+                              >
+                      {{coRow.productName2 || 'empty'}}
+                      </span>
+                                  </td>
+                                  <td>
+                      <span
+                              editable-text="coRow.productPrice2"
+                              e-name="productPrice2"
+                              e-form="corowform"
+                              e-required
+                              >
+                      {{coRow.productPrice2 || 'empty'}}
+                      </span>
+                                  </td>
+                                  <td>
+                      <span
+                              editable-text="coRow.correlatedProduct2"
+                              e-name="correlatedProduct2"
+                              e-form="corowform"
+                              e-required
+                              >
+                      {{coRow.correlatedProduct2 || 'empty'}}
+                      </span>
+                                  </td>
+                                  <td>
+                      <span
+                              editable-text="coRow.productName3"
+                              e-name="productName3"
+                              e-form="corowform"
+                              e-required
+                              >
+                      {{coRow.productName3 || 'empty'}}
+                      </span>
+                                  </td>
+                                  <td>
+                      <span
+                              editable-text="coRow.productPrice3"
+                              e-name="productPrice3"
+                              e-form="corowform"
+                              e-required
+                              >
+                      {{coRow.productPrice3 || 'empty'}}
+                      </span>
+                                  </td>
+                                  <td>
+                      <span
+                              editable-text="coRow.correlatedProduct3"
+                              e-name="correlatedProduct3"
+                              e-form="corowform"
+                              e-required
+                              >
+                      {{coRow.correlatedProduct3 || 'empty'}}
+                      </span>
+                                  </td>
+                              </tr>
+                          </table>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+    </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="panel panel-success profile-uploader-widget-wrap">
+                <div class="panel-heading">
+                    Item Similarity Report
+                </div>
+                <div class="panel-body">
+                    <div class="pull-right">
+                        <input type="number" placeholder="Number of Customers" name="itemsimilarityRange" ng-model="item_similarity.range">
+                        <md-button class="md-primary btn btn-lg btn-primary profile-btn-margin" ng-click="itemSimilarity()">Submit</md-button>
+                    </div>
+                    <div class="panel-body">
+                        <div ng-controller="CoreMerchantTableCtrl">
+
+                            <table class="table table-bordered table-condensed">
+                                <tr>
+                                    <td>Customer Name</td>
+                                    <td>Item 1</td>
+                                    <td>Item 2</td>
+                                    <td>Item 3</td>
+                                </tr>
+                                <tr ng-repeat="coRow in ItemSimilarityRows.allConsumerRecommendationRows">
+                                    <td>
+                      <span
+                              editable-text="coRow.firstName"
+                              e-name="firstName"
+                              e-form="corowform"
+                              e-required
+                              >
+                      {{coRow.firstName+' '+coRow.lastName || 'empty'}}
+                      </span>
+                                    </td>
+
+                                    <td>
+                      <span
+                              editable-text="coRow.product1"
+                              e-name="product1"
+                              e-form="corowform"
+                              e-required
+                              >
+                      {{coRow.product1 || 'empty'}}
+                      </span>
+                                    </td>
+                                    <td>
+                      <span
+                              editable-text="coRow.product2"
+                              e-name="product2"
+                              e-form="corowform"
+                              e-required
+                              >
+                      {{coRow.product2 || 'empty'}}
+                      </span>
+                                    </td>
+                                    <td>
+                      <span
+                              editable-text="coRow.product3"
+                              e-name="product3"
+                              e-form="corowform"
+                              e-required
+                              >
+                      {{coRow.product3|| 'empty'}}
+                      </span>
+                                    </td>
+
+
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+       <div class="col-sm-12">
+          <div class="panel panel-success profile-uploader-widget-wrap">
+             <div class="panel-heading">
+                 Product Correlation Report
+             </div>
+              <div class="panel-body">
+                  <div class="pull-right">
+                      <md-button class="md-primary btn btn-lg btn-primary profile-btn-margin" ng-click="allProductCorrelations()">Get Products</md-button>
+                  </div>
+                  <div class="panel-body">
+                      <div ng-controller="CoreMerchantTableCtrl">
+
+                          <table class="table table-bordered table-condensed">
+                              <tr>
+                                  <td>Product 1</td>
+                                  <td>Product 2</td>
+                                  <td>Pearson Correlation</td>
+                                  <td>Cosine Correlation</td>
+                                  <td>Jaccard Correlation</td>
+                              </tr>
+                              <tr ng-repeat="prRow in ProductCorrelationsRows.allProductCorrelationsRows">
+                                  <td>
+                      <span
+                              editable-text="prRow.firstPtroduct"
+                              e-name="firstPtroduct"
+                              e-form="prrowform"
+                              e-required
+                              >
+                      {{prRow.firstPtroduct || 'empty'}}
+                      </span>
+                                  </td>
+                                  <td>
+                      <span
+                              editable-text="prRow.secondPtroduct"
+                              e-name="secondPtroduct"
+                              e-form="prrowform"
+                              e-required
+                              >
+                      {{prRow.secondPtroduct || 'empty'}}
+                      </span>
+                                  </td>
+                                  <td>
+                      <span
+                              editable-text="prRow.pearsonCorrelation"
+                              e-name="pearsonCorrelation"
+                              e-form="prrowform"
+                              e-required
+                              >
+                      {{prRow.pearsonCorrelation || 0 }}
+                      </span>
+                                  </td>
+
+                                  <td>
+                      <span
+                              editable-text="prRow.cosineCorrelation"
+                              e-name="cosineCorrelation"
+                              e-form="prrowform"
+                              e-required
+                              >
+                      {{prRow.cosineCorrelation || 0 }}
+                      </span>
+                                  </td>
+                                  <td>
+                      <span
+                              editable-text="prRow.jaccardCorrelation"
+                              e-name="jaccardCorrelation"
+                              e-form="prrowform"
+                              e-required
+                              >
+                      {{prRow.jaccardCorrelation || 0 }}
+                      </span>
+                                  </td>
+                              </tr>
+                          </table>
+                      </div>
+                  </div>
+              </div>
+          </div>
+       </div>
+    </div>
+
+    <div class="row">
+			  <!-- Start uploaderProduct -->
+			  <div class="col-sm-12">
+				  <div class="panel panel-success profile-uploader-widget-wrap">
+					  <div class="panel-heading">
+						  Merchant Product CSV File Uploader
+					  </div>
+					  <div class="panel-body">
+						  <div class="row">
+							  <div class="" nv-file-drop="" uploader="uploaderProduct" filters="queueLimit, customFilter">
+								  <div class="bg-light b-r bg-auto">
+									  <div class="wrapper-md">
+										  <div ng-show="uploaderProduct.isHTML5" class="m-b-md">
+											  <div class="b-a b-2x b-dashed wrapper-lg bg-white text-center m-b" nv-file-over="" over-class="b-info" uploader="uploaderProduct">
+												  Drop File Here to Upload
+											  </div>
+										  </div>
+										  <input type="file" nv-file-select="" uploader="uploaderProduct" name = "productFile"/>
+									  </div>
+								  </div>
+								  <div class="">
+									  <div class="wrapper-md bg-light dk b-b">
+										  <span class="pull-right m-t-xs">Queue length: <b class="badge bg-info">{{ productUploader.queue.length }}</b></span>
+										  <h3 class="m-n font-thin">Upload queue</h3>
+									  </div>
+									  <div class="wrapper-md">
+										  <table class="table bg-white-only b-a">
+											  <thead>
+											  <tr>
+												  <th width="50%">Name</th>
+												  <th ng-show="uploaderProduct.isHTML5">Size</th>
+												  <th ng-show="uploaderProduct.isHTML5">Progress</th>
+												  <th>Status</th>
+												  <th>Actions</th>
+											  </tr>
+											  </thead>
+											  <tbody>
+											  <tr ng-repeat="item in uploaderProduct.queue">
+												  <td><strong>{{ item.file.name }}</strong></td>
+												  <td ng-show="uploaderProduct.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
+												  <td ng-show="uploaderProduct.isHTML5">
+													  <div class="progress progress-sm m-b-none m-t-xs">
+														  <div class="progress-bar bg-info" role="progressbar" ng-style="{ 'width': item.progress + '%' }"></div>
+													  </div>
+												  </td>
+												  <td class="text-center">
+													  <span ng-show="item.isSuccess" id = "productSuccess" name = "productSuccess" class="text-success"><i class="glyphicon glyphicon-ok"></i></span>
+													  <span ng-show="item.isCancel" class="text-warning"><i class="glyphicon glyphicon-ban-circle"></i></span>
+													  <span ng-show="item.isError" id = "productError" name = "productError" class="text-danger"><i class="glyphicon glyphicon-remove"></i></span>
+												  </td>
+												  <td nowrap>
+													  <button type="button" class="btn btn-default btn-xs" ng-click="item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess">
+														  Upload
+													  </button>
+													  <button type="button" class="btn btn-default btn-xs" ng-click="item.cancel()" ng-disabled="!item.isUploading">
+														  Cancel
+													  </button>
+													  <button type="button" class="btn btn-default btn-xs" ng-click="item.remove()">
+														  Remove
+													  </button>
+												  </td>
+											  </tr>
+											  </tbody>
+										  </table>
+										  <div>
+											  <div>
+												  <p>Queue progress:</p>
+												  <div class="progress bg-light dker" style="">
+													  <div class="progress-bar progress-bar-striped bg-info" role="progressbar" ng-style="{ 'width': uploaderProduct.progress + '%' }"></div>
+												  </div>
+											  </div>
+										  </div>
+									  </div>
+								  </div>
+							  </div>
+						  </div>
+					  </div>
+				  </div>
+			  </div>
+		  <!-- End uploaderProduct -->
+
+          <div class="col-sm-12">
+		  <div class="panel panel-success profile-uploader-widget-wrap">
+			  <div class="panel-heading">
+				  Product Table
+			  </div>
+              <div ng-controller="CoreMerchantTableCtrl">
+			  <div class="panel-body">
+                  <div class="pull-right">
+                      <input type="number" placeholder="Number of Products" name="productRange" ng-model="product.range">
+                      <md-button class="md-primary btn btn-lg btn-primary profile-btn-margin" ng-click="allProducts()">Get Products</md-button>
+                  </div>
+				  <div class="panel-body">
+
+
+						  <table class="table table-bordered table-condensed">
+							  <tr>
+								  <td>Brand Name</td>
+								  <td>Brand Id</td>
+								  <td>Product Name</td>
+								  <td>Product Description</td>
+								  <td>Product SKU Number</td>
+								  <td>Product Type</td>
+								  <td>Product Type Description</td>
+								  <td>Product Category</td>
+								  <td>Product Category Description</td>
+								  <td>Price</td>
+                                  <td>Uploader</td>
+								  <td>Edit</td>
+							  </tr>
+							  <tr ng-repeat="pRow in productRows.allProductRows">
+								  <td>
+									  <!-- editable brandName (text with validation) -->
+                    <span
+                        editable-text="pRow.brandName"
+                        e-name="brandName"
+                        e-form="rowform"
+                        e-required
+                        >
+                    {{pRow.brandName || 'empty'}}
+                    </span>
+
+								  </td>
+								  <td>
+									  <!-- editable brandId (text with validation) -->
+									  <span
+											  editable-text="pRow.brandId"
+											  e-name="brandId"
+											  e-form="rowform"
+											  e-required
+											  >
+										{{pRow.brandId || 'empty'}}
+									  </span>
+								  </td>
+
+								  <td>
+									  <!-- editable productName (text with validation) -->
+                    <span
+                        editable-text="pRow.productName"
+                        e-name="productName"
+                        e-form="rowform"
+                        e-required
+                        >
+                    {{pRow.productName || 'empty'}}
+                    </span>
+								  </td>
+
+								  <td>
+									  <!-- editable productDescription (text with validation) -->
+                    <span
+                        editable-text="pRow.productDescription"
+                        e-name="productDescription"
+                        e-form="rowform"
+                        e-required
+                        >
+                    {{pRow.productDescription || 'empty'}}
+                    </span>
+								  </td>
+								  <td>
+									  <span
+											  editable-text="pRow.product_SKU_Number"
+											  e-name="product_SKU_Number"
+											  e-form="rowform"
+											  e-required
+											  >
+										{{pRow.product_SKU_Number || 'empty'}}
+									  </span>
+								  </td>
+								  <td>
+									  <!-- editable productType (text with validation) -->
+                    <span
+                        editable-text="pRow.productType"
+                        e-name="productType"
+                        e-form="rowform"
+                        e-required
+                        >
+                    {{pRow.productType || 'empty'}}
+                    </span>
+								  </td>
+								  <td>
+									  <span
+											  editable-text="pRow.productTypeDescription"
+											  e-name="productTypeDescription"
+											  e-form="rowform"
+											  e-required
+											  >
+											{{pRow.productTypeDescription || 'empty'}}
+									  </span>
+								  </td>
+
+								  <td>
+									  <!-- editable productCategory (text with validation) -->
+                    <span
+                        editable-text="pRow.productCategory"
+                        e-name="productCategory"
+                        e-form="rowform"
+                        e-required
+                        >
+                    {{pRow.productCategory || 'empty'}}
+                    </span>
+								  </td>
+								  <td>
+									  <span
+											  editable-text="pRow.productCategoryDescription"
+											  e-name="productCategoryDescription"
+											  e-form="rowform"
+											  e-required
+											  >
+											 {{pRow.productCategoryDescription || 'empty'}}
+										</span>
+								  </td>
+
+								  <td>
+									  <!-- editable price (text with validation) -->
+                    <span
+                        editable-text="pRow.price"
+                        e-name="price"
+                        e-form="rowform"
+                        e-required
+                        >
+                    ${{pRow.price || 'empty'}}
+                    </span>
+								  </td>
+                                  <td>
+                                    <input e-form="rowform" id="productUploadId-{{$index}}" type="file" e-name="productImageFile" ng-model="productImage" onload="onLoad($index)" base-sixty-four-input>
+
+									  <img id="product-img-{{$index}}" ng-src= "{{pRow.productImage}}" class = "img-circle img-size" />
+                                  </td>
+
+								  <td>
+									  <!-- form -->
+									  <form
+											  editable-form name="rowform"
+											  onbeforesave="saveAllProductRows($data, $index)"
+											  ng-show="rowform.$visible"
+											  class="form-buttons form-inline"
+											  shown="inserted == pRow"
+											  >
+										  <button type="submit" ng-disabled="rowform.$waiting" class="btn btn-primary">save</button>
+										  <button type="button" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()" class="btn btn-default">cancel</button>
+									  </form>
+									  <div class="buttons" ng-show="!rowform.$visible">
+										  <button class="btn btn-primary" ng-click="rowform.$show()">edit</button>
+										  <button class="btn btn-danger" ng-click="removeAllProductRows($index)">del</button>
+									  </div>
+								  </td>
+							  </tr>
+						  </table>
+						  <button class="btn btn-default" ng-click="addAllProductRows()">Add row</button>
+					  </div>
+				  </div>
+			  </div>
+		  </div>
+		  </div>
+	  </div>
+
+	  <div class="row">
+	  <!-- Start uploaderStore -->
+		<div class="col-sm-12">
+		  <div class="panel panel-success profile-uploader-widget-wrap">
+			<div class="panel-heading">
+			  Merchant Store CSV File Uploader
+			</div>
+			<div class="panel-body">
+			  <div class="row">
+				<div class="" nv-file-drop="" uploader="uploaderStore" filters="queueLimit, customFilter">
+				  <div class="bg-light b-r bg-auto">
+					<div class="wrapper-md">
+					  <div ng-show="uploaderStore.isHTML5" class="m-b-md">
+						  <div class="b-a b-2x b-dashed wrapper-lg bg-white text-center m-b" nv-file-over="" over-class="b-info" uploader="uploaderStore">
+							  Drop File Here to Upload
+						  </div>
+					  </div>
+					  <input type="file" nv-file-select="" uploader="uploaderStore" name = "storeFile" />
+					</div>
+				  </div>
+				  <div class="">
+					<div class="wrapper-md bg-light dk b-b">
+					  <span class="pull-right m-t-xs">Queue length: <b class="badge bg-info">{{ uploaderStore.queue.length }}</b></span>
+					  <h3 class="m-n font-thin">Upload queue</h3>
+					</div>
+					<div class="wrapper-md">
+					  <table class="table bg-white-only b-a">
+						  <thead>
+							  <tr>
+								  <th width="50%">Name</th>
+								  <th ng-show="uploaderStore.isHTML5">Size</th>
+								  <th ng-show="uploaderStore.isHTML5">Progress</th>
+								  <th>Status</th>
+								  <th>Actions</th>
+							  </tr>
+						  </thead>
+						  <tbody>
+							  <tr ng-repeat="item in uploaderStore.queue">
+								  <td><strong>{{ item.file.name }}</strong></td>
+								  <td ng-show="uploaderStore.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
+								  <td ng-show="uploaderStore.isHTML5">
+									  <div class="progress progress-sm m-b-none m-t-xs">
+										  <div class="progress-bar bg-info" role="progressbar" ng-style="{ 'width': item.progress + '%' }"></div>
+									  </div>
+								  </td>
+								  <td class="text-center">
+									  <span ng-show="item.isSuccess" id = "storeSuccess" name = "storeSuccess" class="text-success"><i class="glyphicon glyphicon-ok"></i></span>
+									  <span ng-show="item.isCancel" class="text-warning"><i class="glyphicon glyphicon-ban-circle"></i></span>
+									  <span ng-show="item.isError" id = "storeError" name = "storeError" class="text-danger"><i class="glyphicon glyphicon-remove"></i></span>
+								  </td>
+								  <td nowrap>
+									  <button type="button" class="btn btn-default btn-xs" ng-click="item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess">
+										  Upload
+									  </button>
+									  <button type="button" class="btn btn-default btn-xs" ng-click="item.cancel()" ng-disabled="!item.isUploading">
+										  Cancel
+									  </button>
+									  <button type="button" class="btn btn-default btn-xs" ng-click="item.remove()">
+										  Remove
+									  </button>
+								  </td>
+							  </tr>
+						  </tbody>
+					  </table>
+					  <div>
+						<div>
+						  <p>Queue progress:</p>
+						  <div class="progress bg-light dker" style="">
+							  <div class="progress-bar progress-bar-striped bg-info" role="progressbar" ng-style="{ 'width': uploaderStore.progress + '%' }"></div>
+						  </div>
+						</div>
+					  </div>
+					</div>
+				  </div>
+				</div>
+			  </div>
+			</div>
+		  </div>
+		</div>
+		<!-- End uploaderStore -->
+		<div class="col-sm-12">
+			<div class="panel panel-success profile-uploader-widget-wrap">
+				<div class="panel-heading">
+					Store Table
+				</div>
+				<div class="panel-body">
+                    <div class="pull-right">
+                        <md-button class="md-primary btn btn-lg btn-primary profile-btn-margin" ng-click="allStores()">Get Stores</md-button>
+                    </div>
+					<div class="panel-body">
+						<div ng-controller="CoreMerchantTableCtrl">
+
+							<table class="table table-bordered table-condensed">
+								<tr>
+									<td>Store Name</td>
+									<td>Store Latitude</td>
+									<td>Store Longitude</td>
+									<td>Store Zip code</td>
+									<td>Store street</td>
+									<td>Store State</td>
+									<td>Store City</td>
+									<td>Store Country</td>
+									<td>Edit</td>
+								</tr>
+								<tr ng-repeat="sRow in storesRows.allStoreRows">
+									<td>
+                    <span
+                        editable-text="sRow.storeName"
+                        e-name="storeName"
+                        e-form="srowform"
+                        e-required
+                        >
+                    {{sRow.storeName || 'empty'}}
+                    </span>
+									</td>
+
+									<td>
+                    <span
+                        editable-text="sRow.storeLatitude"
+                        e-name="storeLatitude"
+                        e-form="srowform"
+                        e-required
+                        >
+                    {{sRow.storeLatitude || 'empty'}}
+                    </span>
+									</td>
+
+									<td>
+                    <span
+                        editable-text="sRow.storeLongitude"
+                        e-name="storeLongitude"
+                        e-form="srowform"
+                        e-required
+                        >
+                    {{sRow.storeLongitude || 'empty'}}
+                    </span>
+									</td>
+
+									<td>
+                    <span
+                        editable-text="sRow.storeZipCode"
+                        e-name="storeZipCode"
+                        e-form="srowform"
+                        e-required
+                        >
+                    {{sRow.storeZipCode || 'empty'}}
+                    </span>
+									</td>
+
+									<td>
+                    <span
+                        editable-text="sRow.storeStreetAddress"
+                        e-name="storeStreetAddress"
+                        e-form="srowform"
+                        e-required
+                        >
+                    {{sRow.storeStreetAddress || 'empty'}}
+                    </span>
+									</td>
+
+									<td>
+                    <span
+                        editable-text="sRow.storeState"
+                        e-name="storeState"
+                        e-form="srowform"
+                        e-required
+                        >
+                    {{sRow.storeState || 'empty'}}
+                    </span>
+									</td>
+									<td>
+                    <span
+                        editable-text="sRow.storeCity"
+                        e-name="storeCity"
+                        e-form="srowform"
+                        e-required
+                        >
+                    {{sRow.storeCity || 'empty'}}
+                    </span>
+									</td>
+									<td>
+                    <span
+                        editable-text="sRow.storeCountry"
+                        e-name="storeCountry"
+                        e-form="srowform"
+                        e-required
+                        >
+                    {{sRow.storeCountry || 'empty'}}
+                    </span>
+									</td>
+
+									<td>
+										<!-- form -->
+										<form
+												editable-form name="srowform"
+												onbeforesave="saveAllStoreRows($data,$index)"
+												ng-show="srowform.$visible"
+												class="form-buttons form-inline"
+												shown="inserted == sRow"
+												>
+											<button type="submit" ng-disabled="srowform.$waiting" class="btn btn-primary">save</button>
+											<button type="button" ng-disabled="srowform.$waiting" ng-click="srowform.$cancel()" class="btn btn-default">cancel</button>
+										</form>
+										<div class="buttons" ng-show="!srowform.$visible">
+											<button class="btn btn-primary" ng-click="srowform.$show()">edit</button>
+											<button class="btn btn-danger" ng-click="removeAllStoreRows($index)">del</button>
+										</div>
+									</td>
+								</tr>
+							</table>
+							<button class="btn btn-default" ng-click="addAllStoreRows()">Add row</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	  </div>
+
+
+
+
+	  <div class="row">
+		<!-- Start uploaderTransaction -->
+		<div class="col-sm-12">
+		  <div class="panel panel-success profile-uploader-widget-wrap">
+			<div class="panel-heading">
+			  Merchant Transaction CSV File Uploader
+			</div>
+			<div class="panel-body">
+			  <div class="row">
+				<div class="" nv-file-drop="" uploader="uploaderTransaction" filters="queueLimit, customFilter">
+				  <div class="bg-light b-r bg-auto">
+					<div class="wrapper-md">
+					  <div ng-show="uploaderTransaction.isHTML5" class="m-b-md">
+						  <div class="b-a b-2x b-dashed wrapper-lg bg-white text-center m-b" nv-file-over="" over-class="b-info" uploader="uploaderTransaction">
+							  Drop File Here to Upload
+						  </div>
+					  </div>
+					  <input type="file" nv-file-select="" uploader="uploaderTransaction" name = "transactionFile"/>
+					</div>
+				  </div>
+				  <div class="">
+					<div class="wrapper-md bg-light dk b-b">
+					  <span class="pull-right m-t-xs">Queue length: <b class="badge bg-info">{{ uploaderTransaction.queue.length }}</b></span>
+					  <h3 class="m-n font-thin">Upload queue</h3>
+					</div>
+					<div class="wrapper-md">
+					  <table class="table bg-white-only b-a">
+						  <thead>
+							  <tr>
+								  <th width="50%">Name</th>
+								  <th ng-show="uploaderTransaction.isHTML5">Size</th>
+								  <th ng-show="uploaderTransaction.isHTML5">Progress</th>
+								  <th>Status</th>
+								  <th>Actions</th>
+							  </tr>
+						  </thead>
+						  <tbody>
+							  <tr ng-repeat="item in uploaderTransaction.queue">
+								  <td><strong>{{ item.file.name }}</strong></td>
+								  <td ng-show="uploaderTransaction.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
+								  <td ng-show="uploaderTransaction.isHTML5">
+									  <div class="progress progress-sm m-b-none m-t-xs">
+										  <div class="progress-bar bg-info" role="progressbar" ng-style="{ 'width': item.progress + '%' }"></div>
+									  </div>
+								  </td>
+								  <td class="text-center">
+									  <span ng-show="item.isSuccess" id = "transactionSuccess" name = "transactionSuccess" class="text-success"><i class="glyphicon glyphicon-ok"></i></span>
+									  <span ng-show="item.isCancel" class="text-warning"><i class="glyphicon glyphicon-ban-circle"></i></span>
+									  <span ng-show="item.isError" id = "transactionError" name = "transactionError" class="text-danger"><i class="glyphicon glyphicon-remove"></i></span>
+								  </td>
+								  <td nowrap>
+									  <button
+										type="button"
+										class="btn btn-default btn-xs"
+										ng-click="item.upload()"
+										ng-disabled="item.isReady || item.isUploading || item.isSuccess"
+									  >
+										Upload
+									  </button>
+									  <button type="button" class="btn btn-default btn-xs" ng-click="item.cancel()" ng-disabled="!item.isUploading">
+										  Cancel
+									  </button>
+									  <button type="button" class="btn btn-default btn-xs" ng-click="item.remove()">
+										  Remove
+									  </button>
+								  </td>
+							  </tr>
+						  </tbody>
+					  </table>
+					  <div>
+						<div>
+						  <p>Queue progress:</p>
+						  <div class="progress bg-light dker" style="">
+							  <div class="progress-bar progress-bar-striped bg-info" role="progressbar" ng-style="{ 'width': uploaderTransaction.progress + '%' }"></div>
+						  </div>
+						</div>
+					  </div>
+					</div>
+				  </div>
+				</div>
+			  </div>
+			</div>
+		  </div>
+		</div>
+		<!-- End uploaderTransaction -->
+		<div class="col-sm-12">
+			<div class="panel panel-success profile-uploader-widget-wrap">
+				<div class="panel-heading">
+					Transaction Table
+				</div>
+				<div class="panel-body">
+          <div class="pull-right">
+            <input type="number" placeholder="Number of Transaction"  name="consumerTransactionRange" ng-model="consumerTransaction.range">
+            <md-button class="md-primary btn btn-lg btn-primary profile-btn-margin" ng-click="consumerTransaction()">Submit</md-button>
+          </div>
+					<div class="panel-body">
+						<div ng-controller="CoreMerchantTableCtrl">
+
+							<table class="table table-bordered table-condensed">
+								<tr>
+									<td>Product Name</td>
+									<td>Brand Name</td>
+									<td>Store Name</td>
+									<td>Cash</td>
+									<td>Offer Amount</td>
+									<td>Edit</td>
+								</tr>
+								<tr ng-repeat="ctRow in ConsumerTransactionRows.allConsumerTransactionRows">
+									<td>
+                    <span
+                        editable-text="ctRow.productName"
+                        e-name="productName"
+                        e-form="ctrowform"
+                        e-required
+                        >
+                    {{ctRow.productName || 'empty'}}
+                    </span>
+									</td>
+
+									<td>
+                    <span
+                        editable-text="ctRow.brandName"
+                        e-name="brandName"
+                        e-form="ctrowform"
+                        e-required
+                        >
+                    {{ctRow.brandName || 'empty'}}
+                    </span>
+
+									</td>
+
+									<td>
+                    <span
+                      editable-text="ctRow.storeName"
+                      e-name="storeName"
+                      e-form="ctrowform"
+                      e-required
+                      >
+                      {{ctRow.storeName || 'empty'}}
+                    </span>
+									</td>
+									<td>
+										<span
+												editable-text="ctRow.cash"
+												e-name="cash"
+												e-form="ctrowform"
+												e-required
+												>
+										{{ctRow.cash || 'empty'}}
+									  </span>
+									</td>
+									<td>
+                    <span
+                        editable-text="ctRow.offerAmount"
+                        e-name="offerAmount"
+                        e-form="ctrowform"
+                        e-required
+                        >
+                    {{ctRow.offerAmount || 'empty'}}
+                    </span>
+									</td>
+
+									<td>
+										<!-- form -->
+										<form
+												editable-form name="ctrowform"
+												onbeforesave=""
+												ng-show="ctrowform.$visible"
+												class="form-buttons form-inline"
+												shown="inserted == ctRow"
+												>
+											<button type="submit" ng-disabled="ctrowform.$waiting" class="btn btn-primary">save</button>
+											<button type="button" ng-disabled="ctrowform.$waiting" ng-click="ctrowform.$cancel()" class="btn btn-default">cancel</button>
+										</form>
+										<div class="buttons" ng-show="!ctrowform.$visible">
+											<button class="btn btn-primary" ng-click="ctrowform.$show()">edit</button>
+											<button class="btn btn-danger" ng-click="removeAllConsumerTransactionRows($index)">del</button>
+										</div>
+									</td>
+								</tr>
+							</table>
+							<button class="btn btn-default" ng-click="addAllConsumerTransactionRows()">Add row</button>
+						</div>
+					</div>
+				</div>
+			</div>
+	</div>
+  </div>
+    <div class="row">
+    <div class="col-sm-12">
+        <div class="panel panel-success profile-uploader-widget-wrap">
+            <div class="panel-heading">
+                Merchant Offer Loyalty Table
+            </div>
+            <div class="panel-body">
+                <div class="panel-body">
+                    <div ng-controller="CoreMerchantTableCtrl">
+
+                        <table class="table table-bordered table-condensed">
+                            <tr>
+                                <td>Base Loyalty Points Amount</td>
+                                <td>Increment Loyalty Points Amount</td>
+                                <td>Dollar Purchase Amount</td>
+                                <td>Reward Amount</td>
+                                <td>Threshold Loyalty Points Amount</td>
+                                <td>Edit</td>
+                            </tr>
+                            <tr ng-repeat="sRow in loyaltyRows.allLoyaltyRows">
+                                <td>
+                    <span
+                            editable-text="sRow.baseLoyaltyPointsAmount"
+                            e-name="baseLoyaltyPointsAmount"
+                            e-form="srowform"
+                            e-required
+                            >
+                    {{sRow.baseLoyaltyPointsAmount || 'empty'}}
+                    </span>
+                                </td>
+
+                                <td>
+                    <span
+                            editable-text="sRow.incrementLoyaltyPointsAmount"
+                            e-name="incrementLoyaltyPointsAmount"
+                            e-form="srowform"
+                            e-required
+                            >
+                    {{sRow.incrementLoyaltyPointsAmount || 'empty'}}
+                    </span>
+                                </td>
+
+                                <td>
+                    <span
+                            editable-text="sRow.dollarPurchaseAmount"
+                            e-name="dollarPurchaseAmount"
+                            e-form="srowform"
+                            e-required
+                            >
+                    {{sRow.dollarPurchaseAmount || 'empty'}}
+                    </span>
+                                </td>
+
+                                <td>
+                    <span
+                            editable-text="sRow.rewardAmount"
+                            e-name="rewardAmount"
+                            e-form="srowform"
+                            e-required
+                            >
+                    {{sRow.rewardAmount || 'empty'}}
+                    </span>
+                                </td>
+
+                                <td>
+                    <span
+                            editable-text="sRow.thresholdLoyaltyPointsAmount"
+                            e-name="thresholdLoyaltyPointsAmount"
+                            e-form="srowform"
+                            e-required
+                            >
+                    {{sRow.thresholdLoyaltyPointsAmount || 'empty'}}
+                    </span>
+                                </td>
+                                <td>
+                                    <!-- form -->
+                                    <form
+                                            editable-form name="srowform"
+                                            onbeforesave="saveAllLoyaltyRows($data,$index)"
+                                            ng-show="srowform.$visible"
+                                            class="form-buttons form-inline"
+                                            shown="inserted == sRow"
+                                            >
+                                        <button type="submit" ng-disabled="srowform.$waiting" class="btn btn-primary">save</button>
+                                        <button type="button" ng-disabled="srowform.$waiting" ng-click="srowform.$cancel()" class="btn btn-default">cancel</button>
+                                    </form>
+                                    <div class="buttons" ng-show="!srowform.$visible">
+                                        <button class="btn btn-primary" ng-click="srowform.$show()">edit</button>
+                                        <button class="btn btn-danger" ng-click="removeAllLoyaltyRows($index)">del</button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                        <button class="btn btn-default" ng-click="addAllLoyaltyRows()">Add row</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+</div>

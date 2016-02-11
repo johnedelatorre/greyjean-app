@@ -1,0 +1,147 @@
+// toasters
+md-toast.md-top {
+  top: 65px;
+  position: fixed;
+}
+// icon list
+.list-icon i {
+  font-size: 14px;
+  width: 40px;
+  vertical-align: middle;
+  margin: 0;
+  display: inline-block;
+  text-align: center;
+  .transition(font-size .2s);
+}
+.list-icon div {
+  line-height: 40px;
+  white-space: nowrap;
+}
+.list-icon div:hover i {
+  font-size: 26px;
+}
+// streamline
+.streamline {
+  position: relative;
+  border-color: @border-color;
+  .sl-item:after, &:after {
+    content: '';
+    position: absolute;
+    background-color: #fbfbf8;
+    border-color: inherit;
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 10px;
+    width: 9px;
+    height: 9px;
+    margin-left: -5px;
+    bottom: 0;
+    left: 0;
+  }
+}
+.sl-item {
+  border-color: @border-color;
+  position: relative;
+  padding-bottom: 1px;
+  .clearfix();
+  &:after {
+    top: 6px;
+    bottom: auto;
+  }
+  &.b-l {
+    margin-left: -1px;
+  }
+}
+
+// dasboard widgets -
+
+// fingerprint create widget
+.FOC-widgets-copy-wrap {
+  height: 0;
+  padding-right: 210px;
+  overflow: hidden;
+  transform: translate3d(0, -110%, 0);
+  transition: all .3s ease;
+  &.ui-scrollfix {
+    position: fixed;
+    height: auto;
+    max-height: 120px;
+    top: 0;
+    z-index: 99;
+    width: 100%;
+    transform: translate3d(0, 0, 0);
+    .dashboard-FOC-create-widget {
+      transform: translate3d(0, 0, 0);
+    }
+  }
+  .app-aside-folded & {
+    padding-right: 70px;
+  }
+  .dashboard-FOC-widget-copy {
+    transition: all .3s ease;
+    transform: translate3d(0, -70%, 0);
+  }
+}
+
+.dashboard-fingerprints-create-widget,
+.dashboard-offers-create-widget {
+  i {
+    color: @brand-black;
+  }
+}
+
+.dashboard-campaigns-create-widget {
+  color: @text-white;
+}
+
+.dashboard-main-wrapper {
+  transition: all .3s ease;
+}
+
+.dashboard-create-view {
+  // position: fixed;
+  z-index: -1;
+  max-height: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  // transition: transform .5s ease;
+  transform: scaleY(0) scale(.6);
+  transform-origin: top;
+  &.dashboardFOCActive {
+    max-height: 9999px;
+    z-index: 9999;
+    transform: scaleY(1) scale(1);
+  }
+}
+
+.campaign-create-wrap {
+  overflow-x: hidden;
+}
+
+.mainFOCActive {
+  // overflow: hidden;
+  // .app {
+  //   transform: translate3d(0, 90%, 0);
+  //   overflow: hidden;
+  // }
+}
+
+// .dashboard-create-view {
+//   &.dashboardFOCActive {
+//     + .dashboard-main-wrapper {
+//       .FOC-widgets-copy-wrap {
+//         .dashboard-FOC-widget-copy {
+//           transform: translate3d(0, -110%, 0) !important;
+//         }
+//       }
+//     }
+//   }
+// }
+
+// .dashboard-FOC-create-widget {
+//   max-height: 450px;
+//   overflow: hidden;
+// }

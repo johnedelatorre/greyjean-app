@@ -1,0 +1,18 @@
+<div class="modal-body wrapper-lg">
+  <div class="row">
+    <div class="col-xs-12 b-r">
+      <h3 class="m-t-none m-b font-thin">Your session has expired please Login again</h3>
+      <form name="reauthForm" role="form">
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" class="form-control" placeholder="Enter email" ng-model="user.email" required>
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" class="form-control" placeholder="Password" ng-model="user.email" required>
+        </div>
+        <button type="submit" class="btn btn-sm btn-success pull-right text-uc m-t-n-xs" ng-disabled="reauthForm.$invalid" ng-click="ok()"><strong>Login in</strong></button>
+      </form>
+    </div>
+  </div>
+</div>

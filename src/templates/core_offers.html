@@ -1,0 +1,355 @@
+<div class="wrapper-md" ng-controller="OffersCtrl">
+  <div class="panel-default">
+    <div class="panel-body">
+      <div class="row wrapper bg-light">
+        <div class="col-sm-3">
+          <h1><span class="font-bold">Recent</span> Offers</h1>
+        </div>
+        <div class="col-sm-1">
+          <a class="list-toggle" href=""><img src="img/icon-coverflow.svg">
+          </a>
+          <a class="list-toggle" href=""><img src="img/icon-listview.svg">
+          </a>
+        </div>
+        <div class="col-sm-3">
+          <input id="filter" type="text" class="form-control input-sm w-f inline m-r search-box" placeholder="Search..." />
+        </div>
+         <div class="col-sm-1">
+          <md-button
+            class="createBtn md-primary btn btn-lg btn-primary m-r-sm padder-v padder-lg"
+            ui-sref="core.view.offers.create"
+          >
+            Create
+          </md-button>
+        </div>
+          <md-progress-circular
+                  class="md-hue-2 wizard-loader-data"
+                  md-mode="indeterminate"
+                  ng-class="{'show-wizard-loader': toggleWizardLoader.showLoader}"
+                  ></md-progress-circular>
+        <div class="col-sm-4 m-b-xs">
+          <div class="col-sm-4">
+            <a class="download" href=""><img src="img/icon-csv.svg">
+            </a>
+            <a class="download" href=""><img src="img/icon-pdf.svg">
+            </a>
+          </div>
+          <div class="col-sm-8">
+            <select class="input-sm campaign-toggle form-control w-sm inline v-middle">
+              <option value="0">Year</option>
+              <option value="1">Month</option>
+              <option value="2">Day</option>
+              <option value="3">Overall</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div
+        id="offerWidget"
+        class="offer-create-wrap fade-in-up"
+        ui-view="offerWidget"
+        ng-class="{'offerWidgetViewActive': $state.includes('core.view.offers.create')}"
+      ></div>
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="row row-sm text-center">
+            <div class="col-xs-8">
+              <div class="panel">
+                <div class="bg-charcol">
+                    <div>
+                      <div class="mapSection bg-charcol">
+                        <!-- ICANHAZ: http://www.highcharts.com/maps/demo/map-drilldown -->
+                        <img class="map-holder" src="img/map-placeholder.svg">
+                      </div>
+                    </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-xs-4">
+              <div class="panel">
+                <h2 class="bottom"><span>Basket</span></h2>
+                <div class="StaticTabs">
+                  <md-tabs class="md-accent" md-selected="dashCtrl.tabsetHighlights.selectedIndex">
+                    <md-tab id="tab13" aria-controls="tab13-content">
+                      Brand
+                    </md-tab>
+                    <md-tab id="tab14" aria-controls="tab14-content">
+                      Category
+                    </md-tab>
+                    <md-tab id="tab15" aria-controls="tab15-content">
+                      Type
+                    </md-tab>
+                  </md-tabs>
+                  <ng-switch on="dashCtrl.tabsetHighlights.selectedIndex" class="tabpanel-container">
+                    <div role="tabpanel" id="tab13-content" aria-labelledby="tab13" ng-switch-when="0" md-swipe-left="next()" md-swipe-right="previous()">
+                      <div class="panel panel-default">
+                        <table class="table table-striped m-b-none">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <div ng-init="data1=[ 16,15,15,14,17,18,16,15,16 ]" ui-jq="sparkline" ui-options="[16,15,15,14,17,18,16,15,16], {type:'bar', height:19, barWidth:4, barSpacing:2, barColor:'#27c24c'}" class="sparkline inline">
+                                  <canvas width="104" height="38" style="display: inline-block; width: 52px; height: 19px; vertical-align: top;"></canvas>
+                                </div>
+                              </td>
+                              <td>App downloads</td>
+                              <td class="text-success">
+                                <i class="fa fa-level-up"></i> 40%
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="text-center">
+                                <div ng-init="data2=[ 60,30,10 ]" ui-jq="sparkline" ui-options="[60,30,10], {type:'pie', height:19, sliceColors:['#23b7e5','white','#fad733']}" class="sparkline inline">
+                                  <canvas width="38" height="38" style="display: inline-block; width: 19px; height: 19px; vertical-align: top;"></canvas>
+                                </div>
+                              </td>
+                              <td>Social connection</td>
+                              <td class="text-success">
+                                <i class="fa fa-level-up"></i> 20%
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <div ng-init="data3=[ 16,15,15,14,17,18,16,15,16 ]" ui-jq="sparkline" ui-options="[16,15,15,14,17,18,16,15,16], {type:'line', height:19, width:60, lineColor:'#7266ba', fillColor:'white'}" class="sparkline inline">
+                                  <canvas width="120" height="38" style="display: inline-block; width: 60px; height: 19px; vertical-align: top;"></canvas>
+                                </div>
+                              </td>
+                              <td>Revenue</td>
+                              <td class="text-warning">
+                                <i class="fa fa-level-down"></i> 5%
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <div ng-init="data4=[ 16,15,15,14,17,18,16,15,16 ]" ui-jq="sparkline" ui-options="[16,15,15,14,17,18,16,15,16], {type:'discrete', height:19, width:60, lineColor:'#27c24c'}" class="sparkline inline">
+                                  <canvas width="120" height="38" style="display: inline-block; width: 60px; height: 19px; vertical-align: top;"></canvas>
+                                </div>
+                              </td>
+                              <td>Customer increase</td>
+                              <td class="text-danger">
+                                <i class="fa fa-level-down"></i> 20%
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="text-center">
+                                <div ng-init="data2=[ 60,30,10 ]" ui-jq="sparkline" ui-options="[60,30,10], {type:'pie', height:19, sliceColors:['#7266ba','white','#fad733']}" class="sparkline inline">
+                                  <canvas width="38" height="38" style="display: inline-block; width: 19px; height: 19px; vertical-align: top;"></canvas>
+                                </div>
+                              </td>
+                              <td>Number of Cats</td>
+                              <td class="text-success">
+                                <i class="fa fa-level-up"></i> 77%
+                              </td>
+                            </tr>
+                            <tr class="border-bottom">
+                              <td class="text-center">
+                                <div ng-init="data2=[ 60,30,10 ]" ui-jq="sparkline" ui-options="[60,30,10], {type:'pie', height:19, sliceColors:['#7266ba','white','#fad733']}" class="sparkline inline">
+                                  <canvas width="38" height="38" style="display: inline-block; width: 19px; height: 19px; vertical-align: top;"></canvas>
+                                </div>
+                              </td>
+                              <td>Number of Cats</td>
+                              <td class="text-success">
+                                <i class="fa fa-level-up"></i> 77%
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+
+                        <div class="panel-heading font-bold">Winners</div>
+                      </div>
+                    </div>
+                    <div role="tabpanel" id="tab14-content" aria-labelledby="tab14" ng-switch-when="1" md-swipe-left="next()" md-swipe-right="previous()">
+                      <div class="panel panel-default">
+                        <div class="panel-body text-center">
+                          <small class="text-muted block">yesterday: 20%</small>
+                          <div class="inline">
+                            <div ui-jq="easyPieChart" ui-options="{
+                            percent: 25,
+                            lineWidth: 10,
+                            trackColor: '{{app.color.light}}',
+                            barColor: '{{app.color.success}}',
+                            scaleColor: '{{app.color.light}}',
+                            size: 188,
+                            lineCap: 'butt',
+                            animate: 1000
+                            }">
+                              <div>
+                                <span class="h2 m-l-sm step">25</span>%
+                                <div class="text text-sm">
+                                  <h4><small>last </small>12<small> hrs</small></h4>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="panel-heading font-bold">Best Campaign</div>
+                        <div class="panel-footer"><small>% of change</small>
+                        </div>
+                      </div>
+                    </div>
+                    <div role="tabpanel" id="tab15-content" aria-labelledby="tab15" ng-switch-when="2" md-swipe-left="next()" md-swipe-right="previous()">
+                      <div class="panel panel-default">
+                        <div>
+                          <table class="table m-b-none" ui-jq="footable" data-filter="#filter" data-page-size="5">
+                            <thead>
+                              <tr>
+                                <th data-toggle="true">
+                                  Campaign
+                                </th>
+                                <th>
+                                  Status
+                                </th>
+                                <th data-hide="phone,tablet" data-name="Details">
+                                  Details
+                                </th>
+                                <th data-hide="phone,tablet" data-name="Action">
+                                  Action
+                                </th>
+                                <th data-hide="phone,tablet" data-name="Remaining">
+                                  Remaining
+                                </th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <td>Isidra</td>
+                                <td class="text-danger">
+                                  <i class="fa fa-level-down"></i> 57%</td>
+                                <td data-value="3">
+                                  <span class="label bg-warning" title="Female">Gender</span>
+                                  <span class="label bg-light" title="Disabled">Offer Type</span>
+                                  <span class="label bg-light" title="Disabled">Other</span>
+                                </td>
+                                <td>Lorem ipsum dolor sit amet.</td>
+                                <td data-value="2">20 days</td>
+                              </tr>
+                              <tr>
+                                <td>Shona</td>
+                                <td class="text-warning">
+                                  <i class="fa fa-level-down"></i> 10%</td>
+                                <td data-value="3">
+                                  <span class="label bg-warning" title="Female">Gender</span>
+                                  <span class="label bg-light" title="Disabled">Offer Type</span>
+                                  <span class="label bg-light" title="Disabled">Other</span>
+                                </td>
+                                <td>Lorem ipsum dolor sit amet.</td>
+                                <td data-value="2">20 days</td>
+                              </tr>
+                              <tr>
+                                <td>Granville</td>
+                                <td class="text-light">
+                                  <i class="fa fa-level-down"></i> 1%</td>
+                                <td data-value="3">
+                                  <span class="label bg-warning" title="Female">Gender</span>
+                                  <span class="label bg-light" title="Disabled">Offer Type</span>
+                                  <span class="label bg-light" title="Disabled">Other</span>
+                                </td>
+                                <td>Lorem ipsum dolor sit amet.</td>
+                                <td data-value="2">20 days</td>
+                              </tr>
+                              <tr>
+                                <td>Easer</td>
+                                <td class="text-light">
+                                  <i class="fa fa-level-down"></i> 3%</td>
+                                <td data-value="3">
+                                  <span class="label bg-warning" title="Female">Gender</span>
+                                  <span class="label bg-light" title="Disabled">Offer Type</span>
+                                  <span class="label bg-light" title="Disabled">Other</span>
+                                </td>
+                                <td>Lorem ipsum dolor sit amet.</td>
+                                <td data-value="2">20 days</td>
+                              </tr>
+                              <tr>
+                                <td>Maple</td>
+                                <td class="text-warning">
+                                  <i class="fa fa-level-down"></i> 17%</td>
+                                <td data-value="3">
+                                  <span class="label bg-warning" title="Female">Gender</span>
+                                  <span class="label bg-light" title="Disabled">Offer Type</span>
+                                  <span class="label bg-light" title="Disabled">Other</span>
+                                </td>
+                                <td>Lorem ipsum dolor sit amet.</td>
+                                <td data-value="2">20 days</td>
+                              </tr>
+                            </tbody>
+                            <tfoot class="hide-if-no-paging">
+                              <tr>
+                                <td colspan="5" class="text-center">
+                                  <ul class="pagination"></ul>
+                                </td>
+                              </tr>
+                            </tfoot>
+                          </table>
+                        </div>
+                        <div class="panel-heading font-bold">Losers</div>
+                      </div>
+                    </div>
+                  </ng-switch>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="">
+        <!-- FLUX: ->  this is going back in the mix
+        <div class="bg-dark"> REMOVED 02/12/15
+          <div class="gallery" flickity="{wrapAround: true}">
+            <div class="gallery-cell" fingerprint-ref="{{offer.offerId}}" ng-repeat="offer in offers">
+              <img src="img/placeholder.png" alt="">
+              <div class="gallery-caption">
+                <p>{{offer.offerName}}</p>
+              </div>
+            </div>
+          </div>
+        </div> -->
+        <div>
+          <table class="table m-b-none" ui-jq="footable" data-filter="#filter" data-page-size="5">
+            <thead>
+              <tr>
+                <th data-toggle="true">Offer Name</th>
+                <th>Brand</th>
+                <th data-hide="phone">Product</th>
+                <th data-hide="phone" data-name="Max Age">ZipCode</th>
+                <th data-hide="phone">Start Date</th>
+                <th data-hide="phone">End Date</th>
+                <th data-hide="phone">Status</th>
+                <th data-hide="phone">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="offer in allOffers">
+                <td>{{offer.offerName}}</td>
+                <td>{{offer.brandName}}</td>
+                <td>{{offer.productName}}</td>
+                <td>{{offer.zipCode}}</td>
+                <td>{{offer.dateStart}}</td>
+                <td>{{offer.dateEnd}}</td>
+                <td data-value="1">
+                  <span class="label bg-success" title="Active">Active</span>
+                </td>
+                <td data-value="1">
+                  <!-- <a href="#">
+                    <i class="fa fa-fw fa-eye text-dark"></i>
+                  </a> -->
+                  <a href="#/view/offers/{{offer.offerId}}/update" id="open-button" class="menu-button m-r-sm">
+                    <i class="fa fa-fw fa-pencil text-dark"></i>
+                  </a>
+                  <a ng-click="trashOffer($index, offer.offerId)">
+                    <i class="fa fa-fw fa-trash text-dark"></i>
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+            <tfoot class="hide-if-no-paging">
+              <tr>
+                <td colspan="5" class="text-center">
+                  <ul class="pagination"></ul>
+                </td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+    </div>

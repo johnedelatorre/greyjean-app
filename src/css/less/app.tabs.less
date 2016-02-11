@@ -1,0 +1,84 @@
+/*-----------------*/
+  /***** TABS *****/
+  /*-----------------*/
+
+  md-tab {border:none !important}
+
+  .StaticTabs {
+    /* Tab Animation styles */
+  }
+  .StaticTabs #tab1-content {
+    color: @text-color;
+  }
+  .StaticTabs #tab2-content {
+    color: @text-color;
+  }
+  .StaticTabs #tab3-content {
+    color: @text-color;
+  }
+  .StaticTabs .tabpanel-container {
+    display: block;
+    position: relative;
+    background: #fbfbf8;
+    border: 0px solid black;
+    height: 320px;
+    overflow: hidden;
+  }
+  .StaticTabs [role="tabpanel"] {
+    width: 100%;
+    height: 100%;
+    -webkit-transition: all cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.5s;
+    transition: all cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.5s;
+    position: absolute;
+  }
+  .StaticTabs [role="tabpanel"].ng-leave.ng-leave-active,
+  .StaticTabs [role="tabpanel"].ng-enter {
+    top: -300px;
+  }
+  .StaticTabs [role="tabpanel"].ng-leave,
+  .StaticTabs [role="tabpanel"].ng-enter.ng-enter-active {
+    top: 0;
+  }
+  .StaticTabs [role="tabpanel"].ng-leave {
+    z-index: 100;
+  }
+  .StaticTabs .tabpanel-container [role="tabpanel"] {
+    padding: 0 !important
+  }
+  .tabpanel-container {} .StaticTabs .after-tabs-area {
+    padding: 25px;
+  }
+  .StaticTabs .after-tabs-area > span {
+    margin-top: 25px;
+    padding-right: 15px;
+    vertical-align: middle;
+    line-height: 30px;
+    height: 35px;
+  }
+  .StaticTabs .after-tabs-area > md-checkbox {
+    margin-top: 26px;
+    margin-left: 0px;
+  }
+  .StaticTabs .md-header {
+    height: 40px;
+    background: @brand-primary !important;
+  }
+  .StaticTabs md-tab {
+    color: #fbfbf8 !important;
+  }
+  .StaticTabs md-tab.active,
+  .StaticTabs md-tab:focus {
+    /*background: #fbfbf8 !important;*/
+    color: #333238 !important;
+  }
+  .StaticTabs .charcol md-tab.active,
+  .StaticTabs .charcol md-tab:focus {
+    background: @charcol !important;
+    color: #333238 !important;
+  }
+  .StaticTabs md-tab[disabled] {
+    opacity: 0.5;
+  }
+  .StaticTabs .md-header .md-ripple {} .StaticTabs md-tabs-ink-bar {
+    display: none !important
+  }

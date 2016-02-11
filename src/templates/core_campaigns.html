@@ -1,0 +1,119 @@
+<div class="wrapper-md" ng-controller="CampaignsCtrl">
+  <div class="panel-default">
+    <div class="panel-body">
+      <div class="row wrapper bg-light">
+        <div class="col-sm-3">
+          <h1><span class="font-bold">Recent</span> Campaigns</h1>
+        </div>
+        <div class="col-sm-1">
+          <a class="list-toggle" href=""><img src="img/icon-coverflow.svg">
+          </a>
+          <a class="list-toggle" href=""><img src="img/icon-listview.svg">
+          </a>
+        </div>
+        <div class="col-sm-3">
+          <input id="filter" type="text" class="form-control input-sm w-f inline m-r search-box" placeholder="Search..." />
+        </div>
+        <div class="col-sm-1">
+          <md-button
+            ui-sref="core.view.campaigns.create"
+            class="createBtn md-primary btn btn-lg btn-primary m-r-sm padder-v padder-lg"
+          >
+            Create
+          </md-button>
+        </div>
+          <md-progress-circular
+                  class="md-hue-2 wizard-loader-data"
+                  md-mode="indeterminate"
+                  ng-class="{'show-wizard-loader': toggleWizardLoader.showLoader}"
+                  ></md-progress-circular>
+        <div class="col-sm-4 m-b-xs">
+          <div class="col-sm-4">
+            <a class="download" href=""><img src="img/icon-csv.svg">
+            </a>
+            <a class="download" href=""><img src="img/icon-pdf.svg">
+            </a>
+          </div>
+          <div class="col-sm-8">
+            <select class="input-sm campaign-toggle form-control w-sm inline v-middle">
+              <option value="0">Year</option>
+              <option value="1">Month</option>
+              <option value="2">Day</option>
+              <option value="3">Overall</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div
+        id="campaignWidget"
+        class="campaign-create-wrap fade-in-up"
+        ui-view="campaignWidget"
+        ng-class="{'campaignWidgetViewActive': $state.includes('core.view.campaigns.create')}"
+      ></div>
+      <div class="">
+        <!-- FLUX: ->  this is going back in the mix
+        <div class="bg-dark"> REMOVED 02/12/15
+          <div class="gallery" flickity="{wrapAround: true}">
+            <div class="gallery-cell" fingerprint-ref="{{offer.campaignId}}" ng-repeat="campaign in campaigns">
+              <img src="img/placeholder.png" alt="">
+              <div class="gallery-caption">
+                <p>{{campaign.campaignName}}</p>
+              </div>
+            </div>
+          </div>
+        </div> -->
+        <div class="table-responsive">
+          <table class="table m-b-none" ui-jq="footable" data-filter="#filter" data-page-size="5">
+            <thead>
+              <tr>
+                <th data-toggle="true">Campaign Name</th>
+                <th>Fingerprint Id</th>
+                <th data-hide="phone">Offer Id</th>
+                <th data-hide="phone" data-name="Max Age">Start Date</th>
+                <th data-hide="phone">End Date</th>
+                <th data-hide="phone">Activate/Deactivate</th>
+                <th data-hide="phone">Status</th>
+                <th data-hide="phone">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="campaign in allCampaigns">
+                <td>{{campaign.campaignName}}</td>
+                <td>{{campaign.fingerprintId}}</td>
+                <td>{{campaign.offerId}}</td>
+                <td>{{campaign.dateStart}}</td>
+                <td>{{campaign.dateEnd}}</td>
+                <td><md-button class=" md-primary btn-primary" ng-model="active" ng-click="campaignActivateDeactivate(campaign.campaignId,0,$index)" ng-show="campaign.activate == 1">Deactivate</md-button>
+                    <md-button class=" md-primary btn-danger" ng-model="deactive" ng-click="campaignActivateDeactivate(campaign.campaignId,1,$index)" ng-show="campaign.activate == 0">Activate</md-button>
+                </td>
+
+                <td data-value="1">
+                  <span class="label bg-success" title="Active" ng-show="campaign.activate == 1">Active</span>
+                   <span class="label bg-danger" title="Not Active" ng-show="campaign.activate == 0">Not Active</span>
+                </td>
+                <td data-value="1">
+                  <!-- <a href="#">
+                    <i class="fa fa-fw fa-eye text-dark"></i>
+                  </a> -->
+                  <a href="#/view/campaigns/{{campaign.campaignId}}/update" id="open-button" class="menu-button m-r-sm" href="#">
+                    <i class="fa fa-fw fa-pencil text-dark"></i>
+                  </a>
+                  <a ng-click="trashCampaign($index, campaign.campaignId)">
+                    <i class="fa fa-fw fa-trash text-dark"></i>
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+            <tfoot class="hide-if-no-paging">
+              <tr>
+                <td colspan="5" class="text-center">
+                  <ul class="pagination"></ul>
+                </td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+    </div>

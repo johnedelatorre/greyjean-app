@@ -1,0 +1,83 @@
+{
+  "issues": [
+    {
+      "text": "something is not right",
+      "id": 101
+    },
+    {
+      "text": "crash on login",
+      "id": 102
+    },
+    {
+      "text": "crash on login",
+      "id": 103
+    },
+    {
+      "text": "crash on login",
+      "id": 104
+    },
+    {
+      "text": "crash on login",
+      "id": 105
+    },
+    {
+      "text": "crash on login",
+      "id": 106
+    },
+    {
+      "text": "crash on login",
+      "id": 107
+    },
+    {
+      "text": "crash on login",
+      "id": 108
+    },
+    {
+      "text": "crash on login",
+      "id": 109
+    },
+    {
+      "text": "crash on login",
+      "id": 110
+    },
+    {
+      "message": "meowza",
+      "fid": 1,
+      "test": [
+        "cool",
+        77777,
+        {
+          "catName": "Fred"
+        }
+      ],
+      "id": 111
+    }
+  ],
+  "people": [
+    {
+      "issueId": 101,
+      "id": 10,
+      "name": "Gleb"
+    },
+    {
+      "issueId": 102,
+      "id": 12,
+      "name": "John"
+    }
+  ],
+  "stats": [
+    {
+      "issueId": 101,
+      "peopleId": 10,
+      "id": 1,
+      "name": "This is a serious serious statistic"
+    },
+    {
+      "issueId": 102,
+      "peopleId": 12,
+      "id": 2,
+      "name": "I am just a bit less serious but still an important statistic"
+    }
+  ],
+  "catName": []
+}

@@ -1,0 +1,388 @@
+<div class="hbox hbox-auto-xs hbox-auto-sm" ng-init="">
+  <!-- main -->
+  <div class="col">
+    <!-- main header -->
+    <div class="bg-light lter b-b wrapper-md">
+      <div class="row">
+        <div class="col-sm-6 col-xs-12">
+          <h1 class="m-n font-thin h3 text-black">Hi {{merchantMe.firstName | toCapital}} {{merchantMe.lastName | toCapital}} - Welcome to Flik Dashboard</h1>
+          <small class="text-muted">Hey {{merchantMe.firstName}} {{merchantMe.lastName}}</small>
+        </div>
+        <div class="col-sm-6 text-right hidden-xs">
+          <div class="inline m-r text-left">
+            <div class="m-b-xs">77 <span class="text-muted">items</span></div>
+            <div ng-init="data1=[ 106,108,110,105,110,109,105,104,107,109,105,100,105,102,101,99,98 ]"
+              ui-jq="sparkline"
+              ui-options="{{data1}}, {type:'bar', height:20, barWidth:5, barSpacing:1, barColor:'#dce5ec'}"
+              class="sparkline inline">loading...
+            </div>
+          </div>
+          <div class="inline text-left">
+            <div class="m-b-xs">$70,777 <span class="text-muted">revenue</span></div>
+            <div ng-init="data2=[ 105,102,106,107,105,104,101,99,98,109,105,100,108,110,105,110,109 ]"
+              ui-jq="sparkline"
+              ui-options="{{data2}}, {type:'bar', height:20, barWidth:5, barSpacing:1, barColor:'#dce5ec'}"
+              class="sparkline inline">loading...
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- / main header -->
+    <div class="wrapper-md" ng-controller="FlotChartDemoCtrl">
+      <!-- stats -->
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="row row-sm text-center">
+            <div class="col-xs-3">
+              <a ui-sref="app.dashboard.fingerprint.view" class="block panel padder-v bg-info item">
+                <span class="text-white font-thin h1 block">{{fingerprintsCount}}</span>
+                <span class="text-muted text-xs">Fingerprints</span>
+                <span class="bottom text-right w-full">
+                  <b class="badge bg-primary pull-right" ng-model="fingerprintsCount">{{fingerprintsCount}}</b>
+                  <i class="fa fa-caret-up text-warning m-r-sm"></i>
+                </span>
+              </a>
+            </div>
+            <div class="col-xs-3">
+              <div class="panel padder-v item">
+                <div class="h1 text-info font-thin h1" ng-model="offersCount">{{offersCount}}</div>
+                <span class="text-muted text-xs">New Offers</span>
+                <div class="bottom text-right w-full">
+                  <i class="fa fa-caret-down text-warning m-r-sm"></i>
+                </div>
+              </div>
+            </div>
+            <div class="col-xs-3">
+              <a ui-sref="app.dashboard.campaign.view" class="block panel padder-v bg-primary item">
+                <span class="text-white font-thin h1 block" ng-model="campaignsCount">{{campaignsCount}}</span>
+                <span class="text-muted text-xs">Campaigns</span>
+                <span class="bottom text-right w-full">
+                  <i class="fa fa-cloud-upload text-muted m-r-sm"></i>
+                </span>
+              </a>
+            </div>
+            <div class="col-xs-3">
+              <div class="panel padder-v item">
+                <div class="font-thin h1">29</div>
+                <span class="text-muted text-xs">Messages</span>
+                <div class="bottom text-right w-full">
+                  <i class="fa fa-caret-down text-warning m-r-sm"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- / stats -->
+      <!-- campaigns -->
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="panel wrapper">
+            <label class="i-switch bg-warning pull-right" ng-init="showSpline=true">
+              <input type="checkbox" ng-model="showSpline">
+              <i></i>
+            </label>
+            <h4 class="font-thin m-t-none m-b text-muted">Latest Campaign Stats</h4>
+            <div ui-jq="plot" ui-refresh="showSpline" ui-options="
+              [
+                { data: {{d0_1}}, label:'Organic Milk', points: { show: true, radius: 1}, splines: { show: showSpline, tension: 0.4, lineWidth: 1, fill: 0.8 } },
+                { data: {{d0_2}}, label:'Cat Toys', points: { show: true, radius: 1}, splines: { show: showSpline, tension: 0.4, lineWidth: 1, fill: 0.8 } }
+              ],
+              {
+                colors: ['{{app.color.info}}', '{{app.color.primary}}'],
+                series: { shadowSize: 3 },
+                xaxis:{ font: { color: '#a1a7ac' } },
+                yaxis:{ font: { color: '#a1a7ac' }, max:20 },
+                grid: { hoverable: true, clickable: true, borderWidth: 0, color: '#dce5ec' },
+                tooltip: true,
+                tooltipOpts: { content: 'Visits of %x.1 is %y.4',  defaultTheme: false, shifts: { x: 10, y: -25 } }
+              }
+            " style="height:246px" >
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- / campaigns -->
+      <!-- tables -->
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          Recent Campaigns
+        </div>
+        <div class="row wrapper">
+          <div class="col-sm-5 m-b-xs">
+            <select class="input-sm form-control w-sm inline v-middle">
+              <option value="0">Bulk action</option>
+              <option value="1">Delete selected</option>
+              <option value="2">Bulk edit</option>
+              <option value="3">Export</option>
+            </select>
+            <button class="btn btn-sm btn-default">Apply</button>
+          </div>
+          <div class="col-sm-4">
+          </div>
+          <div class="col-sm-3">
+            <div class="input-group">
+              <input type="text" class="input-sm form-control" placeholder="Search">
+              <span class="input-group-btn">
+                <button class="btn btn-sm btn-default" type="button">Go!</button>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="table-responsive">
+          <table class="table table-striped b-t b-light">
+            <thead>
+              <tr>
+                <th style="width:20px;">
+                  <label class="i-checks m-b-none">
+                    <input type="checkbox"><i></i>
+                  </label>
+                </th>
+                <th>Name</th>
+                <th>Group</th>
+                <th>Date</th>
+                <th style="width:30px;"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><label class="i-checks m-b-none"><input type="checkbox" name="post[]"><i></i></label></td>
+                <td>Idrawfast</td>
+                <td>4c</td>
+                <td>Jul 25, 2013</td>
+                <td>
+                  <a href class="active" ui-toggle-class><i class="fa fa-check text-success text-active"></i><i class="fa fa-times text-danger text"></i></a>
+                </td>
+              </tr>
+              <tr>
+                <td><label class="i-checks m-b-none"><input type="checkbox" name="post[]"><i></i></label></td>
+                <td>Formasa</td>
+                <td>8c</td>
+                <td>Jul 22, 2013</td>
+                <td>
+                  <a href ui-toggle-class><i class="fa fa-check text-success text-active"></i><i class="fa fa-times text-danger text"></i></a>
+                </td>
+              </tr>
+              <tr>
+                <td><label class="i-checks m-b-none"><input type="checkbox" name="post[]"><i></i></label></td>
+                <td>Avatar system</td>
+                <td>15c</td>
+                <td>Jul 15, 2013</td>
+                <td>
+                  <a href class="active" ui-toggle-class><i class="fa fa-check text-success text-active"></i><i class="fa fa-times text-danger text"></i></a>
+                </td>
+              </tr>
+              <tr>
+                <td><label class="i-checks m-b-none"><input type="checkbox" name="post[]"><i></i></label></td>
+                <td>Throwdown</td>
+                <td>4c</td>
+                <td>Jul 11, 2013</td>
+                <td>
+                  <a href class="active" ui-toggle-class><i class="fa fa-check text-success text-active"></i><i class="fa fa-times text-danger text"></i></a>
+                </td>
+              </tr>
+              <tr>
+                <td><label class="i-checks m-b-none"><input type="checkbox" name="post[]"><i></i></label></td>
+                <td>Idrawfast</td>
+                <td>4c</td>
+                <td>Jul 7, 2013</td>
+                <td>
+                  <a href class="active" ui-toggle-class><i class="fa fa-check text-success text-active"></i><i class="fa fa-times text-danger text"></i></a>
+                </td>
+              </tr>
+              <tr>
+                <td><label class="i-checks m-b-none"><input type="checkbox" name="post[]"><i></i></label></td>
+                <td>Formasa</td>
+                <td>8c</td>
+                <td>Jul 3, 2013</td>
+                <td>
+                  <a href class="active" ui-toggle-class><i class="fa fa-check text-success text-active"></i><i class="fa fa-times text-danger text"></i></a>
+                </td>
+              </tr>
+              <tr>
+                <td><label class="i-checks m-b-none"><input type="checkbox" name="post[]"><i></i></label></td>
+                <td>Avatar system</td>
+                <td>15c</td>
+                <td>Jul 2, 2013</td>
+                <td>
+                  <a href class="active" ui-toggle-class><i class="fa fa-check text-success text-active"></i><i class="fa fa-times text-danger text"></i></a>
+                </td>
+              </tr>
+              <tr>
+                <td><label class="i-checks m-b-none"><input type="checkbox" name="post[]"><i></i></label></td>
+                <td>Videodown</td>
+                <td>4c</td>
+                <td>Jul 1, 2013</td>
+                <td>
+                  <a href class="active" ui-toggle-class><i class="fa fa-check text-success text-active"></i><i class="fa fa-times text-danger text"></i></a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <footer class="panel-footer">
+          <div class="row">
+            <div class="col-sm-4 hidden-xs">
+              <select class="input-sm form-control w-sm inline v-middle">
+                <option value="0">Bulk action</option>
+                <option value="1">Delete selected</option>
+                <option value="2">Bulk edit</option>
+                <option value="3">Export</option>
+              </select>
+              <button class="btn btn-sm btn-default">Apply</button>
+            </div>
+            <div class="col-sm-4 text-center">
+              <small class="text-muted inline m-t-sm m-b-sm">showing 20-30 of 50 items</small>
+            </div>
+            <div class="col-sm-4 text-right text-center-xs">
+              <ul class="pagination pagination-sm m-t-none m-b-none">
+                <li><a href><i class="fa fa-chevron-left"></i></a></li>
+                <li><a href>1</a></li>
+                <li><a href>2</a></li>
+                <li><a href>3</a></li>
+                <li><a href>4</a></li>
+                <li><a href>5</a></li>
+                <li><a href><i class="fa fa-chevron-right"></i></a></li>
+              </ul>
+            </div>
+          </div>
+        </footer>
+      </div>
+      <!-- / tables -->
+      <!-- updates -->
+      <div class="row">
+        <div class="col-sm-6 col-md-4">
+          <div class="panel panel-default">
+            <div class="panel-heading">Revenue</div>
+            <div class="panel-body">
+              <div class="m-b-md">
+                <p class="h3 font-thin">Investment</p>
+                Average Earnings for last year.
+              </div>
+              <div class="row m-b">
+                <div class="col-xs-6">
+                  <div ng-init="data99 = [ [2, 8], [4, 6], [6, 4], [8, 2], [10, 0], [8, 2], [6, 4], [4, 6], [2,8] ]" ui-jq="sparkline" ui-options="{{data99}}, {type:'bar', height:112, barWidth:6, barSpacing:10, stackedBarColor:['{{app.color.success}}', '#d7e5e8']}" class="sparkline inline"></div>
+                </div>
+                <div class="col-xs-6 padder-sm">
+                  Revenue
+                  <div class="h3 text-black m-b">4500,00</div>
+                  Costs
+                  <div class="h3 text-success">3450,00</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6 col-md-8">
+          <div class="panel panel-default">
+            <div class="panel-heading">Stats</div>
+            <table class="table table-striped m-b-none">
+              <thead>
+                <tr>
+                  <th style="width:60px;" class="text-center">Graph</th>
+                  <th>Item</th>
+                  <th style="width:70px;"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <div ng-init="data1=[ 16,15,15,14,17,18,16,15,16 ]" ui-jq="sparkline" ui-options="{{data1}}, {type:'bar', height:19, barWidth:4, barSpacing:2, barColor:'{{app.color.success}}'}" class="sparkline inline">loading...</div>
+                  </td>
+                  <td>App downloads</td>
+                  <td class="text-success">
+                    <i class="fa fa-level-up"></i> 40%
+                  </td>
+                </tr>
+                <tr>
+                  <td class="text-center">
+                    <div ng-init="data2=[ 60,30,10 ]" ui-jq="sparkline" ui-options="{{data2}}, {type:'pie', height:19, sliceColors:['{{app.color.info}}','#fbfbf8','{{app.color.warning}}']}" class="sparkline inline">loading...</div>
+                  </td>
+                  <td>Social connection</td>
+                  <td class="text-success">
+                    <i class="fa fa-level-up"></i> 20%
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <div ng-init="data3=[ 16,15,15,14,17,18,16,15,16 ]" ui-jq="sparkline" ui-options="{{data3}}, {type:'line', height:19, width:60, lineColor:'{{app.color.primary}}', fillColor:'#fbfbf8'}" class="sparkline inline">loading...</div>
+                  </td>
+                  <td>Revenue</td>
+                  <td class="text-warning">
+                    <i class="fa fa-level-down"></i> 5%
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <div ng-init="data4=[ 16,15,15,14,17,18,16,15,16 ]" ui-jq="sparkline" ui-options="{{data4}}, {type:'discrete', height:19, width:60, lineColor:'{{app.color.success}}'}" class="sparkline inline">loading...</div>
+                  </td>
+                  <td>Customer increase</td>
+                  <td class="text-danger">
+                    <i class="fa fa-level-down"></i> 20%
+                  </td>
+                </tr>
+                <tr>
+                  <td class="text-center">
+                    <div ng-init="data2=[ 60,30,10 ]" ui-jq="sparkline" ui-options="{{data2}}, {type:'pie', height:19, sliceColors:['{{app.color.primary}}','#fbfbf8','{{app.color.warning}}']}" class="sparkline inline">loading...</div>
+                  </td>
+                  <td>Number of Cats</td>
+                  <td class="text-success">
+                    <i class="fa fa-level-up"></i> 77%
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <!-- / updates -->
+      <!-- service -->
+      <div class="panel hbox hbox-auto-xs no-border">
+        <div class="col wrapper">
+          <i class="fa fa-circle-o text-info m-r-sm pull-right"></i>
+          <h4 class="font-thin m-t-none m-b-none text-primary-lt">Managed Flik Services</h4>
+          <span class="m-b block text-sm text-muted">This year to date</span>
+          <div ui-jq="plot" ui-options="
+            [
+              { data: {{d4}}, lines: { show: true, lineWidth: 1, fill:true, fillColor: { colors: [{opacity: 0.2}, {opacity: 0.8}] } } }
+            ],
+            {
+              colors: ['{{app.color.light}}'],
+              series: { shadowSize: 3 },
+              xaxis:{ show:false },
+              yaxis:{ font: { color: '#a1a7ac' } },
+              grid: { hoverable: true, clickable: true, borderWidth: 0, color: '#dce5ec' },
+              tooltip: true,
+              tooltipOpts: { content: '%s of %x.1 is %y.4',  defaultTheme: false, shifts: { x: 10, y: -25 } }
+            }
+          " style="height:240px" >
+          </div>
+        </div>
+        <div class="col wrapper-lg w-lg bg-light dk r-r">
+          <h4 class="font-thin m-t-none m-b">Reports</h4>
+          <div class="">
+            <div class="">
+              <span class="pull-right text-primary">80%</span>
+              <span>Campaigns</span>
+            </div>
+            <progressbar value="80" class="progress-xs m-t-sm bg-white" animate="true" type="primary"></progressbar>
+            <div class="">
+              <span class="pull-right text-info">65%</span>
+              <span>Offers</span>
+            </div>
+            <progressbar value="65" class="progress-xs m-t-sm bg-white" animate="true" type="info"></progressbar>
+            <div class="">
+              <span class="pull-right text-warning">75%</span>
+              <span>Fingerprints</span>
+            </div>
+            <progressbar value="75" class="progress-xs m-t-sm bg-white" animate="true" type="warning"></progressbar>
+          </div>
+          <p class="text-muted">Hey Flik Starz. You know, you did great this year... Bravo. </p>
+        </div>
+      </div>
+      <!-- / service -->
+    </div>
+  </div>
+  <!-- / main -->
+</div>

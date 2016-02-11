@@ -1,0 +1,9 @@
+<snippet>
+	<content><![CDATA[
+{% verbatim %}
+	${1:angular or other stuff}
+{% endverbatim %}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>%v</tabTrigger>
+</snippet>

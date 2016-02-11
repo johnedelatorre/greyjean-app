@@ -1,0 +1,142 @@
+<div class="bg-light lter b-b wrapper-md">
+  <h1 class="m-n font-thin h3">Create Campaign</h1>
+</div>
+<div class="wrapper-md" ng-controller="CoreCampaignCreateCtrl">
+  <div class="panel panel-default">
+    <div class="bg-light lter b-b wrapper-md">
+      <h4 class="m-n font-bold h4">Name Your Campaign</h4>
+    </div>
+    <div class="panel-body">
+      <form name="campaignCreateForm" class="form-horizontal" role="form">
+        <div class="form-group">
+          <div class="col-xs-12">
+              <md-text-float label="Campaign Name" name="campaignNameInput" type="text" class="form-input-full" ng-model="campaignName" ng-pattern="wordsOnly" required> </md-text-float>
+              <input label="Campaign Name" name="campaignNameInput" type="text" class="form-input-full ng-hide" ng-model="campaignName" ng-pattern="wordsOnly" required ng-trim="false" auto-focus>
+              <span class="error" ng-show="campaignCreateForm.campaignNameInput.$error.pattern">
+                  No special characters allowed onlt letters, numbers, and spaces
+              </span>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="bg-light lter b-b wrapper-md m-b-lg">
+            <h4 class="m-n font-bold h4">Choose Campaign Options</h4>
+          </div>
+          <div class="col-sm-3">
+            <h5 class="font-bold m-l-xs m-b-sm">Choose Fingerprint</h5>
+            <!-- <ui-select multiple ng-model="multipleCampaign.selectedFingerprints" theme="bootstrap" ng-disabled="disabled" ng-required="true" required>
+              <ui-select-match placeholder="Select Fingerprints" required>{{$item.FingerprintName}}</ui-select-match>
+              <ui-select-choices group-by="someGroupFn" repeat="fingerprint in fingerprints | propsFilter: {FingerprintName: $select.search}" ng-required="true" required>
+                <div ng-bind-html="fingerprint.FingerprintName | highlight: $select.search" ng-required="true" required></div>
+                <small>
+                  Gender: <span ng-bind-html="Fingerprint.Gender | highlight: $select.search" ng-required="true" required></span>
+                  Age : <span ng-bind-html="''+Fingerprint.Age | highlight: $select.search"></span> years old
+                </small>
+              </ui-select-choices>
+            </ui-select> -->
+            <ui-select ng-model="fingerprint.selected" theme="bootstrap" required>
+              <ui-select-match placeholder="Select Fingerprint">{{$select.selected.fingerprintName}}</ui-select-match>
+              <ui-select-choices repeat="item in fingerprints | filter: $select.search">
+                <h4 ng-bind-html="item.fingerprintName | highlight: $select.search"></h4>
+                Gender: <small ng-bind-html="item.gender | highlight: $select.search"></small>
+              </ui-select-choices>
+            </ui-select>
+          </div>
+          <div class="col-sm-3">
+            <h5 class="font-bold m-l-xs m-b-sm">Choose Offer</h5>
+            <!-- <ui-select multiple ng-model="multipleCampaign.selectedOffers" theme="bootstrap" ng-disabled="disabled" required>
+              <ui-select-match placeholder="Select Offers">{{$item.OfferName}}</ui-select-match>
+              <ui-select-choices group-by="someGroupFn" repeat="offer in offers | propsFilter: {OfferName: $select.search, Offer.Name: $select.search}">
+                <div ng-bind-html="offer.OfferName | highlight: $select.search"></div>
+                <small>
+                  Amount: $<span ng-bind-html="''+offer.OfferAmount | highlight: $select.search"></span><br>
+                  Offer: <span ng-bind-html="''+offer.Offer.Name | highlight: $select.search"></span>
+                </small>
+              </ui-select-choices>
+            </ui-select> -->
+            <ui-select ng-model="offer.selected" theme="bootstrap" required>
+              <ui-select-match placeholder="Select Offer">{{$select.selected.offerName}}</ui-select-match>
+              <ui-select-choices repeat="item in offers | filter: $select.search">
+                <h4 ng-bind-html="item.offerName | highlight: $select.search"></h4>
+                <small>Brand: </small><small ng-bind-html="item.brandName | highlight: $select.search"></small>
+              </ui-select-choices>
+            </ui-select>
+          </div>
+          <div class="col-sm-3">
+            <h5 class="font-bold m-l-xs m-b-sm">Choose Triggers</h5>
+            <ui-select multiple ng-model="multipleCampaign.selectedTriggers" theme="bootstrap" ng-disabled="disabled" required>
+              <ui-select-match placeholder="Select Triggers">{{$item.name}}</ui-select-match>
+              <ui-select-choices group-by="someGroupFn" repeat="trigger in triggers | propsFilter: {name: $select.search}">
+                <div ng-bind-html="trigger.name | highlight: $select.search"></div>
+                <!-- <small>
+                  {{trigger.name}}
+                </small> -->
+              </ui-select-choices>
+            </ui-select>
+          </div>
+          <div class="col-sm-3">
+            <h5 class="font-bold m-l-xs m-b-sm">Choose Emotions</h5>
+            <ui-select multiple ng-model="multipleCampaign.selectedEmotions" theme="bootstrap" ng-disabled="disabled" required>
+              <ui-select-match placeholder="Select Emotions">{{$item.name}}</ui-select-match>
+              <ui-select-choices group-by="someGroupFn" repeat="emotion in emotions | propsFilter: {name: $select.search}">
+                <div ng-bind-html="emotion.name | highlight: $select.search"></div>
+                <!-- <small>
+                  {{emotion.name}}
+                </small> -->
+              </ui-select-choices>
+            </ui-select>
+          </div>
+        </div>
+        <div class="form-group">
+          <!-- <pre class="alert alert-info">Selected date is: <em>{{campaignStartDate | date:'dd-MMMM-yyyy' }}</em></pre> -->
+          <div class="row padder-md">
+            <div class="col-md-6">
+              <h4>Campaign Start Date</h4>
+              <p class="input-group">
+                <input type="text" class="form-control" datepicker-popup="{{campaignDateFormat}}" ng-model="campaignStartDate" is-open="calendarStartDateOpened" min-date="minStartDate" max-date="maxStartDate" datepicker-options="campaignDateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
+                <span class="input-group-btn">
+                  <button type="button" class="btn btn-default" ng-click="openStartDateCalendar($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                </span>
+              </p>
+            </div>
+            <div class="col-md-6">
+              <h4>Campaign End Date</h4>
+              <p class="input-group">
+                <input type="text" class="form-control" datepicker-popup="{{campaignDateFormat}}" ng-model="campaignEndDate" is-open="calendarEndDateOpened" min-date="campaignStartDate" max-date="maxEndDate" datepicker-options="campaignDateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
+                <span class="input-group-btn">
+                  <button type="button" class="btn btn-default" ng-click="openEndDateCalendar($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                </span>
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="bg-light lter b-b wrapper-md">
+            <h4 class="m-n font-bold h4">Choose Campaign Budget</h4>
+          </div>
+          <div class="col-xs-4 col-sm-3">
+            <md-text-float label="Budget" type="number" class="form-input-full" ng-model="campaignBudget" required> </md-text-float>
+          </div>
+          <div class="col-xs-8 col-sm-4">
+            <h5 class="font-bold m-l-xs m-b-sm">Fees</h5>
+            {{campaignBudget | percent: 1000: true}}
+          </div>
+          <div class="col-xs-12 col-sm-5">
+            <h5 class="font-bold m-l-xs m-b-sm">Campaign Total</h5>
+            {{campaignBudget/10+campaignBudget}}
+            <!-- {{campaignBudget | percent: 1}} -->
+          </div>
+        </div>
+        <div class="form-group text-right clearfix">
+          <md-button class="md-primary btn btn-lg btn-primary m-r-sm padder-v padder-lg" ng-disabled="campaignCreateForm.$invalid" ng-click="saveCampaign()">Save</md-button>
+          <md-button class="md-primary btn btn-lg btn-danger m-r-md padder-v padder-lg" ng-disabled="campaignCreateForm.$invalid" ng-click="saveCampaignNextStep($event)">Save &amp; Activate</md-button>
+          <md-button class="md-fab pull-left m-l-md" aria-label="Time" ng-click="goBackToOffer($event)" ng-show="returnToOffer">
+              <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48"><path d="M40 22H15.66l11.17-11.17L24 8 8 24l16 16 2.83-2.83L15.66 26H40v-4z"/></svg>
+          </md-button>
+          <!-- <md-button class="md-primary" ng-click="saveCampaignNextStep($event)">
+            Confirm Dialog
+          </md-button> -->
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

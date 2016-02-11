@@ -1,0 +1,161 @@
+<div class="bg-light lter b-b wrapper-md">
+  <h1 class="m-n font-thin h3">Create Offer</h1>
+</div>
+<div class="wrapper-md" ng-controller="CoreOfferCreateCtrl">
+  <div class="panel panel-default">
+    <div class="bg-light lter b-b wrapper-md">
+      <h4 class="m-n font-bold h4">Name Your Offer</h4>
+    </div>
+    <div class="panel-body">
+      <form name="offerCreateForm" class="form-horizontal" role="form">
+        <div class="form-group">
+          <div class="col-xs-12">
+
+              <md-text-float label="Offer Name" name="offerNameInput" class="form-input-full" ng-model="offerName" required> </md-text-float>
+              <input label="Offer Name" name="offerNameInput" type="text" class="form-input-full ng-hide" ng-model="offerName" ng-pattern="wordsOnly" required ng-trim="false">
+              <span class="error" ng-show="offerCreateForm.offerNameInput.$error.pattern">
+                  No special characters allowed only letters, numbers, and spaces
+              </span>
+
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="bg-light lter b-b wrapper-md">
+            <h4 class="m-n font-bold h4">Choose Options</h4>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-xs-12 col-sm-6 col-md-6">
+
+            <h4>Choose Offer</h4>
+            <ui-select ng-model="offer.selected" theme="bootstrap" required>
+              <ui-select-match placeholder="Select Offer">{{$select.selected.Name}}</ui-select-match>
+              <ui-select-choices repeat="item in offers | filter: $select.search">
+                <div ng-bind-html="item.Name | highlight: $select.search"></div>
+                <small ng-bind-html="item.Brand | highlight: $select.search"></small>
+              </ui-select-choices>
+            </ui-select>
+
+          </div>
+          <div class="col-xs-12 col-sm-6 col-md-6">
+
+            <h4>Select Offer Type</h4>
+            <ui-select ng-model="offerType.selected" theme="bootstrap" required>
+              <ui-select-match placeholder="Select Offer Type">{{$select.selected.Name}}</ui-select-match>
+              <ui-select-choices repeat="item in offerTypes | filter: $select.search">
+                <div ng-bind-html="item.Name | highlight: $select.search"></div>
+                <small ng-bind-html="item.Type | highlight: $select.search"></small>
+              </ui-select-choices>
+            </ui-select>
+
+          </div>
+        </div>
+        <div class="line line-dashed b-b line-lg pull-in"></div>
+        <div class="form-group">
+          <!-- <pre class="alert alert-info">Selected date is: <em>{{offerStartDate | date:'dd-MMMM-yyyy' }}</em></pre> -->
+          <div class="row padder-md">
+            <div class="col-md-6">
+
+              <h4>Offer Start Date</h4>
+              <p class="input-group">
+                <input type="text" class="form-control" datepicker-popup="{{offerDateFormat}}" ng-model="offerStartDate" is-open="calendarStartDateOpened" min-date="minStartDate" max-date="maxStartDate" datepicker-options="offerDateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
+                <span class="input-group-btn">
+                  <button type="button" class="btn btn-default" ng-click="openStartDateCalendar($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                </span>
+              </p>
+
+            </div>
+            <div class="col-md-6">
+
+              <h4>Offer End Date</h4>
+              <p class="input-group">
+                <input type="text" class="form-control" datepicker-popup="{{offerDateFormat}}" ng-model="offerEndDate" is-open="calendarEndDateOpened" min-date="offerStartDate" max-date="maxEndDate" datepicker-options="offerDateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
+                <span class="input-group-btn">
+                  <button type="button" class="btn btn-default" ng-click="openEndDateCalendar($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                </span>
+              </p>
+
+            </div>
+          </div>
+        </div>
+        <div class="line line-dashed b-b line-lg pull-in"></div>
+        <div class="form-group">
+          <div class="row padder-md">
+            <div class="col-xs-12">
+
+              <h4>Offer Description</h4>
+              <md-input-container flex>
+                <textarea class="form-control" name="offerDescription" ng-model="offerDescription" required></textarea>
+              </md-input-container>
+
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="m-b-md bg-light lter b-b wrapper-md">
+            <h4 class="font-bold h4">Choose Locations</h4>
+          </div>
+          <div class="col-xs-12 col-sm-6">
+
+            <h4 class="m-n font-bold h4">Choose Locations</h4>
+            <tags-input ng-model="offerLocationAddresses">
+              <auto-complete source="getOfferLocations($query)"></auto-complete>
+            </tags-input>
+
+            <h4 class="m-b-xs font-bold h4">Choose States</h4>
+            <ui-select
+              ng-model="offerLocationStates.selectedStates"
+              theme="bootstrap"
+              ng-disabled="disabled"
+              ng-required="true"
+              multiple
+              required
+            >
+              <ui-select-match placeholder="Select States" required>
+                {{$item.name}}
+              </ui-select-match>
+              <ui-select-choices
+                group-by="someGroupFn"
+                repeat="state in offerLocationStatesList | propsFilter: {name: $select.search}"
+                ng-required="true"
+                required
+              >
+                <div ng-bind-html="state.name | highlight: $select.search" ng-required="true" required></div>
+              </ui-select-choices>
+            </ui-select>
+
+          </div>
+          <div class="col-xs-12 col-sm-6">
+
+            <h4 class="m-n font-bold h4">Choose Zipcodes</h4>
+            <tags-input ng-model="offerLocationZipcodes">
+              <auto-complete source="getOfferLocations($query)"></auto-complete>
+            </tags-input>
+
+          </div>
+        </div>
+        <div class="line line-dashed b-b line-lg pull-in"></div>
+        <div class="form-group">
+          <div class="col-xs-12">
+
+            <p>Offer Amount: ${{offerAmount}}</p>
+            <slider
+                ng-model="offerAmount"
+                translate-fn="currencyFormatting"
+                floor="1"
+                ceiling="5">
+            </slider>
+
+          </div>
+        </div>
+        <div class="form-group text-right clearfix">
+          <md-button class="md-primary btn btn-lg btn-primary m-r-sm padder-v padder-lg" ng-disabled="offerCreateForm.$invalid" ng-click="saveOffer()">Save</md-button>
+          <md-button class="md-primary btn btn-lg btn-danger m-r-md padder-v padder-lg" ng-disabled="offerCreateForm.$invalid" ng-click="saveOfferNextStep()">Save &amp; Next</md-button>
+          <md-button class="md-fab pull-left m-l-md" aria-label="Time" ng-click="goBackToFingerprint($event)" ng-show="returnToFingerprint">
+              <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48"><path d="M40 22H15.66l11.17-11.17L24 8 8 24l16 16 2.83-2.83L15.66 26H40v-4z"/></svg>
+          </md-button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

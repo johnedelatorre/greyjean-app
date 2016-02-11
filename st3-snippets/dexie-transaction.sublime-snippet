@@ -1,0 +1,19 @@
+<snippet>
+	<content><![CDATA[
+${1:dbCore}.transaction('${2:rw}', ${1:dbCore}.${4:table}, () => {
+	${5:do meow meow meeeeooww}
+}).then(${6:result} => {
+	${7:success meow}
+	console.${8:warn}("Success - from the transaction ${4:table}");
+}).catch(${9:error} => {
+	console.group("${4:table} error group")
+	console.${9:error}(${9:error}.stack || ${9:error});
+	console.${8:warn}("Nope - from the transaction ${4:table} "+JSON.stringify(${9:error}, null, 4));
+	console.groupEnd();
+});
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>dxt</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

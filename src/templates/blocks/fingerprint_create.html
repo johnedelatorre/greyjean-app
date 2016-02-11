@@ -1,0 +1,612 @@
+<div class="FOC-widget-outer-wrap" ng-controller="CoreFingerprintCreateCtrl">
+  <div class="clearfix bg-primarydark controls">
+    <div ng-if="$state.includes('core.view.fingerprints.create')" ui-sref="core.view.fingerprints" class="close"></div>
+    <div ng-if="$state.includes('core.home.fingerprint')" ui-sref="core.home" class="close"></div>
+  </div>
+  <div class="panel-body bg-primary">
+    <div class="row wrapper">
+      <div class="col-sm-4 col-md-6 wrapper-md">
+        <md-text-float
+          label="Fingerprint Name"
+          name="fingerprintNameInput"
+          class="bb form-input-full main-input"
+          ng-model="fingerprintName"
+          required
+          ng-trim="false"
+        ></md-text-float>
+      </div>
+      <div class="col-sm-6"></div>
+    </div>
+    <div class="row wrapper">
+      <div class="col-sm-4">
+        <div class="text-dark wrapper-md">
+          <h4 class="m-n h4"><span class="font-bold">Gender</span> Selection</h4>
+        </div>
+        <div class="col-sm-12">
+          <div class="svg-fields row">
+            <div class="svg-radio-group svg-radio-custom clearfix svg-anim-lower">
+              <div class="col-sm-4">
+                <label
+                  ng-class="{'emotion-selected': gender.filter == 'MALE'}"
+                  ng-model="gender.filter"
+                  class="radio-male"
+                  btn-radio="'MALE'"
+                ></label>
+                <h5 class="text-center">Male</h5>
+              </div>
+              <div class="col-sm-4">
+                <label
+                  ng-class="{'emotion-selected': gender.filter == 'FEMALE'}"
+                  ng-model="gender.filter"
+                  class="radio-female"
+                  btn-radio="'FEMALE'"
+                ></label>
+                <h5 class="text-center">Female</h5>
+              </div>
+              <div class="col-sm-4">
+                <label
+                  ng-class="{'emotion-selected': gender.filter == 'BOTH'}"
+                  ng-model="gender.filter"
+                  class="radio-both"
+                  btn-radio="'BOTH'"
+                ></label>
+                <h5 class="text-center">Both</h5>
+              </div>
+              <div class="btn-group transaction-logic-button-group" ng-if="$index >= 1">
+                <label class="btn btn-primary" ng-model="cList.filter.logicOperator" btn-radio="'AND'">AND</label>
+                <label class="btn btn-primary" ng-model="cList.filter.logicOperator" btn-radio="'OR'">OR</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="form-group">
+          <div class="text-dark wrapper-md">
+            <h4 class="m-n h4"><span class="font-bold">Income</span> Range</h4>
+          </div>
+          <div class="wrapper-md">
+            <slider class="customSlider" ng-model="rangeIncome.minIncome" ng-model-range="rangeIncome.maxIncome" translate-fn="currencyFormatting" floor="20000" ceiling="150000">
+            </slider>
+            <p class="details text-dark">Income Range ( min: ${{rangeIncome.minIncome}} - max: ${{rangeIncome.maxIncome}} )</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="form-group">
+          <div class="text-dark wrapper-md">
+            <h4 class="m-n font-bold h4">Age Range</h4>
+          </div>
+          <div class="wrapper-md">
+            <slider class="customSlider" ng-model="rangeAge.minAge" ng-model-range="rangeAge.maxAge" floor="16" ceiling="80">
+            </slider>
+            <p class="details text-dark">Age Range ( min:{{rangeAge.minAge}} - max:{{rangeAge.maxAge}} )</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Begin Location Targeting -->
+    <div class="row">
+      <div class="col-sm-3">
+      <div class="text-dark wrapper-md">
+        <h4 class="m-n h4"><span class="font-bold">Geographic</span> Information</h4>
+      </div>
+      <div class="row wrapper-md">
+        <div class="form-group">
+          <div class="col-sm-12">
+            <h5 class="m-b-sm m-t-sm font-bold h5">Select Location</h5>
+            <div class="input-group">
+              <ui-select
+                ng-model="fingerprintLocationAddresses.selected"
+                theme="bootstrap"
+                ng-disabled="disabled"
+                reset-search-input="false"
+              >
+              <ui-select-match placeholder="Enter an address...">
+                {{$select.selected.formatted_address}}
+              </ui-select-match>
+              <ui-select-choices
+                repeat="address in addresses track by $index"
+                refresh="refreshAddresses($select.search)"
+                refresh-delay="1"
+              >
+                <div ng-bind-html="address.formatted_address | highlight: $select.search"></div>
+              </ui-select-choices>
+              </ui-select>
+              <span class="input-group-btn">
+                <button ng-click="fingerprintLocationAddresses.selected = {}" class="btn btn-default">
+                  <span class="glyphicon glyphicon-trash"></span>
+                </button>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+      <div class="col-sm-3">
+        <div class="text-dark wrapper-md">
+            <h4 class="m-n h4 store-pulldown-upper-txt"><span class="font-bold">Radius</span></h4>
+        </div>
+        <div class="row wrapper-md">
+          <div class="form-group">
+            <div class="col-sm-12">
+              <h5 class="m-b-sm m-t-sm font-bold h5">RADIUS</h5>
+              <div class="input-group width-full">
+                <ui-select
+                  ng-model="radius.selected"
+                  theme="bootstrap"
+                  ng-disabled="disabled"
+                  reset-search-input="false"
+                  >
+                    <ui-select-match placeholder="Enter a Store...">
+                        {{$select.selected.radius}}
+                    </ui-select-match>
+                    <ui-select-choices
+                      repeat="Radius in radius track by $index"
+                      refresh="refreshAddresses($select.search)"
+                      refresh-delay="1"
+                      >
+                        <div ng-bind-html="Radius.radius | highlight: $select.search"></div>
+                    </ui-select-choices>
+                </ui-select>
+                <span class="input-group-btn">
+                  <button ng-click="radius.selected = {}" class="btn btn-default">
+                    <span class="glyphicon glyphicon-trash"></span>
+                  </button>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-3">
+        <div class="text-dark wrapper-md">
+            <h4 class="m-n h4 store-pulldown-upper-txt"><span class="font-bold">Store</span></h4>
+        </div>
+        <div class="row wrapper-md">
+          <div class="form-group">
+            <div class="col-sm-12">
+              <h5 class="m-b-sm m-t-sm font-bold h5">STORE</h5>
+              <div class="input-group width-full">
+                <ui-select
+                  ng-model="fingerprintStoreAddresses.selected"
+                  theme="bootstrap"
+                  ng-disabled="disabled"
+                  reset-search-input="false"
+                  >
+                    <ui-select-match placeholder="Enter a Store...">
+                      {{$select.selected.storeName}}
+                    </ui-select-match>
+                    <!--<ui-select-choices-->
+                      <!--repeat="store in allData.stores.list track by $index"-->
+                      <!--refresh="refreshAddresses($select.search)"-->
+                      <!--refresh-delay="1">-->
+                    <ui-select-choices
+                            repeat="store in stores track by $index"
+                            refresh="refreshAddresses($select.search)"
+                            refresh-delay="1">
+                      <div ng-bind-html="store.storeName | highlight: $select.search"></div>
+                    </ui-select-choices>
+                </ui-select>
+                <span class="input-group-btn">
+                  <button ng-click="fingerprintStoreAddresses.selected = {}" class="btn btn-default">
+                    <span class="glyphicon glyphicon-trash"></span>
+                  </button>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-3">
+        <div class="text-dark wrapper-md">
+          <h4 class="m-n h4 store-pulldown-upper-txt"><span class="font-bold" >Beacon</span></h4>
+        </div>
+        <div class="row wrapper-md">
+          <div class="form-group">
+            <div class="col-sm-12">
+              <h5 class="m-b-sm m-t-sm font-bold h5">BEACON</h5>
+              <div class="input-group width-full">
+                <ui-select
+                  ng-model="fingerprintBeaconAddresses.selected"
+                  theme="bootstrap"
+                  ng-disabled="disabled"
+                  reset-search-input="false"
+                  >
+                    <ui-select-match placeholder="Enter a Beacon...">
+                      {{$select.selected.beaconUUID}}
+                    </ui-select-match>
+                    <ui-select-choices
+                      repeat="beacon in allData.beacons.list track by $index"
+                      refresh="refreshAddresses($select.search)"
+                      refresh-delay="1"
+                      >
+                      <div ng-bind-html="beacon.beaconUUID | highlight: $select.search"></div>
+                    </ui-select-choices>
+                </ui-select>
+                <span class="input-group-btn">
+                  <button ng-click="fingerprintBeaconAddresses.selected = {}" class="btn btn-default">
+                    <span class="glyphicon glyphicon-trash"></span>
+                  </button>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- End Location Targeting -->
+    <!-- transaction history -->
+    <div class="row wrapper">
+      <div class="col-sm-12">
+        <div class="text-dark">
+          <h4 class="m-n h4"><span class="font-bold">Transaction</span> History Filter</h4>
+        </div>
+        <ul class="con-buys-lists">
+          <li class="con-buys-list" ng-repeat="cList in conBuysLists track by cList.filter.id">
+          <!-- transaction history filters -->
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="btn-group transaction-logic-button-group" ng-if="$index >= 1">
+                  <label class="btn btn-primary" ng-model="cList.filter.logicOperator" btn-radio="'AND'">AND</label>
+                  <label class="btn btn-primary" ng-model="cList.filter.logicOperator" btn-radio="'OR'">OR</label>
+                </div>
+                <div class="btn-group">
+                  <label class="btn btn-primary" ng-model="cList.filter.logicPurchased" btn-radio="'BOUGHT'">BOUGHT</label>
+                  <label class="btn btn-primary" ng-model="cList.filter.logicPurchased" btn-radio="'NOTBOUGHT'">NOT BOUGHT</label>
+                </div>
+                <div class="row">
+                  <!-- /Select Product Category -->
+                  <div class="col-sm-3">
+                    <div class="transaction-filter-product-select-wrap">
+                      <h5 class="m-b-sm font-bold h5">Select Product Category</h5>
+                      <div class="input-group">
+                        <ui-select reach-infinity="addMoreProductCategoryItems()" ng-model="cList.filter.productCat.selected" theme="bootstrap" ng-change = "ProductNamesWithCategories('{{$select.selected.productCategory}}')">
+                          <ui-select-match placeholder="Select Product Category" required>
+                            <small>{{$select.selected.productCategory}}</small>
+                          </ui-select-match>
+                          <ui-select-choices
+                            repeat="cat in allProductCategories | propsFilter: {productCategory: $select.search} | orderBy: 'productCategory' | filterBy: 'productCategory'"
+                            group-by="someGroupFn"
+                            refresh="refreshProductCategory($select.search)"
+                            ng-required="true"
+                            required
+                          >
+                            <div ng-bind-html="cat.productCategory | highlight: $select.search" ng-required="true" required></div>
+                            Product: <small ng-bind-html="cat.productName | highlight: $select.search" ng-required="true" required></small>
+                          </ui-select-choices>
+                        </ui-select>
+                        <span class="input-group-btn">
+                          <button ng-click="cList.filter.productCat.selected = {}"  class="btn btn-default">
+                            <!--<button ng-click="trashCategory()"  class="btn btn-default">-->
+                            <span class="glyphicon glyphicon-trash"></span>
+                          </button>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- /Select Product Category -->
+                  <!-- /Select Product Brand -->
+                  <div class="col-sm-3">
+                    <div class="transaction-filter-product-select-wrap">
+                      <h5 class="m-b-sm font-bold h5">Select Product Brand</h5>
+                      <div class="input-group">
+                        <ui-select reach-infinity="addMoreProductBrandItems()" ng-model="cList.filter.productBrand.selected" theme="bootstrap" >
+                          <ui-select-match placeholder="Select Product Brand" required>
+                            <small>{{$select.selected.brandName}}</small>
+                          </ui-select-match>
+                          <ui-select-choices
+                            repeat="brand in allProductBrands | propsFilter: {brandName: $select.search} | orderBy:'brandName' | unique:'brandName'"
+                            group-by="someGroupFn"
+                            ng-required="true"
+                            required
+                          >
+                            <div ng-bind-html="brand.brandName | highlight: $select.search" ng-required="true" required></div>
+                            Product: <small ng-bind-html="brand.productName | highlight: $select.search" ng-required="true" required></small>
+                          </ui-select-choices>
+                        </ui-select>
+                        <span class="input-group-btn">
+                          <button ng-click="cList.filter.productBrand.selected = {}" class="btn btn-default">
+                            <span class="glyphicon glyphicon-trash"></span>
+                          </button>
+                        </span><div class="input-group"></div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- /Select Product Brand -->
+                  <!-- /Select Product Name -->
+                  <div class="col-sm-3">
+                    <div class="transaction-filter-product-select-wrap">
+                      <h5 class="m-b-sm font-bold h5">Select Product Name</h5>
+                      <div class="input-group">
+                        <ui-select reach-infinity="addMoreProductNameItems()" ng-model="cList.filter.productName.selected" theme="bootstrap" required>
+                          <ui-select-match placeholder="Select Product Name" required>
+                            <small>{{$select.selected.productName}}</small>
+                          </ui-select-match>
+                          <ui-select-choices
+                            repeat="type in allProductNames | propsFilter: {productName: $select.search} | orderBy:'productName' | filterBy: 'productName'"
+                            group-by="someGroupFn"
+                            refresh="refreshProductName($select.search)"
+                            ng-required="true"
+                            required
+                          >
+                            <div ng-bind-html="type.productType | highlight: $select.search" ng-required="true" required></div>
+                            Product: <small ng-bind-html="type.productName | highlight: $select.search" ng-required="true" required></small>
+                          </ui-select-choices>
+                        </ui-select>
+                        <span class="input-group-btn">
+                          <button ng-click="cList.filter.productName.selected = {}" class="btn btn-default">
+                            <span class="glyphicon glyphicon-trash"></span>
+                          </button>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- /Select Product Name -->
+                  <!-- /Select Time Span -->
+                  <div class="col-sm-3">
+                    <h5 class="m-b-sm font-bold h5">Select Date &amp; Time</h5>
+                    <div class="input-group">
+                      <datetimepicker  show-weeks="showWeeks" hour-step="hourStep" minute-step="minuteStep" ng-model="cList.filter.timeFrames.selected" show-meridian="showMeridian" date-format="dd-MMM-yyyy" date-options="dateOptions" date-disabled="disabled(date, mode)" readonly-time="false"></datetimepicker>
+                    </div>
+                  </div>
+                  <!-- /Select Time Span -->
+                </div>
+              </div>
+            </div>
+            <!-- /transaction history filters -->
+
+            <div class="transaction-button-add-remove-wrap m-t-xs m-b-xs add-remove-btns">
+              <i class="fa fa-plus-square fa-2x btn  md-raised button-create-con-selection-widget" ng-click="createConBuyList()">&nbsp;</i>
+              <i class="fa fa-minus-square fa-2x btn md-raised md-warn button-create-con-selection-widget" ng-click="trashConBuyList($index)" ng-if="$index >= 1">&nbsp;</i>
+            </div>
+          </li>
+        </ul>
+
+      </div>
+    </div>
+
+    <!-- /transaction history -->
+    <!--/Social history-->
+    <div class="row wrapper">
+      <div class="col-sm-12">
+        <div class="text-dark">
+            <h4 class="m-n h4"><span class="font-bold">Social</span> History Filter</h4>
+        </div>
+        <ul class="con-buys-lists">
+          <li class="con-buys-list" ng-repeat="sList in conBuysSocialLists track by sList.sfilter.id">
+            <!-- social history filters -->
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="btn-group transaction-logic-button-group" ng-if="$index >= 1">
+                  <label class="btn btn-primary" ng-model="sList.sfilter.logicOperator" btn-radio="'AND'">AND</label>
+                  <label class="btn btn-primary" ng-model="sList.sfilter.logicOperator" btn-radio="'OR'">OR</label>
+                </div>
+                <div class="btn-group">
+                  <label class="btn btn-primary" ng-model="sList.sfilter.logicPurchased" btn-radio="'LIKE'">Like</label>
+                  <label class="btn btn-primary" ng-model="sList.sfilter.logicPurchased" btn-radio="'NOTLIKE'">Not Like</label>
+                </div>
+                <div class="row">
+                  <!-- /Select Product Category -->
+                  <div class="col-sm-3">
+                    <div class="transaction-filter-product-select-wrap">
+                      <h5 class="m-b-sm font-bold h5">Select Product Category</h5>
+                      <div class="input-group">
+                        <ui-select reach-infinity="addMoreProductCategoryItems()" ng-model="sList.sfilter.productCat.selected" theme="bootstrap" ng-change = "ProductNamesWithCategories('{{$select.selected.productCategory}}')">
+                          <ui-select-match placeholder="Select Product Category" required>
+                            <small>{{$select.selected.productCategory}}</small>
+                          </ui-select-match>
+                          <ui-select-choices
+                            repeat="cat in allProductCategories | propsFilter: {productCategory: $select.search} | orderBy:'productCategory'"
+                            group-by="someGroupFn"
+                            refresh="refreshProductCategory($select.search)"
+                            ng-required="true"
+                            required
+                            >
+                            <div ng-bind-html="cat.productCategory | highlight: $select.search" ng-required="true" required></div>
+                            Product: <small ng-bind-html="cat.productName | highlight: $select.search" ng-required="true" required></small>
+                          </ui-select-choices>
+                        </ui-select>
+                          <span class="input-group-btn">
+                            <button ng-click="sList.sfilter.productCat.selected = {}" class="btn btn-default">
+                                <span class="glyphicon glyphicon-trash"></span>
+                            </button>
+                          </span>
+                      </div>
+                    </div>
+                </div>
+                <!-- /Select Product Category -->
+                <!-- /Select Product Brand -->
+                <div class="col-sm-3">
+                  <div class="transaction-filter-product-select-wrap">
+                    <h5 class="m-b-sm font-bold h5">Select Product Brand</h5>
+                    <div class="input-group">
+                      <ui-select reach-infinity="addMoreProductBrandItems()" ng-model="sList.sfilter.productBrand.selected" theme="bootstrap">
+                        <ui-select-match placeholder="Select Product Brand" required>
+                          <small>{{$select.selected.brandName}}</small>
+                        </ui-select-match>
+                        <ui-select-choices
+                          repeat="brand in allProductBrands | propsFilter: {brandName: $select.search} | orderBy:'brandName' | unique:'brandName'"
+                          group-by="someGroupFn"
+
+                          ng-required="true"
+                          required
+                          >
+                          <div ng-bind-html="brand.brandName | highlight: $select.search" ng-required="true" required></div>
+                          Product: <small ng-bind-html="brand.productName | highlight: $select.search" ng-required="true" required></small>
+                        </ui-select-choices>
+                      </ui-select>
+                      <span class="input-group-btn">
+                        <button ng-click="sList.sfilter.productBrand.selected = {}" class="btn btn-default">
+                          <span class="glyphicon glyphicon-trash"></span>
+                        </button>
+                      </span><div class="input-group"></div>
+                    </div>
+                  </div>
+                </div>
+                <!-- /Select Product Brand -->
+                <!-- /Select Product Name -->
+                <div class="col-sm-3">
+                    <div class="transaction-filter-product-select-wrap">
+                        <h5 class="m-b-sm font-bold h5">Select Product Name</h5>
+
+                        <div class="input-group">
+
+                            <ui-select reach-infinity="addMoreProductNameItems($select.search)" ng-model="sList.sfilter.productName.selected" theme="bootstrap" required>
+                                <ui-select-match placeholder="Select Product Name" required>
+                                    <small>{{$select.selected.productName}}</small>
+                                </ui-select-match>
+                                <ui-select-choices
+                                        repeat="type in allProductNames | propsFilter: {productName: $select.search} | orderBy:'productName'"
+                                        group-by="someGroupFn"
+                                        refresh="refreshProductName($select.search)"
+                                        ng-required="true"
+                                        required
+                                        >
+                                    <div ng-bind-html="type.productType | highlight: $select.search" ng-required="true" required></div>
+                                    Product: <small ng-bind-html="type.productName | highlight: $select.search" ng-required="true" required></small>
+                                </ui-select-choices>
+                            </ui-select>
+                            <span class="input-group-btn">
+                              <button ng-click="sList.sfilter.productName.selected = {}" class="btn btn-default">
+                                  <span class="glyphicon glyphicon-trash"></span>
+                              </button>
+                            </span>
+                        </div>
+                    </div>
+                  </div>
+                  <!-- /Select Product Name -->
+                  <!-- /Select Time Span -->
+                  <div class="col-sm-3">
+                    <h5 class="m-b-sm font-bold h5">Select Date &amp; Time</h5>
+                    <div class="input-group">
+                      <datetimepicker  show-weeks="showWeeks" hour-step="hourStep" minute-step="minuteStep" ng-model="sList.sfilter.timeFrames.selected" show-meridian="showMeridian" date-format="dd-MMM-yyyy" date-options="dateOptions" date-disabled="disabled(date, mode)" readonly-time="false"></datetimepicker>
+                    </div>
+                  </div>
+                  <!-- /Select Time Span -->
+                </div>
+              </div>
+            </div>
+            <!-- /social history filters -->
+
+            <div class="transaction-button-add-remove-wrap m-t-xs m-b-xs add-remove-btns">
+                <i class="fa fa-plus-square fa-2x btn  md-raised button-create-con-selection-widget" ng-click="createConBuySocialList()">&nbsp;</i>
+                <i class="fa fa-minus-square fa-2x btn md-raised md-warn button-create-con-selection-widget" ng-click="trashConBuySocialList($index)" ng-if="$index >= 1">&nbsp;</i>
+            </div>
+          </li>
+        </ul>
+
+      </div>
+    </div>
+
+    <!--/Social history-->
+
+    <!--/cause history-->
+    <div class="row wrapper">
+      <div class="col-sm-12">
+        <div class="text-dark">
+          <h4 class="m-n h4"><span class="font-bold">Cause</span> History Filter</h4>
+        </div>
+        <ul class="con-buys-lists">
+          <li class="con-buys-list" ng-repeat="caList in conBuysCauseLists track by cList.cfilter.id">
+            <!-- cause history filters -->
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="btn-group transaction-logic-button-group" ng-if="$index >= 1">
+                  <label class="btn btn-primary" ng-model="caList.cfilter.logicOperator" btn-radio="'AND'">AND</label>
+                  <label class="btn btn-primary" ng-model="caList.cfilter.logicOperator" btn-radio="'OR'">OR</label>
+                </div>
+                <div class="btn-group">
+                  <label class="btn btn-primary" ng-model="caList.cfilter.logicPurchased" btn-radio="'BOUGHT'">Like</label>
+                  <label class="btn btn-primary" ng-model="caList.cfilter.logicPurchased" btn-radio="'NOTBOUGHT'">Not Like</label>
+                </div>
+                <div class="row">
+                  <!-- /Select Product Category -->
+                  <div class="col-sm-3">
+                    <div class="transaction-filter-product-select-wrap">
+                      <h5 class="m-b-sm font-bold h5">Select Cause </h5>
+                      <div class="input-group">
+                        <ui-select ng-model="caList.cfilter.causeName.selected" theme="bootstrap"  required>
+                          <ui-select-match placeholder="Select Cause" required>
+                            <small>{{$select.selected.causeName}}</small>
+                          </ui-select-match>
+                          <ui-select-choices
+                                  repeat="Cause in causes | propsFilter: {causeName: $select.search} | orderBy:'causeName'"
+                                  group-by="someGroupFn"
+                                  ng-required="true"
+                                  required
+                                  >
+                            <div ng-bind-html="Cause.causeName | highlight: $select.search" ng-required="true" required></div>
+                            Product: <small ng-bind-html="cat.productName | highlight: $select.search" ng-required="true" required></small>
+                          </ui-select-choices>
+                        </ui-select>
+                        <span class="input-group-btn">
+                          <button ng-click="caList.cfilter.productCat.selected = {}" class="btn btn-default">
+                            <span class="glyphicon glyphicon-trash"></span>
+                          </button>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- /Select Product Category -->
+
+                  <!-- /Select Time Span -->
+                  <div class="col-sm-3">
+                    <h5 class="m-b-sm font-bold h5">Select Time Span</h5>
+                    <div class="input-group">
+                        <datetimepicker  show-weeks="showWeeks" hour-step="hourStep" minute-step="minuteStep" ng-model="caList.cfilter.timeFrames.selected" show-meridian="showMeridian" date-format="dd-MMM-yyyy" date-options="dateOptions" date-disabled="disabled(date, mode)" readonly-time="false"></datetimepicker>
+                    </div>
+                  </div>
+                  <!-- /Select Time Span -->
+                </div>
+              </div>
+            </div>
+            <!-- /cause history filters -->
+
+            <div class="transaction-button-add-remove-wrap m-t-xs m-b-xs add-remove-btns">
+                <i class="fa fa-plus-square fa-2x btn  md-raised button-create-con-selection-widget" ng-click="createConBuyCauseList()">&nbsp;</i>
+                <i class="fa fa-minus-square fa-2x btn md-raised md-warn button-create-con-selection-widget" ng-click="trashConBuyCauseList($index)" ng-if="$index >= 1">&nbsp;</i>
+            </div>
+          </li>
+        </ul>
+
+      </div>
+    </div>
+
+    <!--/cause history-->
+
+  </div>
+  <div class="form-group text-right clearfix bg-primary">
+    <div
+      class="bg-primarydark savenext"
+      ng-class="{'no-save-next': !$state.includes('core.home.fingerprint')}"
+      >
+      <md-button
+        class="btnSave m-r-sm padder-lg"
+        ng-if="!$state.includes('core.view.fingerprints.update')"
+        ng-disabled="fingerprintCreateForm.$invalid"
+        ng-click="saveFingerprint()">Save</md-button>
+      <md-button
+        ng-if="$state.includes('core.view.fingerprints.update')"
+        class="btnSave m-r-sm padder-lg"
+        ng-disabled="fingerprintCreateForm.$invalid"
+        ng-click="updateFingerprint()">Update</md-button>
+      <span ng-if="$state.includes('core.home.fingerprint')" class="or text-white">or</span>
+      <md-button
+        class="btnNext m-r-md padder-lg"
+        ng-if="$state.includes('core.home.fingerprint')"
+        ng-disabled="fingerprintCreateForm.$invalid"
+        ng-click="saveFingerprint(true)">Save &amp; Next</md-button>
+    </div>
+  </div>
+
+  <!--<md-progress-circular-->
+    <!--class="md-hue-2 wizard-loader"-->
+    <!--md-mode="indeterminate"-->
+    <!--ng-class="{'show-wizard-loader': toggleWizardLoader.showLoader}"-->
+  <!-->
+  <!--</md-progress-circular>-->
+  <!--&ndash;&gt;-->
+</div>
